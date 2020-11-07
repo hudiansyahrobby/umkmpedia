@@ -1,0 +1,7 @@
+export const ADD_ORDER_INIT = 'ADD_ORDER_INIT';
+export const ADD_ORDER_SUCCESS = 'ADD_ORDER_SUCCESS';
+export const ADD_ORDER__FAIL = 'ADD_ORDER__FAIL';
+
+export const GET_ORDER_INIT = 'GET_ORDER_INIT';
+export const GET_ORDER_SUCCESS = 'GET_ORDER_SUCCESS';
+export const GET_ORDER__FAIL = 'GET_ORDER__FAIL';
