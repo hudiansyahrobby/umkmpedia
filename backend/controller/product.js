@@ -1,12 +1,8 @@
 const Product = require('../model/product');
 
 exports.addProduct = async (req, res, next) => {
-  const { name, price, description, brand, quantity } = req.body;
-  const product = await Product.findOne({ name });
+  const { name, price, description, category, quantity } = req.body;
 
-  if (product) {
-    return res.status(400).json({ success: false, message: 'Product has already exist' });
-  }
   if (!req.file) {
     return res.status(400).json({ success: false, message: 'Image is not valid' });
   }
@@ -15,7 +11,7 @@ exports.addProduct = async (req, res, next) => {
     name,
     price,
     description,
-    brand,
+    category,
     quantity,
     image: req.file.filename,
   });

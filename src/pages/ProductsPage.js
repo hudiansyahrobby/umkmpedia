@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Title from '../components/Title';
 import Products from '../components/Products/Products';
-import { deleteProductById, getAllProducts, searchProduct } from '../actions/productActions';
+import { deleteProductById, getProducts } from '../actions/productActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist, deleteFromWishlist, getWishlist } from '../actions/wishlistActions';
 import Layout from '../components/Layout';
@@ -25,16 +25,14 @@ function ProductsPage(props) {
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(searchProduct(searchQuery, page));
+    dispatch(getProducts(searchQuery, page));
     dispatch(getWishlist());
   }, [dispatch, page]);
 
   const onSearchHandler = (e) => {
     e.preventDefault();
-    console.log('SEARCH QUERY', searchQuery);
-    console.log('SEARCH ', search);
     history.push(`products?search=${search}&page=1`);
-    dispatch(searchProduct(search, page));
+    dispatch(getProducts(search, page));
   };
 
   const onDeleteProductHandler = (id) => {

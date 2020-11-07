@@ -2,10 +2,9 @@ import React, { useEffect } from 'react';
 import Hero from '../components/Hero';
 import Title from '../components/Title';
 import Products from '../components/Products/Products';
-import { deleteProductById, getAllProducts } from '../actions/productActions';
+import { deleteProductById, getProducts } from '../actions/productActions';
 import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist, deleteFromWishlist, getWishlist } from '../actions/wishlistActions';
-import Categories from '../components/Categories/Categories';
 import Layout from '../components/Layout';
 import ProductSkeleton from '../components/Products/ProductSkeleton';
 
@@ -14,13 +13,9 @@ function HomePage() {
   const { products, loading } = useSelector((state) => state.product);
   const { wishlists } = useSelector((state) => state.wishlist);
 
-  const getProducts = () => {
-    dispatch(getAllProducts());
-  };
-
   useEffect(() => {
     dispatch(getWishlist());
-    getProducts();
+    dispatch(getProducts());
   }, [dispatch]);
 
   const onDeleteProductHandler = (id) => {

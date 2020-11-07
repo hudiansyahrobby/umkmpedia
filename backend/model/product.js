@@ -14,9 +14,9 @@ const productSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
-    brand: {
+    category: {
       type: mongoose.Schema.ObjectId,
-      ref: 'Brand',
+      ref: 'Categtory',
       required: true,
     },
     image: {
@@ -27,12 +27,6 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
     },
-    // review: [
-    //   {
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'Review',
-    //   },
-    // ],
   },
   {
     timestamps: true,

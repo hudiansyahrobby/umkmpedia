@@ -45,6 +45,6 @@ export const isUserLoggedIn = (history) => async (dispatch) => {
     dispatch({ type: USER.SIGN_IN_SUCCESS, payload: { token, user } });
   } else {
     localStorage.removeItem('token');
-    dispatch({ type: USER.SIGN_IN__FAIL, payload: 'Token is not valid' });
+    dispatch({ type: USER.SIGN_IN__FAIL, payload: 'Token Tidak Valid' });
   }
 };

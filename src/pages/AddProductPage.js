@@ -90,8 +90,8 @@ function AddProductPage() {
                   name='quantity'
                   type='number'
                   id='quantity'
-                  placeholder='Masukkan Kuantitas Produk'
-                  label='Kuantitas Produk'
+                  placeholder='Masukkan Jumlah Produk'
+                  label='Jumlah Produk'
                 />
 
                 <Input

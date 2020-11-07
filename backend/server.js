@@ -7,8 +7,7 @@ const authRoute = require('./router/auth');
 const productRoute = require('./router/product');
 const cartRoute = require('./router/cart');
 const wishlistRoute = require('./router/wishlist');
-const brandRoute = require('./router/brand');
-// const reviewRoute = require('./router/review');
+const categoryRoute = require('./router/category');
 const path = require('path');
 
 dotenv.config();
@@ -25,12 +24,11 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(express.json());
 
-// app.use('/api', reviewRoute);
 app.use('/api', authRoute);
 app.use('/api', productRoute);
 app.use('/api', cartRoute);
 app.use('/api', wishlistRoute);
-app.use('/api', brandRoute);
+app.use('/api', categoryRoute);
 
 app.listen(PORT, () => {
   console.log(`Listening to Port ${PORT}`);
