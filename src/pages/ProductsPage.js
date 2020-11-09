@@ -56,7 +56,7 @@ function ProductsPage(props) {
     <Layout>
       <div className='px-10 mt-20'>
         <Title align='text-center' margin='mx-auto'>
-          All Products
+          Daftar Produk
         </Title>
         <SearchBar
           onSearch={(e) => setSearch(e.target.value)}
@@ -75,21 +75,25 @@ function ProductsPage(props) {
               onRemoveWishlist={onRemoveWishlist}
             />
 
-            <ReactPaginate
-              previousLabel={'Sebelumnya'}
-              nextLabel={'Selanjutnya'}
-              breakLabel={'...'}
-              pageCount={totalPage}
-              marginPagesDisplayed={2}
-              pageRangeDisplayed={4}
-              onPageChange={onHandlePagination}
-              pageClassName={'mr-2 text-red-700 px-2'}
-              previousClassName={'mr-2 text-red-700'}
-              nextClassName={'text-red-700'}
-              containerClassName={'flex justify-center mt-8 py-4  bg-red-200 font-bold'}
-              activeClassName={'text-red-900 bg-red-300 rounded-md'}
-              forcePage={+page - 1}
-            />
+            {totalPage !== 0 && (
+              <ReactPaginate
+                previousLabel={'Sebelumnya'}
+                nextLabel={'Selanjutnya'}
+                breakLabel={'...'}
+                pageCount={totalPage}
+                marginPagesDisplayed={2}
+                pageRangeDisplayed={4}
+                onPageChange={onHandlePagination}
+                pageClassName={'mr-2 text-orange-800 px-2'}
+                previousClassName={'mr-2 text-orange-800'}
+                nextClassName={'text-orange-800'}
+                containerClassName={
+                  'flex justify-center mt-8 py-3 text-sm bg-primary rounded-md font-bold'
+                }
+                activeClassName={'text-orange-900 bg-orange-300 rounded-md'}
+                forcePage={+page - 1}
+              />
+            )}
           </>
         )}
       </div>

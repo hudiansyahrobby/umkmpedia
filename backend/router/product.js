@@ -16,11 +16,11 @@ router.post(
   uploadFile.single('image'),
   productController.addProduct,
 );
+router.get('/products/search', productController.searchProduct);
+
 router.get('/product/:id', productController.getProduct);
 
 router.get('/products/:id', productController.getProductByBrand);
-
-router.post('/products/search', productController.searchProduct);
 
 router.put(
   '/products/:id',

@@ -45,8 +45,8 @@ function Header({ onOpen }) {
       <>
         <NavLink
           to='/profil'
-          className='mr-3  font-semibold tracking-wide hover:text-gray-900 transition duration-300 ease-in-out'
-          activeClassName='text-gray-900'
+          className='mr-3  font-semibold tracking-wide hover:text-primary transition duration-300 ease-in-out'
+          activeClassName='text-primary'
         >
           Profil
         </NavLink>
@@ -59,7 +59,7 @@ function Header({ onOpen }) {
         >
           <NavLink to='/daftar-keinginan' className='relative mr-2'>
             <AiFillHeart />
-            <span className='absolute top-0 right-0 -mt-1 h-4 w-4 text-xs rounded-full bg-red-800  inline-flex justify-center items-center'>
+            <span className='absolute top-0 right-0 -mt-1 h-4 w-4 text-xs rounded-full bg-primary inline-flex justify-center items-center'>
               {wishlists?.length}
             </span>
           </NavLink>
@@ -73,14 +73,14 @@ function Header({ onOpen }) {
         >
           <NavLink to='/keranjang' className='relative mr-2'>
             <FaShoppingCart />
-            <span className='absolute top-0 right-0 -mt-1 h-4 w-4 text-xs rounded-full bg-red-800  inline-flex justify-center items-center'>
+            <span className='absolute top-0 right-0 -mt-1 h-4 w-4 text-xs rounded-full bg-primary  inline-flex justify-center items-center'>
               {carts?.length}
             </span>
           </NavLink>
         </IconContext.Provider>
 
         <button
-          className='p-2 rounded-lg hover:bg-red-700 bg-red-500  transition duration-300 ease-in-out'
+          className='p-2 rounded-lg bg-primary hover:text-white transition duration-300 ease-in-out'
           onClick={onSignOutHandler}
         >
           Keluar
@@ -90,7 +90,7 @@ function Header({ onOpen }) {
   }
 
   return (
-    <header className='z-20  text-black h-16 w-full px-4 top-0 flex items-center justify-between bg-transparent fixed'>
+    <header className='z-20 bg-white text-black h-16 w-full px-4 top-0 flex items-center justify-between bg-transparent fixed'>
       <Link to='/' className='text-xl uppercase font-bold tracking-wider'>
         UMKM<span className='text-black'>Pedia</span>
       </Link>
@@ -110,16 +110,16 @@ function Header({ onOpen }) {
       <div className='hidden sm:block'>
         <NavLink
           to='/'
-          className='mr-3  font-semibold tracking-wide hover:text-gray-900 transition duration-300 ease-in-out'
+          className='mr-3  font-semibold tracking-wide hover:text-primary transition duration-300 ease-in-out'
           exact
-          activeClassName='text-gray-900'
+          activeClassName='text-primary'
         >
           Beranda
         </NavLink>
         <NavLink
           to='/produk'
-          className='mr-3  font-semibold tracking-wide hover:text-gray-900 transition duration-300 ease-in-out'
-          activeClassName='text-gray-900'
+          className='mr-3  font-semibold tracking-wide hover:text-primary transition duration-300 ease-in-out'
+          activeClassName='text-primary'
         >
           Produk
         </NavLink>
@@ -128,8 +128,8 @@ function Header({ onOpen }) {
           <>
             <NavLink
               to='/admin'
-              className='mr-3  font-semibold tracking-wide hover:text-gray-900 transition duration-300 ease-in-out'
-              activeClassName='text-gray-900'
+              className='mr-3  font-semibold tracking-wide hover:text-primary transition duration-300 ease-in-out'
+              activeClassName='text-primary'
             >
               Admin
             </NavLink>

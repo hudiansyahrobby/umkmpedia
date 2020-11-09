@@ -15,32 +15,32 @@ export default function Drawer({ open }) {
 
   return (
     <div
-      className={`fixed top-0 z-50 left-0 h-full w-1/2 bg-red-600 transform transition-all duration-300 ease-in-out ${
+      className={`fixed top-0 z-50 left-0 h-full w-1/2 bg-white transform transition-all duration-300 ease-in-out ${
         !open ? '-translate-x-full' : 'translate-x-0'
       }`}
     >
       <NavLink
         to='/'
         exact
-        activeClassName='bg-red-500'
-        className='no-underline text-white block pl-4 py-3 border-b border-red-700 hover:bg-red-500 transition duration-300'
+        activeClassName='bg-primary'
+        className='no-underline text-black font-semibold block pl-4 py-3 border-b border-primary hover:bg-primary transition duration-300'
       >
-        Home
+        Beranda
       </NavLink>
       <NavLink
-        to='/products'
-        activeClassName='bg-red-500'
-        className='no-underline text-white block pl-4 py-3 border-b border-red-700 hover:bg-red-500 transition duration-300'
+        to='/produk'
+        activeClassName='bg-primary'
+        className='no-underline text-black font-semibold block pl-4 py-3 border-b border-primary hover:bg-primary transition duration-300'
       >
-        Products
+        Produk
       </NavLink>
 
       {user?.role === 'admin' && (
         <>
           <NavLink
             to='/admin'
-            activeClassName='bg-red-500'
-            className='no-underline text-white block pl-4 py-3 border-b border-red-700 hover:bg-red-500 transition duration-300'
+            activeClassName='bg-primary'
+            className='no-underline text-black font-semibold block pl-4 py-3 border-b border-primary hover:bg-primary transition duration-300'
           >
             Admin
           </NavLink>
@@ -50,27 +50,28 @@ export default function Drawer({ open }) {
       {user?.role === 'user' || user?.role === 'admin' ? (
         <>
           <NavLink
-            to='/cart'
-            activeClassName='bg-red-500'
-            className='no-underline text-white block pl-4 py-3 border-b border-red-700 hover:bg-red-500 transition duration-300'
+            to='/keranjang'
+            activeClassName='bg-primary'
+            className='no-underline text-black font-semibold block pl-4 py-3 border-b border-primary hover:bg-primary transition duration-300'
           >
-            Cart
+            Keranjang
           </NavLink>
 
-          <NavLink
-            to='/signout'
-            className='mt-4 p-2 bg-red-500 hover:bg-red-400 transition-colors duration-300 block text-white text-center mx-6'
-            onClick={onSignoutHandler}
-          >
-            Signout
-          </NavLink>
+          <div className='mx-6'>
+            <button
+              className='mt-4 p-2 bg-primary hover:bg-orange-300 transition-colors duration-300 text-black font-semibold text-center w-full'
+              onClick={onSignoutHandler}
+            >
+              Keluar
+            </button>
+          </div>
         </>
       ) : (
         <NavLink
           to='/signin'
-          className='mt-4 p-2 bg-red-500 hover:bg-red-400 transition-colors duration-300 block text-white text-center mx-6'
+          className='mt-4 p-2 bg-primary hover:bg-orange-300 transition-colors duration-300 block text-black font-semibold text-center mx-6'
         >
-          Signin
+          Masuk
         </NavLink>
       )}
     </div>

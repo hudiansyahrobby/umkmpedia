@@ -11,13 +11,8 @@ module.exports = {
         poppins: ['Poppins', 'sans-serif'],
       },
       colors: {
+        primary: '#E2AF70',
         blacklight: 'rgba(0, 0, 0, 0.6)',
-        red: {
-          ...colors.red,
-          hell: '#FF0000',
-          light: '#E34133',
-          lightest: '#FFF2F2',
-        },
         blue: {
           ...colors.blue,
           sea: '#11BDEF',

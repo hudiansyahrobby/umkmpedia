@@ -24,6 +24,7 @@ export const getProducts = (word = '', page = 1) => async (dispatch) => {
   dispatch({ type: PRODUCT.GET_PRODUCTS_INIT });
   try {
     const { data } = await Axios.get(`api/products/search?search=${word}&page=${page}`);
+    console.log(data);
     dispatch({
       type: PRODUCT.GET_PRODUCTS_SUCCESS,
       payload: { products: data.products, totalPage: data.totalPage },

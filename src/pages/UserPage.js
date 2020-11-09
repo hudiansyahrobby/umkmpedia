@@ -38,7 +38,7 @@ function UserPage() {
           <div className='mt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5 mx-6'>
             <IconContext.Provider
               value={{
-                className: `mr-2 bg-red-500 text-red-hell rounded-lg p-1`,
+                className: `mr-2 bg-red-500 text-red-700 rounded-lg p-1`,
                 size: '2rem',
               }}
             >

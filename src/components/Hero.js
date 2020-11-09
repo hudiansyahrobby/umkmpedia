@@ -11,7 +11,10 @@ function Hero() {
       className='h-screen bg-cover bg-center flex items-center justify-center flex-col'
     >
       <h1 className='text-white text-5xl font-bold tracking-wide'>
-        UMKM<span className='text-red-hell'>Pedia</span>
+        UMKM
+        <span className='text-primary'>
+          Pedia
+        </span>
       </h1>
       <p className='w-56 mt-2 text-base tracking-wide text-white text-center'>
         Tempat Jual Beli Dagang Produk UMKM Online
@@ -19,7 +22,7 @@ function Hero() {
       <div className='mt-5'>
         <Link
           to='/produk'
-          className='text-sm py-2 px-3 tracking-widest uppercase bg-red-hell text-white rounded-md border-2 border-red-hell hover:text-red-hell hover:bg-white transition duration-300 ease-in-out font-semibold'
+          className='text-sm py-2 px-3 tracking-widest uppercase bg-primary text-black rounded-md border-2 border-primary hover:bg-white transition duration-300 ease-in-out font-semibold'
         >
           Lihat Daftar Produk
         </Link>
