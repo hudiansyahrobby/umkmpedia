@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import HeroImage from '../assets/images/shoe-1.png';
 
 function Hero() {
   return (
@@ -12,9 +11,7 @@ function Hero() {
     >
       <h1 className='text-white text-5xl font-bold tracking-wide'>
         UMKM
-        <span className='text-primary'>
-          Pedia
-        </span>
+        <span className='text-primary'>Pedia</span>
       </h1>
       <p className='w-56 mt-2 text-base tracking-wide text-white text-center'>
         Tempat Jual Beli Dagang Produk UMKM Online

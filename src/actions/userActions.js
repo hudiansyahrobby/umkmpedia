@@ -20,7 +20,7 @@ export const signout = (history) => async (dispatch) => {
     dispatch({ type: USER.SIGN_OUT_SUCCESS });
     history.push('/masuk');
   } catch (error) {
-    dispatch({ type: USER.SIGN_OUT__FAIL, payload: { message: error.response.data.message } });
+    dispatch({ type: USER.SIGN_OUT__FAIL, payload: { message: 'Gagal Logout' } });
   }
 };
 

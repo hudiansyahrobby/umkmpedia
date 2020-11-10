@@ -12,7 +12,6 @@ export const addNewProduct = (products, history) => async (dispatch) => {
     dispatch({ type: PRODUCT.ADD_PRODUCT_SUCCESS, payload: { product: data.product } });
     history.push('/products');
   } catch (error) {
-    console.log(error);
     dispatch({
       type: PRODUCT.ADD_PRODUCT__FAIL,
       payload: { message: error.response.data.message },
@@ -24,7 +23,6 @@ export const getProducts = (word = '', page = 1) => async (dispatch) => {
   dispatch({ type: PRODUCT.GET_PRODUCTS_INIT });
   try {
     const { data } = await Axios.get(`api/products/search?search=${word}&page=${page}`);
-    console.log(data);
     dispatch({
       type: PRODUCT.GET_PRODUCTS_SUCCESS,
       payload: { products: data.products, totalPage: data.totalPage },
@@ -57,7 +55,7 @@ export const updateProductById = (id, products) => async (dispatch) => {
 export const getProductById = (id) => async (dispatch) => {
   dispatch({ type: PRODUCT.GET_PRODUCT_BY_ID_INIT });
   try {
-    const { data } = await Axios.get(`api/product/${id}`);
+    const { data } = await Axios.get(`api/products/${id}`);
     dispatch({ type: PRODUCT.GET_PRODUCT_BY_ID_SUCCESS, payload: { product: data.product } });
   } catch (error) {
     dispatch({
@@ -71,7 +69,6 @@ export const getProductsByBrand = (id) => async (dispatch) => {
   dispatch({ type: PRODUCT.GET_PRODUCTS_INIT });
   try {
     const { data } = await Axios.get(`api/products/${id}`);
-    console.log(data);
     dispatch({
       type: PRODUCT.GET_PRODUCTS_SUCCESS,
       payload: { products: data.products, totalPage: data.totalPage },

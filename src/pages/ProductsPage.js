@@ -31,7 +31,7 @@ function ProductsPage(props) {
 
   const onSearchHandler = (e) => {
     e.preventDefault();
-    history.push(`products?search=${search}&page=1`);
+    history.push(`produk?search=${search}&page=1`);
     dispatch(getProducts(search, page));
   };
 

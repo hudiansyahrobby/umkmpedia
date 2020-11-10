@@ -1,11 +1,12 @@
 import React from 'react';
-import Wishlist from './Wishlist';
+import Product from '../Products/Product';
+
 export default function Wishlists({ wishlists, onDelete, onRemoveWishlist }) {
   const wishlistEl =
     wishlists?.length > 0 ? (
       wishlists.map((product) => {
         return (
-          <Wishlist
+          <Product
             key={product._id}
             id={product.productId}
             name={product.name}
@@ -13,6 +14,7 @@ export default function Wishlists({ wishlists, onDelete, onRemoveWishlist }) {
             price={product.price}
             image={product.image}
             onWishlist={onRemoveWishlist}
+            direction='vertical'
           />
         );
       })

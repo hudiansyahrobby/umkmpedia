@@ -1,10 +1,11 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
 import { decreaseProductQty, deleteFromCart, increaseProductQty } from '../../actions/cartActions';
-import { generatePublicPath } from '../../utils/generatePublicPath';
-import { IconContext } from 'react-icons';
-import { MdDelete } from 'react-icons/md';
-import { Link } from 'react-router-dom';
+import CartImage from './CartImage';
+import CartTitle from './CartTitle';
+import CartPrice from './CartPrice';
+import DeleteButton from '../Buttons/DeleteButton';
+import QuantityButton from '../Buttons/QuantityButton';
 
 function CartItem({ id, name, price, quantity, image, productId }) {
   const dispatch = useDispatch();
@@ -24,49 +25,19 @@ function CartItem({ id, name, price, quantity, image, productId }) {
   return (
     <div className='flex justify-between items-center mt-4 p-4'>
       <div className='flex items-center'>
-        <div className='w-32 h-32 rounded-mammoth overflow-hidden mr-3'>
-          <img
-            src={generatePublicPath(image)}
-            alt={name}
-            className='w-full h-full object-cover object-center'
-          />
-        </div>
+        <CartImage image={image} name={image} />
         <div>
-          <Link to={`/product/${productId}`} className='uppercase font-bold text-lg'>
-            {name}
-          </Link>
-          <h3 className='mt-2 text-gray-darker font-semibold'>${price}</h3>
-          <button
-            className='bg-red-hell text-white p-2 mt-2 rounded-lg hover:bg-white border-2 border-red-hell transition duration-300 ease-in-out hover:text-red-hell font-semibold tracking-wider text-sm'
-            onClick={() => onDeleteFromCartHandler(id)}
-          >
-            Delete
-            <IconContext.Provider
-              value={{ color: 'text-white', size: '1.2rem', className: 'ml-1 inline-block' }}
-            >
-              <span>
-                <MdDelete />
-              </span>
-            </IconContext.Provider>
-          </button>
+          <CartTitle name={name} productId={productId} />
+          <CartPrice price={price} />
+          <DeleteButton onClick={() => onDeleteFromCartHandler(id)} />
         </div>
       </div>
 
-      <div className='text-center'>
-        <p
-          className='text-gray-lighter text-xl cursor-pointer'
-          onClick={() => onIncreaseQuantityHandler(productId)}
-        >
-          +
-        </p>
-        <p className='text-gray-darkest'>{quantity}</p>
-        <p
-          className='text-gray-lighter text-xl cursor-pointer'
-          onClick={() => onDecreaseQuantityHandler(productId)}
-        >
-          -
-        </p>
-      </div>
+      <QuantityButton
+        onIncrease={() => onIncreaseQuantityHandler(productId)}
+        onDecrease={() => onDecreaseQuantityHandler(productId)}
+        quantity={quantity}
+      />
     </div>
   );
 }

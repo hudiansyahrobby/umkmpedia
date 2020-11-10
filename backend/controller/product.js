@@ -54,7 +54,7 @@ exports.getAllProducts = async (req, res, next) => {
 exports.getProduct = async (req, res, next) => {
   const productId = req.params.id;
   try {
-    const product = await Product.findOne({ _id: productId }).populate('review').exec();
+    const product = await Product.findOne({ _id: productId });
     if (!product) {
       return res.status(400).json({ success: false, message: 'Product not found' });
     }
@@ -69,7 +69,6 @@ exports.getProductByBrand = async (req, res, next) => {
   const brandId = req.params.id;
   try {
     const products = await Product.find({ brand: brandId });
-    console.log(products);
     if (!products) {
       return res.status(400).json({ success: false, message: 'Product not found' });
     }

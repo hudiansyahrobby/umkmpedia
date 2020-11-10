@@ -18,9 +18,9 @@ router.post(
 );
 router.get('/products/search', productController.searchProduct);
 
-router.get('/product/:id', productController.getProduct);
+router.get('/products/:id', productController.getProduct);
 
-router.get('/products/:id', productController.getProductByBrand);
+// router.get('/products/:id', productController.getProductByBrand);
 
 router.put(
   '/products/:id',

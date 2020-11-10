@@ -1,10 +1,6 @@
 import React from 'react';
-import CircleButton from '../components/CircleButtons/CircleButton';
 import Input from '../components/Input';
-import Button from '../components/Button';
-import FacebookIcon from '../components/icons/FacebookIcon';
-import GoogleIcon from '../components/icons/GoogleIcon';
-import TwitterIcon from '../components/icons/TwitterIcon';
+import Button from '../components/Buttons/Button';
 import * as Yup from 'yup';
 import { signup } from '../actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -46,11 +42,11 @@ function SignupPage() {
           >
             <Form className='bg-info shadow-md rounded px-8 pt-6 pb-8 mb-4'>
               <h2 className='font-bold text-2xl tracking-wide text-center'>Buat Akun Baru</h2>
-              <div className='flex justify-center mt-4 text-center'>
+              {/* <div className='flex justify-center mt-4 text-center'>
                 <CircleButton icon={<FacebookIcon />} border='border-blue-dark' />
                 <CircleButton icon={<GoogleIcon />} border='border-red-light' />
                 <CircleButton icon={<TwitterIcon />} border='border-blue-light' />
-              </div>
+              </div> */}
 
               <Input name='name' type='text' id='name' placeholder='Masukkan Nama' label='Name' />
               <Input
@@ -78,8 +74,8 @@ function SignupPage() {
               />
               <div className='text-center'>
                 <Button
-                  background='bg-red-hell hover:bg-red-600'
-                  className='font-bold transition duration-300'
+                  background='bg-primary hover:bg-orange-400'
+                  variant='text-black font-bold transition duration-300'
                   size='extraBig'
                   type='submit'
                 >

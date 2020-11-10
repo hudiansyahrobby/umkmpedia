@@ -26,7 +26,7 @@ function App() {
       <AdminRoute path='/admin/edit-produk/:id' component={EditProductPage} />
       <AdminRoute path='/admin' component={AdminPage} />
       <UserRoute path='/keranjang' component={CartPage} />
-      <UserRoute path='/daftar-keinginan' component={WishlistPage} />
+      <UserRoute path='/favorit' component={WishlistPage} />
       <UserRoute path='/profil' component={UserPage} />
       <Route path='/masuk' component={SigninPage} />
       <Route path='/daftar' component={SignupPage} />

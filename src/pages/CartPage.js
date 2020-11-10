@@ -2,10 +2,10 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCart } from '../actions/cartActions';
 import { addToOrder } from '../actions/orderActions';
-import Button from '../components/Button';
+import Button from '../components/Buttons/Button';
 import Carts from '../components/Carts/Carts';
 import CartSkeleton from '../components/Carts/CartSkeleton';
-import CircleButton from '../components/CircleButtons/CircleButton';
+import CircleButton from '../components/Buttons/CircleButtons/CircleButton';
 import Layout from '../components/Layout';
 import Title from '../components/Title';
 

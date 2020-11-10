@@ -60,8 +60,7 @@ exports.addProductToWishlist = async (req, res, next) => {
         products: newProduct,
       });
 
-      const userWishlist = await newWishlist.save();
-      console.log(userWishlist.products);
+      await newWishlist.save();
       return res.status(201).json({ success: true, wishlist: newProduct });
     }
   } catch (error) {

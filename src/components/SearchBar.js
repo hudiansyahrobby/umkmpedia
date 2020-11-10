@@ -8,7 +8,7 @@ export default function SearchBar({ onSearch, onSubmit, value }) {
         <input
           type='text'
           className='bg-transparent focus:outline-none tracking-wider w-full placeholder-gray-900'
-          placeholder='Search Products...'
+          placeholder='Cari Produk...'
           value={value}
           onChange={onSearch}
         />

@@ -28,7 +28,6 @@ exports.signin = async (req, res, next) => {
   if (!isMatch) {
     return res.status(400).json({ success: false, message: 'Email or password is invalid' });
   }
-  console.log(user);
   const { name, role, profilPic, email: mail } = user;
   const accessToken = await user.getToken({ id: user._id });
   // Send Cookie

@@ -5,7 +5,7 @@ const initialState = {
   success: false,
   error: false,
   products: [],
-  product: null,
+  product: [],
   loading: false,
   totalPage: 1,
 };
@@ -90,7 +90,7 @@ export default function productReducer(state = initialState, action) {
       state = {
         ...state,
         loading: false,
-        product: action.payload.product,
+        product: [action.payload.product],
       };
       break;
     case PRODUCT.GET_PRODUCT_BY_ID_FAIL:

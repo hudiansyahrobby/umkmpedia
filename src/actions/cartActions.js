@@ -69,7 +69,6 @@ export const increaseProductQty = (cartData) => async (dispatch) => {
       });
     }
   } catch (error) {
-    console.log(error);
     dispatch({
       type: CART.INCREASE_PRODUCT_QTY_FAIL,
       payload: { message: error.response.data.message },

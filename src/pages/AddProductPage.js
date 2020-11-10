@@ -1,6 +1,6 @@
 import React from 'react';
 import { useState } from 'react';
-import Button from '../components/Button';
+import Button from '../components/Buttons/Button';
 import Input from '../components/Input';
 import Title from '../components/Title';
 import { addNewProduct, resetProduct } from '../actions/productActions';
@@ -133,7 +133,12 @@ function AddProductPage() {
                   />
                 )}
                 <div className='mt-5 w-48 mx-auto'>
-                  <Button background='bg-red-hell' size='extraBig'>
+                  <Button
+                    background='bg-primary hover:bg-orange-400'
+                    variant='font-bold transition duration-300 mx-auto'
+                    size='extraBig'
+                    type='submit'
+                  >
                     Tambah Produk
                   </Button>
                 </div>

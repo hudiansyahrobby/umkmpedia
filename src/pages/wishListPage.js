@@ -26,7 +26,7 @@ function WishlistPage() {
     <Layout>
       <div className='px-10 mt-20'>
         <Title align='text-center' margin='mx-auto'>
-          Daftar Keinginan
+          Produk Favorit
         </Title>
         {loading ? (
           <ProductSkeleton />

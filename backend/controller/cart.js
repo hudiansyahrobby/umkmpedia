@@ -4,10 +4,7 @@ const Product = require('../model/product');
 exports.getProductInCart = async (req, res, next) => {
   try {
     const userData = await Cart.findOne({ userId: req.user._id }).populate('cart').exec();
-    console.log(userData);
-
     const cart = userData;
-    console.log(cart);
     return res.status(200).json({ success: true, cart });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
@@ -25,9 +22,9 @@ exports.addProductToCart = async (req, res, next) => {
     price,
     image,
   };
-
   try {
     const cart = await Cart.findOne({ userId: req.user._id }).populate('cart').exec();
+
     if (cart) {
       // Find if the product exist in cart
       let itemIndex = cart.products.findIndex((product) => product.productId === id);
@@ -54,10 +51,10 @@ exports.addProductToCart = async (req, res, next) => {
         products: newProduct,
       });
 
-      const totalPrice = cart.products.reduce((accumulator, currentValue) => {
+      const totalPrice = newCart.products.reduce((accumulator, currentValue) => {
         return accumulator + currentValue.price * currentValue.quantity;
       }, 0);
-      cart.totalPrice = totalPrice;
+      newCart.totalPrice = totalPrice;
       const userCart = await newCart.save();
 
       return res

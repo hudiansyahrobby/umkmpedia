@@ -53,7 +53,7 @@ export default function Input({
             </svg>
           </div>
         </div>
-        <p className='mt-2 text-red-hell'>
+        <p className='mt-2 text-red-600 text-sm'>
           <ErrorMessage name={name} />
         </p>
       </div>
@@ -71,7 +71,7 @@ export default function Input({
           placeholder={placeholder}
           className='shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline h-48'
         ></Field>
-        <p className='mt-2 text-red-hell'>
+        <p className='mt-2 text-red-600 text-sm'>
           <ErrorMessage name={name} />
         </p>
       </div>
@@ -85,7 +85,7 @@ export default function Input({
 
         <div className='flex items-center bg-grey-lighter'>
           <label
-            className='w-full flex flex-col items-center px-4 py-6 bg-white text-info rounded-lg shadow-lg tracking-wide uppercase border border-info cursor-pointer hover:bg-info hover:text-gray-200'
+            className='w-full flex flex-col items-center px-4 py-6 bg-white text-info rounded-lg shadow-lg tracking-wide uppercase border border-info cursor-pointer transition duration-300 hover:bg-primary'
             onChange={onChange}
           >
             <svg
@@ -115,7 +115,7 @@ export default function Input({
           type={type}
           placeholder={placeholder}
         />
-        <p className='mt-2 text-red-hell'>
+        <p className='mt-2 text-red-600 text-sm'>
           <ErrorMessage name={name} />
         </p>
       </div>

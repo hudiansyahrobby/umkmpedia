@@ -60,7 +60,6 @@ export default function wishlistReducer(state = initialState, action) {
         loading: false,
         wishlists: state.wishlists.filter((wishlist) => wishlist.productId !== action.payload.id),
       };
-      console.log(state.wishlists);
       break;
     case WISHLIST.DELETE_PRODUCT_FROM_WISHLIST_FAIL:
       state = {

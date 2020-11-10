@@ -1,8 +1,8 @@
 import React from 'react';
-import CircleButton from '../CircleButtons/CircleButton';
-import StarIcon from '../icons/StarIcon';
+import CircleButton from '../Buttons/CircleButtons/CircleButton';
 
 import Shoe1 from '../../assets/images/shoe-1.png';
+import ProductStar from '../Products/ProductStar';
 
 function Review({ name, image, rating, content, reply }) {
   return (
@@ -21,13 +21,7 @@ function Review({ name, image, rating, content, reply }) {
       </div>
 
       <div className='w-64'>
-        <div className='flex'>
-          <StarIcon size='small' background='text-yellow-dark' />
-          <StarIcon size='small' background='text-yellow-dark' />
-          <StarIcon size='small' background='text-yellow-dark' />
-          <StarIcon size='small' background='text-yellow-dark' />
-          <StarIcon size='small' background='text-yellow-dark' />
-        </div>
+        <ProductStar size='1.6rem' color='text-yellow-dark' rating={5} />
 
         <h3 className='mt-2 text-sm font-bold'>Highly Recommended</h3>
         <p className='mt-2 text-xs text-gray-darkest'>
