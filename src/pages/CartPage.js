@@ -34,9 +34,10 @@ function CartPage() {
 
         {carts.length > 0 && (
           <Button
-            background='bg-red-hell hover:bg-white'
+            link='/order'
+            background='bg-primary hover:bg-orange-400'
             size='big'
-            variant='mx-auto w-32 mt-12 border-2 border-red-hell hover:text-red-hell'
+            variant='mx-auto w-32 mt-12 block font-bold'
             onClick={onOrderHandler}
           >
             Pesan

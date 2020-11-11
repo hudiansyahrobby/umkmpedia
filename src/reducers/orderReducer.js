@@ -5,6 +5,8 @@ const initialState = {
   loading: false,
   orders: [],
   totalPrice: 0,
+  provinces: [],
+  cities: [],
 };
 
 export default function orderReducer(state = initialState, action) {
@@ -44,6 +46,48 @@ export default function orderReducer(state = initialState, action) {
 
       break;
     case ORDER.GET_ORDER__FAIL:
+      state = {
+        ...state,
+        loading: false,
+        message: action.payload.message,
+      };
+      break;
+    case ORDER.GET_PROVINCE_INIT:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case ORDER.GET_PROVINCE_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        provinces: state.provinces.concat(action.payload.provinces),
+      };
+
+      break;
+    case ORDER.GET_PROVINCE_FAIL:
+      state = {
+        ...state,
+        loading: false,
+        message: action.payload.message,
+      };
+      break;
+    case ORDER.GET_CITY_INIT:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case ORDER.GET_CITY_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        cities: state.cities.concat(action.payload.cities),
+      };
+
+      break;
+    case ORDER.GET_CITY_FAIL:
       state = {
         ...state,
         loading: false,

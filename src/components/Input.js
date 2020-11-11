@@ -18,10 +18,10 @@ export default function Input({
   if (as === 'select') {
     let options;
     switch (id) {
-      case 'brand':
-        options = data?.map(({ _id, name }) => (
-          <option key={_id} value={_id}>
-            {capitalizeFirstLetter(name)}
+      case 'provinsi':
+        options = data?.map(({ province_id, province }) => (
+          <option key={province_id} value={province_id}>
+            {province}
           </option>
         ));
         break;

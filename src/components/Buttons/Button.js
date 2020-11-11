@@ -20,7 +20,7 @@ function Button({ background, children, size, variant, onClick, link }) {
     return (
       <NavLink
         to={link}
-        className={`rounded-md transition duration-300 ease-in-out ${variant} ${style} ${
+        className={`rounded-md transition duration-300 ease-in-out text-center ${variant} ${style} ${
           background && background
         }`}
       >

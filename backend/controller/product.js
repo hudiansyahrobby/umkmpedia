@@ -36,6 +36,7 @@ exports.getAllProducts = async (req, res, next) => {
     if (!products) {
       return res.status(400).json({ success: false, message: 'Products not found' });
     }
+    console.log(products);
     const totalProducts = await Product.countDocuments({}).exec();
     const totalPage = Math.ceil(totalProducts / itemPerPage);
     return res.status(200).json({

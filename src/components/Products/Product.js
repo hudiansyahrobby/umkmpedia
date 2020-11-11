@@ -44,7 +44,7 @@ function Product({
             <ProductPrice price={price} />
           </div>
 
-          <CartButton size='2rem' onClick={() => onAddToCartHandler(id)} />
+          <CartButton size='2.5rem' onClick={() => onAddToCartHandler(id)} />
         </div>
         {user?.role === 'admin' && <ProductAdminButton onDelete={onDelete} id={id} />}
       </div>
