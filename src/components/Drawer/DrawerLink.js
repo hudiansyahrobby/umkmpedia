@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-export default function DrawerLink({ link, exact, name, button, onClick }) {
+export default function DrawerLink({ link, exact, name, button, onClick, buttonLink }) {
   if (button) {
     return (
       <div className='mx-6'>

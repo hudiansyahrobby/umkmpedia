@@ -8,10 +8,8 @@ export default function Drawer({ open }) {
   const { user } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
-
   const onSignoutHandler = () => {
-    dispatch(signout());
-    history.push('/masuk');
+    dispatch(signout(history));
   };
 
   return (
@@ -32,7 +30,7 @@ export default function Drawer({ open }) {
           <DrawerLink button name='Keluar' onClick={onSignoutHandler} />
         </>
       ) : (
-        <DrawerLink button name='Masuk' onClick={onSignoutHandler} />
+        <DrawerLink link='/masuk' name='Masuk' />
       )}
     </div>
   );

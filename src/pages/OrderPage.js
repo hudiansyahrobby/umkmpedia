@@ -1,26 +1,124 @@
+/* eslint-disable array-callback-return */
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import Layout from '../components/Layout';
 import Title from '../components/Title';
 import { GiFrayedArrow } from 'react-icons/gi';
+import { HiLocationMarker } from 'react-icons/hi';
 import { IconContext } from 'react-icons';
-import Button from '../components/Buttons/Button';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCity, getProvince } from '../actions/orderActions';
+import { getCost, resetOrder } from '../actions/orderActions';
+import { getCity, getProvince } from '../actions/userActions';
+import { getCart } from '../actions/cartActions';
+import Button from '../components/Buttons/Button';
+import { Redirect, useHistory } from 'react-router-dom';
 
 export default function OrderPage() {
-  const { totalPrice, loading, provinces, cities } = useSelector((state) => state.order);
-  const [province, setProvince] = useState('');
-  const [city, setCity] = useState('');
+  const { couriers } = useSelector((state) => state.order);
+  const { carts, totalPrice } = useSelector((state) => state.cart);
+  const { user, cities } = useSelector((state) => state.user);
+  const [courier, setCourier] = useState('');
+  const [courierCost, setCourierCost] = useState(0);
+  const [bank, setBank] = useState('');
 
   const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(getProvince());
-  }, [dispatch]);
+  const history = useHistory();
+
+  const courierList = ['jne', 'pos', 'tiki'];
+
+  const getAllCourierCost = () => {
+    if (user.city) {
+      const orderData = {
+        destination: user.city,
+        courier: '',
+      };
+      courierList.map((courier) => {
+        orderData.courier = courier;
+        dispatch(getCost(orderData));
+      });
+    }
+  };
+
+  const onPayHandler = () => {
+    if (courierCost !== 0) {
+      // history.push('/pembayaran');
+      alert('Terimakasih Telah Berbelanja');
+    }
+  };
 
   useEffect(() => {
-    console.log('terpanggil');
-    dispatch(getCity(province));
-  }, [dispatch, province]);
+    dispatch(getCart());
+    dispatch(getCity());
+    dispatch(getProvince());
+    getAllCourierCost();
+
+    return () => {
+      dispatch(resetOrder());
+    };
+  }, []);
+
+  if (!user.fullAddress || !user.city || !user.province || !user.telephone) {
+    return <Redirect to='/profil/update' />;
+  }
+  const addressName = cities?.map((city, index) => {
+    if (city.city_id === user.city) {
+      return (
+        <React.Fragment key={index}>
+          <IconContext.Provider
+            value={{ className: 'text-primary inline-block mr-2', size: '1.6rem' }}
+          >
+            <span>
+              <HiLocationMarker />
+            </span>
+          </IconContext.Provider>
+          <h2 className='font-semibold text-sm'>
+            {user.fullAddress}, {city.type} {city.city_name} , Provinsi {city.province}, Kode Pos{' '}
+            {city.postal_code}{' '}
+          </h2>
+        </React.Fragment>
+      );
+    }
+  });
+
+  const allCouriers = couriers?.map((_courier) => {
+    return (
+      <React.Fragment key={_courier.code}>
+        <button
+          className='block w-full bg-primary p-4 mt-4'
+          onClick={() => setCourier(_courier.code)}
+        >
+          {_courier.name}
+        </button>
+        {_courier.code === courier && (
+          <div className='bg-orange-200 mx-2'>
+            {_courier.costs.map((service) => {
+              return (
+                <React.Fragment key={service.service}>
+                  <div className='p-4 border-2 border-primary flex items-center'>
+                    <input
+                      type='radio'
+                      name='kurir'
+                      id={service.service}
+                      className='mr-4'
+                      value={service.cost[0].value}
+                      onChange={(e) => setCourierCost(e.target.value)}
+                    />
+                    <label htmlFor={service.service}>
+                      <h2 className='font-bold'>{service.service}</h2>
+                      <h2 className='text-xs font-semibold'>
+                        Estimasi : {service.cost[0].etd} Hari
+                      </h2>
+                      <h2 className='text-xs font-semibold'>Ongkos : Rp.{service.cost[0].value}</h2>
+                    </label>
+                  </div>
+                </React.Fragment>
+              );
+            })}
+          </div>
+        )}
+      </React.Fragment>
+    );
+  });
 
   return (
     <Layout>
@@ -30,102 +128,70 @@ export default function OrderPage() {
         </Title>
         <h2 className='mt-4 font-semibold'>Barang Pesanan</h2>
         <ul className='mt-4'>
-          <li className='text-sm text-gray-700 mt-3'>
-            <IconContext.Provider
-              value={{ className: 'text-primary inline-block mr-2', size: '1.6rem' }}
-            >
-              <span>
-                <GiFrayedArrow />
-              </span>
-            </IconContext.Provider>
-            <span className='font-semibold'>Kopi Expresso 2 kg</span>
-          </li>
-          <li className='text-sm text-gray-700 mt-3'>
-            <IconContext.Provider
-              value={{ className: 'text-primary inline-block mr-2', size: '1.6rem' }}
-            >
-              <span>
-                <GiFrayedArrow />
-              </span>
-            </IconContext.Provider>
-            <span className='font-semibold'>Sepatu 5 buah</span>
-          </li>
+          {carts?.map((cart) => {
+            console.log(cart);
+            return (
+              <li className='text-sm text-gray-700 mt-3' key={cart._id}>
+                <IconContext.Provider
+                  value={{ className: 'text-primary inline-block mr-2', size: '1.6rem' }}
+                >
+                  <span>
+                    <GiFrayedArrow />
+                  </span>
+                </IconContext.Provider>
+                <span className='font-semibold'>
+                  {cart.name} - {cart.quantity} {cart.unit}
+                </span>
+              </li>
+            );
+          })}
         </ul>
 
         <h2 className='mt-8 text-center font-semibold'>Alamat Tujuan</h2>
+        <div className='mt-4 flex items-center border-2 border-primary p-4'>{addressName}</div>
 
-        <div className='mb-4 w-full'>
-          <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='provinsi'>
-            Provinsi
+        <h2 className='mt-8 text-center font-semibold'>Plih Kurir Pengiriman</h2>
+        {allCouriers}
+
+        <h2 className='mt-8 text-center font-semibold'>Plih Bank Pembayaran</h2>
+
+        <div className='mt-4 p-4 border-2 border-primary flex items-center'>
+          <input
+            type='radio'
+            name='bank'
+            id='bni'
+            className='mr-4'
+            value='bni'
+            onChange={(e) => setBank(e.target.value)}
+          />
+          <label htmlFor='bni'>
+            <h2 className='font-bold'>BNI</h2>
           </label>
-          <div className='relative'>
-            <select
-              name='provinsi'
-              id='provinsi'
-              onChange={(e) => setProvince(e.target.value)}
-              className='block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline'
-            >
-              <option>Pilih Provinsi Tujuan Pengiriman</option>
-              {provinces?.map(({ province_id, province }) => {
-                return (
-                  <option key={province_id} value={province_id}>
-                    {province}
-                  </option>
-                );
-              })}
-            </select>
-
-            <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700'>
-              <svg
-                className='fill-current h-4 w-4'
-                xmlns='http://www.w3.org/2000/svg'
-                viewBox='0 0 20 20'
-              >
-                <path d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z' />
-              </svg>
-            </div>
-          </div>
-
-          <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='provinsi'>
-            Kota/Kabupaten
-          </label>
-          <div className='relative'>
-            <select
-              name='provinsi'
-              id='provinsi'
-              onChange={(e) => setCity(e.target.value)}
-              className='block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline'
-            >
-              <option>Pilih Kota/Kabupaten Tujuan Pengiriman</option>
-              {cities?.map(({ city_id, city_name }) => {
-                console.log('summon');
-                return (
-                  <option key={city_id} value={city_id}>
-                    {city_name}
-                  </option>
-                );
-              })}
-            </select>
-
-            <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700'>
-              <svg
-                className='fill-current h-4 w-4'
-                xmlns='http://www.w3.org/2000/svg'
-                viewBox='0 0 20 20'
-              >
-                <path d='M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z' />
-              </svg>
-            </div>
-          </div>
-          <Button
-            background='bg-primary hover:bg-orange-400'
-            variant='font-bold transition duration-300 mx-auto'
-            size='extraBig'
-            type='submit'
-          >
-            Pesan Sekarang
-          </Button>
         </div>
+
+        <div className='p-4 border-2 border-primary flex items-center'>
+          <input
+            type='radio'
+            name='bank'
+            id='mandiri'
+            className='mr-4'
+            value='mandiri'
+            onChange={(e) => setBank(e.target.value)}
+          />
+          <label htmlFor='mandiri'>
+            <h2 className='font-bold'>Mandiri</h2>
+          </label>
+        </div>
+
+        <h2 className='mt-8 text-right font-bold'>Harga Total : Rp {totalPrice + +courierCost}</h2>
+        <Button
+          background='bg-primary hover:bg-orange-400'
+          size='big'
+          variant='mx-auto w-32 mt-12 block font-bold'
+          onClick={onPayHandler}
+        >
+          Bayar
+        </Button>
       </div>
     </Layout>
   );

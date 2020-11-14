@@ -14,6 +14,8 @@ export const GET_CITY_INIT = 'GET_CITY_INIT';
 export const GET_CITY_SUCCESS = 'GET_CITY_SUCCESS';
 export const GET_CITY_FAIL = 'GET_CITY_FAIL';
 
-export const GET_COST_INIT = 'GET_COST_INIT';
-export const GET_COST_SUCCESS = 'GET_COST_SUCCESS';
-export const GET_COST_FAIL = 'GET_COST_FAIL';
+export const GET_COURIER_INIT = 'GET_COURIER_INIT';
+export const GET_COURIER_SUCCESS = 'GET_COURIER_SUCCESS';
+export const GET_COURIER_FAIL = 'GET_COURIER_FAIL';
+
+export const RESET_ORDER = 'RESET_ORDER';

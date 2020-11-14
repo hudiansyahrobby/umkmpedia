@@ -1,7 +1,6 @@
 import { ErrorMessage, Field } from 'formik';
 import React from 'react';
 import { capitalizeFirstLetter } from '../utils/capitalizeFirstLetter';
-
 export default function Input({
   label,
   id,
@@ -18,10 +17,10 @@ export default function Input({
   if (as === 'select') {
     let options;
     switch (id) {
-      case 'provinsi':
-        options = data?.map(({ province_id, province }) => (
-          <option key={province_id} value={province_id}>
-            {province}
+      case 'unit':
+        options = data?.map((_data) => (
+          <option key={_data} value={_data}>
+            {capitalizeFirstLetter(_data)}
           </option>
         ));
         break;

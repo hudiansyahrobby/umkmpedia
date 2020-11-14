@@ -2,7 +2,7 @@ import React from 'react';
 import AdminCards from '../components/Cards/AdminCards';
 import Button from '../components/Buttons/Button';
 import Layout from '../components/Layout';
-import Table from '../components/Table/Table';
+// import Table from '../components/Table/Table';
 import Title from '../components/Title';
 
 function AdminPage() {

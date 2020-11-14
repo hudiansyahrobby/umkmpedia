@@ -14,11 +14,15 @@ const productSchema = mongoose.Schema(
       type: Number,
       required: true,
     },
-    category: {
-      type: mongoose.Schema.ObjectId,
-      ref: 'Categtory',
-      // required: true,
+    unit: {
+      type: String,
+      required: true,
     },
+    // category: {
+    //   type: mongoose.Schema.ObjectId,
+    //   ref: 'Category',
+    //   required: true,
+    // },
     image: {
       type: String,
       required: true,

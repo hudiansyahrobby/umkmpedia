@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import Title from '../components/Title';
 import Products from '../components/Products/Products';
@@ -41,7 +42,7 @@ function ProductsPage(props) {
 
   const onHandlePagination = (event) => {
     const data = +event.selected;
-    history.push(`products?search=${search}&page=${data + 1}`);
+    history.push(`produk?search=${search}&page=${data + 1}`);
   };
 
   const onAddWishlistHandler = (id) => {

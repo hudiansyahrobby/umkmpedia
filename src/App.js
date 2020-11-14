@@ -5,11 +5,13 @@ import { isUserLoggedIn } from './actions/userActions';
 import AdminRoute from './HOC/AdminRoute';
 import UserRoute from './HOC/UserRoute';
 import AddProductPage from './pages/AddProductPage';
+import AddressPage from './pages/AddressPage';
 import AdminPage from './pages/AdminPage';
 import CartPage from './pages/CartPage';
 import EditProductPage from './pages/EditProductPage';
 import HomePage from './pages/HomePage';
 import OrderPage from './pages/OrderPage';
+import PaymentPage from './pages/PaymentPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import ProductsPage from './pages/ProductsPage';
 import SigninPage from './pages/SigninPage';
@@ -27,8 +29,10 @@ function App() {
       <AdminRoute path='/admin/edit-produk/:id' component={EditProductPage} />
       <AdminRoute path='/admin' component={AdminPage} />
       <UserRoute path='/keranjang' component={CartPage} />
+      <UserRoute path='/pembayaran' component={PaymentPage} />
       <UserRoute path='/favorit' component={WishlistPage} />
       <UserRoute path='/order' component={OrderPage} />
+      <UserRoute path='/profil/update' component={AddressPage} />
       <UserRoute path='/profil' component={UserPage} />
       <Route path='/masuk' component={SigninPage} />
       <Route path='/daftar' component={SignupPage} />

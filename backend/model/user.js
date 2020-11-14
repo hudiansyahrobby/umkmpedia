@@ -20,6 +20,18 @@ const userSchema = mongoose.Schema(
       minlength: [6, 'Password must be at least 12 characters long'],
       required: true,
     },
+    telephone: {
+      type: String,
+    },
+    city: {
+      type: String,
+    },
+    province: {
+      type: String,
+    },
+    fullAddress: {
+      type: String,
+    },
     role: {
       type: String,
       enum: ['admin', 'user'],

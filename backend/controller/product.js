@@ -1,7 +1,7 @@
 const Product = require('../model/product');
 
 exports.addProduct = async (req, res, next) => {
-  const { name, price, description, category, quantity } = req.body;
+  const { name, price, description, unit, quantity } = req.body;
 
   if (!req.file) {
     return res.status(400).json({ success: false, message: 'Image is not valid' });
@@ -11,7 +11,7 @@ exports.addProduct = async (req, res, next) => {
     name,
     price,
     description,
-    category,
+    unit,
     quantity,
     image: req.file.filename,
   });
@@ -36,7 +36,6 @@ exports.getAllProducts = async (req, res, next) => {
     if (!products) {
       return res.status(400).json({ success: false, message: 'Products not found' });
     }
-    console.log(products);
     const totalProducts = await Product.countDocuments({}).exec();
     const totalPage = Math.ceil(totalProducts / itemPerPage);
     return res.status(200).json({
@@ -135,6 +134,7 @@ exports.searchProduct = async (req, res, next) => {
   const itemPerPage = 8;
   try {
     const products = await Product.find({ name: { $regex: req.query.search, $options: 'i' } })
+      .sort({ updatedAt: -1 })
       .skip(page * itemPerPage)
       .limit(itemPerPage)
       .exec();

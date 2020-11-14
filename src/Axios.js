@@ -1,13 +1,19 @@
 import axios from 'axios';
 
-//An instance that holds the base URL is created to be used within any component that makes requests to the base URL
-const token = localStorage.getItem('token');
+const fetchClient = () => {
+  // Create instance
+  let instance = axios.create({
+    baseURL: 'http://localhost:5000/',
+  });
 
-const Axios = axios.create({
-  baseURL: 'http://localhost:5000/',
-  headers: {
-    Authorization: token ? `Bearer ${token}` : null,
-  },
-});
+  // Set the AUTH token for any request
+  instance.interceptors.request.use(function (config) {
+    const token = localStorage.getItem('token');
+    config.headers.Authorization = token ? `Bearer ${token}` : '';
+    return config;
+  });
 
-export default Axios;
+  return instance;
+};
+
+export default fetchClient();

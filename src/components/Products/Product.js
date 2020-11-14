@@ -30,23 +30,28 @@ function Product({
   let card;
   if (direction === 'vertical') {
     card = (
-      <div className='rounded-mammoth overflow-hidden bg-white shadow-lg flex flex-col justify-between'>
+      <div className='verflow-hidden bg-white shadow-lg flex flex-col justify-between'>
         <ProductImage
           image={image}
           name={image}
           onClick={() => onWishlist(id)}
           favorited={favorited}
         />
-        <div className='flex justify-between items-center px-4'>
+        <div className='px-4'>
           <div className='pb-4'>
             <ProductTitle name={name} id={id} />
-            <ProductStar rating={5} color='text-red-600' size='1.6rem' />
+            <ProductStar rating={5} color='text-yellow-600' size='1.6rem' />
             <ProductPrice price={price} />
           </div>
 
-          <CartButton size='2.5rem' onClick={() => onAddToCartHandler(id)} />
+          <button
+            className='mb-4 p-2 bg-primary text-center block w-full text-xs font-bold text-gray-900'
+            onClick={() => onAddToCartHandler(id)}
+          >
+            Tambah Ke Keranjang
+          </button>
         </div>
-        {user?.role === 'admin' && <ProductAdminButton onDelete={onDelete} id={id} />}
+        {/* {user?.role === 'admin' && <ProductAdminButton onDelete={onDelete} id={id} />} */}
       </div>
     );
   }

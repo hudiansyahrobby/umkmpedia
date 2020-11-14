@@ -1,7 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-function Button({ background, children, size, variant, onClick, link }) {
+function Button({ background, children, size, variant, onClick, link, type }) {
   let style;
 
   if (size === 'extraBig') {
@@ -33,6 +33,7 @@ function Button({ background, children, size, variant, onClick, link }) {
       className={`rounded-md transition duration-300 ease-in-out ${variant} ${style} ${
         background && background
       }`}
+      type={type}
       onClick={onClick}
     >
       {children}

@@ -18,8 +18,8 @@ export default function Carts({ carts, totalPrice }) {
         );
       })}
       {carts.length !== 0 ? (
-        <h2 className='mt-8 pr-6 text-right font-bold text-xl uppercase tracking-wide'>
-          Harga Total : ${totalPrice}
+        <h2 className='mt-8 pr-6 text-right font-bold text-xl tracking-wide'>
+          HARGA TOTAL : Rp{totalPrice}
         </h2>
       ) : (
         <h1 className='text-center'>Anda Belum Menambahkan Produk Pada Keranjang Belanja</h1>

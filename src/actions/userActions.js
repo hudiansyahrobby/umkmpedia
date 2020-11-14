@@ -16,24 +16,27 @@ export const signout = (history) => async (dispatch) => {
   dispatch({ type: USER.SIGN_OUT_INIT });
   try {
     await Axios.post('/api/signout');
-    localStorage.removeItem('token');
     dispatch({ type: USER.SIGN_OUT_SUCCESS });
+    localStorage.removeItem('token');
     history.push('/masuk');
   } catch (error) {
     dispatch({ type: USER.SIGN_OUT__FAIL, payload: { message: 'Gagal Logout' } });
   }
 };
 
-export const signin = (userData, history) => async (dispatch) => {
+export const signin = (userData) => async (dispatch) => {
   dispatch({ type: USER.SIGN_IN_INIT });
   try {
     const { data } = await Axios.post('/api/signin', userData);
-    const { accessToken, user } = data;
-    localStorage.setItem('token', accessToken);
-    localStorage.setItem('user', JSON.stringify(user));
-    dispatch({ type: USER.SIGN_IN_SUCCESS, payload: { token: accessToken, user } });
-    history.push('/profil');
+    if (data) {
+      const { accessToken, user } = data;
+      localStorage.setItem('token', accessToken);
+      localStorage.setItem('user', JSON.stringify(user));
+      console.log(user);
+      dispatch({ type: USER.SIGN_IN_SUCCESS, payload: { token: accessToken, user } });
+    }
   } catch (error) {
+    console.log(error);
     dispatch({ type: USER.SIGN_IN__FAIL, payload: { message: error.response.data.message } });
   }
 };
@@ -46,5 +49,58 @@ export const isUserLoggedIn = (history) => async (dispatch) => {
   } else {
     localStorage.removeItem('token');
     dispatch({ type: USER.SIGN_IN__FAIL, payload: 'Token Tidak Valid' });
+  }
+};
+
+export const getProvince = () => async (dispatch) => {
+  dispatch({ type: USER.GET_PROVINCE_INIT });
+  try {
+    const { data } = await Axios.get('api/province');
+    console.log(data);
+    dispatch({
+      type: USER.GET_PROVINCE_SUCCESS,
+      payload: { provinces: data.provinces },
+    });
+  } catch (error) {
+    dispatch({
+      type: USER.GET_PROVINCE_FAIL,
+      payload: { message: error.response.data.message },
+    });
+  }
+};
+
+export const getCity = (provinceId) => async (dispatch) => {
+  dispatch({ type: USER.GET_CITY_INIT });
+  try {
+    const { data } = await Axios.get(`api/city`);
+    dispatch({
+      type: USER.GET_CITY_SUCCESS,
+      payload: { cities: data.cities },
+    });
+  } catch (error) {
+    dispatch({
+      type: USER.GET_CITY_FAIL,
+      payload: { message: error.response.data.message },
+    });
+  }
+};
+
+export const updateProfile = (updatedProfile, history) => async (dispatch) => {
+  dispatch({ type: USER.UPDATE_PROFILE_INIT });
+  try {
+    const { data } = await Axios.put('api/update-profile', updatedProfile);
+    console.log(data);
+    dispatch({
+      type: USER.UPDATE_PROFILE_SUCCESS,
+      // payload: { user: data.user },
+    });
+    localStorage.setItem('user', JSON.stringify(data.user));
+    history.push('/profil');
+  } catch (error) {
+    console.log(error);
+    dispatch({
+      type: USER.UPDATE_PROFILE_FAIL,
+      payload: { message: error },
+    });
   }
 };

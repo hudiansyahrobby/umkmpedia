@@ -31,52 +31,25 @@ export const getOrder = () => async (dispatch) => {
   }
 };
 
-export const getProvince = () => async (dispatch) => {
-  dispatch({ type: ORDER.GET_PROVINCE_INIT });
+export const getCost = (orderData) => async (dispatch) => {
+  console.log(orderData);
+  dispatch({ type: ORDER.GET_COURIER_INIT });
   try {
-    const { data } = await Axios.get('api/province');
+    const { data } = await Axios.post(`api/courier`, orderData);
     console.log(data);
     dispatch({
-      type: ORDER.GET_PROVINCE_SUCCESS,
-      payload: { provinces: data.provinces },
+      type: ORDER.GET_COURIER_SUCCESS,
+      payload: { courier: data.courier },
     });
   } catch (error) {
+    console.log(error);
     dispatch({
-      type: ORDER.GET_PROVINCE_FAIL,
+      type: ORDER.GET_COURIER_FAIL,
       payload: { message: error.response.data.message },
     });
   }
 };
 
-export const getCity = (id) => async (dispatch) => {
-  console.log('ID', id);
-  dispatch({ type: ORDER.GET_CITY_INIT });
-  try {
-    const { data } = await Axios.get(`api/city/${id}`);
-    dispatch({
-      type: ORDER.GET_CITY_SUCCESS,
-      payload: { cities: data.cities },
-    });
-  } catch (error) {
-    dispatch({
-      type: ORDER.GET_CITY_FAIL,
-      payload: { message: error.response.data.message },
-    });
-  }
-};
-
-export const getCost = (orderData) => async (dispatch) => {
-  dispatch({ type: ORDER.GET_COST_INIT });
-  try {
-    const { data } = await Axios.get(`api/cost`, orderData);
-    dispatch({
-      type: ORDER.GET_COST_SUCCESS,
-      payload: { cost: data.cost },
-    });
-  } catch (error) {
-    dispatch({
-      type: ORDER.GET_COST_FAIL,
-      payload: { message: error.response.data.message },
-    });
-  }
+export const resetOrder = () => async (dispatch) => {
+  dispatch({ type: ORDER.RESET_ORDER });
 };

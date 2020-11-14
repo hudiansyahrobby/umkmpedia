@@ -4,7 +4,7 @@ import { IconContext } from 'react-icons';
 
 export default function ProductStar({ rating, color, size }) {
   return (
-    <div className='rating flex mr-2 -ml-1'>
+    <div className='mt-2 rating flex mr-2 -ml-1'>
       <IconContext.Provider value={{ size: size }}>
         {Array(rating)
           .fill()

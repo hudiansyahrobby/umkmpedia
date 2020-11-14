@@ -59,7 +59,7 @@ function ProductDetailPage() {
   let productElement;
 
   if (product?.length > 0) {
-    const { image, name, price, quantity, _id, description } = product[0];
+    const { image, name, price, quantity, _id, description, unit } = product[0];
 
     productElement = (
       <div className='p-6'>
@@ -70,7 +70,7 @@ function ProductDetailPage() {
             <ProductDetailTitle name={name} />
             <div className='mt-2 flex items-center'>
               <ProductStar rating={5} size='1.3rem' color='text-red-600' />
-              <ProductDetailReview score={4.4} number={5} />
+              {/* <ProductDetailReview score={4.4} number={5} /> */}
             </div>
             <ProductPrice price={price} />
           </div>
@@ -88,7 +88,7 @@ function ProductDetailPage() {
           </div>
         </div>
 
-        <ProductDetailQuantity quantity={quantity} />
+        <ProductDetailQuantity quantity={quantity} unit={unit} />
         <ProductDetailInfo description={description} />
         {/* 
         <div className='mt-8'>

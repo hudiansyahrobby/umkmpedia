@@ -18,6 +18,8 @@ function AddProductPage() {
   const history = useHistory();
   const { message, success, error } = useSelector((state) => state.product);
 
+  const units = ['kg', 'gram', 'buah', 'meter', 'kotak'];
+
   useEffect(() => {
     dispatch(resetProduct());
   }, [dispatch]);
@@ -26,20 +28,23 @@ function AddProductPage() {
       <div className='w-full h-screen max-w-lg mx-auto mt-20'>
         <div className='px-6'>
           <Formik
-            initialValues={{ name: '', price: '', quantity: '', description: '' }}
+            initialValues={{ name: '', price: '', quantity: '', description: '', unit: '' }}
             validationSchema={Yup.object({
               name: Yup.string().required('Wajib Diisi'),
               price: Yup.number().required('Wajib Diisi').min(0, 'Harga Harus Lebih Dari 0'),
               quantity: Yup.number().required('Wajib Diisi').min(0, 'Kuantitas Harus Lebih Dari 0'),
+              unit: Yup.string().required('Wajib Diisi'),
               description: Yup.string()
                 .required('Wajib Diisi')
                 .min(100, 'Deskripsi minimal 100 karakter'),
             })}
-            onSubmit={({ name, price, quantity, description }, { setSubmitting }) => {
+            onSubmit={({ name, price, quantity, description, unit }, { setSubmitting }) => {
               const productData = new FormData();
+              console.log(unit);
               productData.append('name', name);
               productData.append('price', price);
               productData.append('quantity', quantity);
+              productData.append('unit', unit);
               productData.append('image', image);
               productData.append('description', description);
 
@@ -95,6 +100,15 @@ function AddProductPage() {
                 />
 
                 <Input
+                  name='unit'
+                  as='select'
+                  id='unit'
+                  data={units}
+                  label='Satuan Produk'
+                  option='Pilih Satuan'
+                />
+
+                <Input
                   name='description'
                   as='textarea'
                   id='description'
@@ -115,7 +129,7 @@ function AddProductPage() {
                   <img
                     src={URL.createObjectURL(image)}
                     alt='preview'
-                    className='w-40 h-48 mb-4 rounded-lg mx-auto'
+                    className='w-64 h-48 mb-4 rounded-lg mx-auto'
                   />
                 )}
                 {success && (
