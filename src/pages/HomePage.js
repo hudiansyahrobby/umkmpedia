@@ -7,7 +7,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist, deleteFromWishlist, getWishlist } from '../actions/wishlistActions';
 import Layout from '../components/Layout';
 import ProductSkeleton from '../components/Products/ProductSkeleton';
-import Axios from '../Axios';
 
 function HomePage() {
   const dispatch = useDispatch();
@@ -17,10 +16,7 @@ function HomePage() {
   useEffect(() => {
     dispatch(getWishlist());
     dispatch(getProducts());
-    Axios.get('/api/province')
-      .then((res) => console.log(res.data.province))
-      .catch((err) => console.log(err));
-  }, [dispatch]);
+  }, [dispatch, products.length]);
 
   const onDeleteProductHandler = (id) => {
     dispatch(deleteProductById(id));

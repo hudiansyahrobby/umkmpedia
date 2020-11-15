@@ -7,7 +7,7 @@ exports.addCategory = async (req, res, next) => {
   const category = await Category.findOne({ name: loweredCaseName });
 
   if (category) {
-    return res.status(400).json({ success: false, message: 'Category has already exist' });
+    return res.status(400).json({ success: false, message: 'Kategori Telah Ada' });
   }
 
   const newCategory = new Category({
@@ -26,7 +26,7 @@ exports.getAllCategories = async (req, res, next) => {
   try {
     const categories = await Category.find({});
     if (!categories) {
-      return res.status(400).json({ success: false, message: 'Categories not found' });
+      return res.status(400).json({ success: false, message: 'Kategori Tidak Ada' });
     }
 
     return res.status(200).json({ success: true, categories });
@@ -40,7 +40,7 @@ exports.getCategory = async (req, res, next) => {
   try {
     const category = await Category.find({ _id: categoryId }).select('name _id');
     if (!category) {
-      return res.status(400).json({ success: false, message: 'category not found' });
+      return res.status(400).json({ success: false, message: 'Kategori Tidak Ditemukan' });
     }
 
     return res.status(200).json({ success: true, category });
@@ -56,10 +56,10 @@ exports.deleteCategory = async (req, res, next) => {
     if (!category) {
       return res
         .status(400)
-        .json({ success: false, message: "Can't delete category that doesn't exist" });
+        .json({ success: false, message: 'Tidak Dapat Menghapus Kategori Yang Tidak Ada' });
     }
 
-    return res.status(200).json({ success: true, message: 'Category successfully deleted' });
+    return res.status(200).json({ success: true, message: 'Kategori Berhasil Dihapus' });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -70,6 +70,10 @@ exports.updateCategory = async (req, res, next) => {
 
   const categoryId = req.params.id;
 
+  const isCategoryExist = await Category.findOne({ name });
+  if (isCategoryExist) {
+    return res.status(400).json({ success: false, message: 'Kategori Sudah Ada' });
+  }
   const updatedCategory = {
     name,
   };
@@ -79,10 +83,10 @@ exports.updateCategory = async (req, res, next) => {
     if (!category) {
       return res
         .status(400)
-        .json({ success: false, message: "Can't update category that doesn't exist" });
+        .json({ success: false, message: 'Tidak Bisa Mengupdate Kategori Yang Tidak Ada' });
     }
 
-    return res.status(200).json({ success: true, message: 'Category successfully updated' });
+    return res.status(200).json({ success: true, message: 'Kategori Berhasil Diupdate' });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

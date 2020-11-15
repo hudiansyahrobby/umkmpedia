@@ -44,14 +44,17 @@ function Product({
             <ProductPrice price={price} />
           </div>
 
-          <button
-            className='mb-4 p-2 bg-primary text-center block w-full text-xs font-bold text-gray-900'
-            onClick={() => onAddToCartHandler(id)}
-          >
-            Tambah Ke Keranjang
-          </button>
+          {user?.role !== 'admin' && (
+            <button
+              className='mb-4 p-2 bg-primary text-center block w-full text-xs font-bold text-gray-900'
+              onClick={() => onAddToCartHandler(id)}
+            >
+              Tambah Ke Keranjang
+            </button>
+          )}
+
+          {user?.role === 'admin' && <ProductAdminButton onDelete={onDelete} id={id} />}
         </div>
-        {/* {user?.role === 'admin' && <ProductAdminButton onDelete={onDelete} id={id} />} */}
       </div>
     );
   }

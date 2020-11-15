@@ -84,7 +84,7 @@ export default function Input({
 
         <div className='flex items-center bg-grey-lighter'>
           <label
-            className='w-full flex flex-col items-center px-4 py-6 bg-white text-info rounded-lg shadow-lg tracking-wide uppercase border border-info cursor-pointer transition duration-300 hover:bg-primary'
+            className='w-full h-48 flex flex-col justify-center items-center px-4 py-6 bg-white text-info rounded-lg shadow-lg tracking-wide uppercase border border-info cursor-pointer transition duration-300 hover:bg-primary'
             onChange={onChange}
           >
             <svg

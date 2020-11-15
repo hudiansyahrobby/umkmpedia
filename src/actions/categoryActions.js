@@ -4,11 +4,7 @@ import * as CATEGORY from '../constants/categoryConstants';
 export const addCategories = (category) => async (dispatch) => {
   dispatch({ type: CATEGORY.ADD_CATEGORY_INIT });
   try {
-    const { data } = await Axios.post('api/category', category, {
-      headers: {
-        'Content-Type': 'multipart/data',
-      },
-    });
+    const { data } = await Axios.post('api/category', category);
     dispatch({ type: CATEGORY.ADD_CATEGORY_SUCCESS, payload: { category: data.category } });
   } catch (error) {
     dispatch({
@@ -41,15 +37,37 @@ export const getcategories = () => async (dispatch) => {
   }
 };
 
-export const updateCategoryById = (id, categories) => async (dispatch) => {
+export const getCategoryById = (id) => async (dispatch) => {
+  dispatch({ type: CATEGORY.GET_CATEGORY_INIT });
+  try {
+    const { data } = await Axios.get(`api/category/${id}`);
+    if (data.category) {
+      dispatch({
+        type: CATEGORY.GET_CATEGORY_SUCCESS,
+        payload: { category: data.category },
+      });
+    } else {
+      dispatch({
+        type: CATEGORY.GET_CATEGORY_SUCCESS,
+        payload: { category: [] },
+      });
+    }
+  } catch (error) {
+    dispatch({
+      type: CATEGORY.GET_CATEGORY__FAIL,
+      payload: { message: error.response.data.message },
+    });
+  }
+};
+
+export const updateCategoryById = (id, category, history) => async (dispatch) => {
   dispatch({ type: CATEGORY.UPDATE_CATEGORY_INIT });
   try {
-    await Axios.put(`api/category/${id}`, categories, {
-      headers: {
-        'Content-Type': 'multipart/data',
-      },
-    });
-    dispatch({ type: CATEGORY.UPDATE_CATEGORY_SUCCESS, payload: { id } });
+    const { data } = await Axios.put(`api/category/${id}`, category);
+    if (data.message) {
+      dispatch({ type: CATEGORY.UPDATE_CATEGORY_SUCCESS, payload: { message: data.message } });
+      history.push('/admin/tambah-kategori');
+    }
   } catch (error) {
     dispatch({
       type: CATEGORY.UPDATE_CATEGORY_FAIL,
@@ -61,8 +79,8 @@ export const updateCategoryById = (id, categories) => async (dispatch) => {
 export const deleteCategoryById = (id) => async (dispatch) => {
   dispatch({ type: CATEGORY.DELETE_CATEGORY_INIT });
   try {
-    await Axios.delete(`api/category/${id}`);
-    dispatch({ type: CATEGORY.DELETE_CATEGORY_SUCCESS, payload: { id } });
+    const { data } = await Axios.delete(`api/category/${id}`);
+    dispatch({ type: CATEGORY.DELETE_CATEGORY_SUCCESS, payload: { id, message: data.message } });
   } catch (error) {
     dispatch({
       type: CATEGORY.DELETE_CATEGORY_FAIL,
@@ -73,8 +91,4 @@ export const deleteCategoryById = (id) => async (dispatch) => {
 
 export const resetCategory = () => async (dispatch) => {
   dispatch({ type: CATEGORY.RESET_STATUS_CATEGORY });
-};
-
-export const resetStateCategory = () => async (dispatch) => {
-  dispatch({ type: CATEGORY.RESET_STATE_CATEGORY });
 };

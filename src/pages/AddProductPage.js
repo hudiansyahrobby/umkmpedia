@@ -40,7 +40,6 @@ function AddProductPage() {
             })}
             onSubmit={({ name, price, quantity, description, unit }, { setSubmitting }) => {
               const productData = new FormData();
-              console.log(unit);
               productData.append('name', name);
               productData.append('price', price);
               productData.append('quantity', quantity);
@@ -55,7 +54,7 @@ function AddProductPage() {
               }, 5000);
             }}
           >
-            <Form className='bg-info shadow-md rounded px-8 pt-6 pb-8 mb-4'>
+            <Form className='bg-info shadow-md rounded px-4 pt-6 pb-8 mb-4'>
               <Title align='text-center' margin='mx-auto'>
                 Tambahkan Produk Anda
               </Title>
@@ -91,22 +90,24 @@ function AddProductPage() {
                   label='Harga Produk'
                 />
 
-                <Input
-                  name='quantity'
-                  type='number'
-                  id='quantity'
-                  placeholder='Masukkan Jumlah Produk'
-                  label='Jumlah Produk'
-                />
+                <div className='grid grid-cols-2 gap-3'>
+                  <Input
+                    name='quantity'
+                    type='number'
+                    id='quantity'
+                    placeholder='Jumlah Produk'
+                    label='Jumlah Produk'
+                  />
 
-                <Input
-                  name='unit'
-                  as='select'
-                  id='unit'
-                  data={units}
-                  label='Satuan Produk'
-                  option='Pilih Satuan'
-                />
+                  <Input
+                    name='unit'
+                    as='select'
+                    id='unit'
+                    data={units}
+                    label='Satuan Produk'
+                    option='Satuan'
+                  />
+                </div>
 
                 <Input
                   name='description'
@@ -116,36 +117,27 @@ function AddProductPage() {
                   label='Deskirpsi Produk'
                 />
 
-                <Input
-                  label='Upload Gambar Produk'
-                  id='image'
-                  accept='image/*'
-                  as='file'
-                  name='image'
-                  onChange={(e) => setImage(e.target.files[0])}
-                />
+                <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor={image}>
+                  Upload Gambar Produk
+                </label>
+                <div className='relative w-64 h-48 mx-auto'>
+                  <Input
+                    id='image'
+                    accept='image/*'
+                    as='file'
+                    name='image'
+                    onChange={(e) => setImage(e.target.files[0])}
+                  />
 
-                {image && (
-                  <img
-                    src={URL.createObjectURL(image)}
-                    alt='preview'
-                    className='w-64 h-48 mb-4 rounded-lg mx-auto'
-                  />
-                )}
-                {success && (
-                  <Alert
-                    message={message}
-                    success={true}
-                    onRemoveAlert={() => dispatch(resetProduct())}
-                  />
-                )}
-                {error && (
-                  <Alert
-                    message={message}
-                    success={false}
-                    onRemoveAlert={() => dispatch(resetProduct())}
-                  />
-                )}
+                  {image && (
+                    <img
+                      src={URL.createObjectURL(image)}
+                      alt='preview'
+                      className='w-64 h-48 rounded-lg absolute inset-0'
+                    />
+                  )}
+                </div>
+
                 <div className='mt-5 w-48 mx-auto'>
                   <Button
                     background='bg-primary hover:bg-orange-400'
