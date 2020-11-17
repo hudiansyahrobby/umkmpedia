@@ -4,7 +4,7 @@ import Button from '../components/Buttons/Button';
 import Input from '../components/Input';
 import Title from '../components/Title';
 import {
-  addNewProduct,
+  updateProductById,
   getProductById,
   resetProduct,
   resetStateProduct,
@@ -16,68 +16,80 @@ import * as Yup from 'yup';
 import { useEffect } from 'react';
 import Layout from '../components/Layout';
 import Alert from '../components/Alert';
+import { getcategories } from '../actions/categoryActions';
+import { generatePublicPath } from '../utils/generatePublicPath';
 
 function EditProductPage() {
   const dispatch = useDispatch();
   const { id } = useParams();
 
+  const units = ['kg', 'gram', 'buah', 'meter', 'kotak'];
+  const history = useHistory();
+  const { categories } = useSelector((state) => state.category);
+  const { message, success, error, product } = useSelector((state) => state.product);
+  const [image, setImage] = useState('');
+
   useEffect(() => {
+    dispatch(getcategories());
     dispatch(getProductById(id));
     dispatch(resetProduct());
     return function cleanup() {
       dispatch(resetStateProduct());
     };
-  }, [dispatch, id]);
-
-  const [image, setImage] = useState('');
-  const history = useHistory();
-  const { brands } = useSelector((state) => state.brand);
-  const { message, success, error, product } = useSelector((state) => state.product);
+  }, []);
 
   return (
     <>
       <Layout>
-        {product ? (
+        {product.length > 0 ? (
           <div className='w-full h-screen max-w-lg mx-auto mt-20'>
             <div className='px-6'>
               <Formik
                 initialValues={{
-                  name: product.name,
-                  price: product.price,
-                  quantity: product.quantity,
-                  brand: product.brand,
-                  description: product.description,
+                  name: product[0].name,
+                  price: product[0].price,
+                  quantity: product[0].quantity,
+                  category: product[0].category,
+                  unit: product[0].unit,
+                  description: product[0].description,
                 }}
                 validationSchema={Yup.object({
-                  name: Yup.string().required('Required'),
-                  price: Yup.number().required('Required').min(0, 'Price must be greater than 0'),
+                  name: Yup.string().required('Wajib Diisi'),
+                  price: Yup.number()
+                    .required('Wajib Diisi')
+                    .min(0, 'Harga Harus Lebih besar dari 0'),
                   quantity: Yup.number()
-                    .required('Required')
-                    .min(0, 'Quantity must be greater than 0'),
-                  brand: Yup.string().required('Required'),
+                    .required('Wajib Diisi')
+                    .min(0, 'Jumlah harus lebih besar dari nol'),
+                  category: Yup.string().required('Wajib Diisi'),
+                  unit: Yup.string().required('Wajib Diisi'),
                   description: Yup.string()
-                    .required('Required')
-                    .min(100, 'At least 100 characters'),
+                    .required('Wajib Diisi')
+                    .min(100, 'Minimal 100 karakter'),
                 })}
-                onSubmit={({ name, price, quantity, brand, description }, { setSubmitting }) => {
+                onSubmit={(
+                  { name, price, quantity, category, description, unit },
+                  { setSubmitting },
+                ) => {
                   const productData = new FormData();
                   productData.append('name', name);
                   productData.append('price', price);
                   productData.append('quantity', quantity);
-                  productData.append('brand', brand);
+                  productData.append('unit', unit);
+                  productData.append('category', category);
                   productData.append('image', image);
                   productData.append('description', description);
 
-                  dispatch(addNewProduct(productData, history));
+                  dispatch(updateProductById(id, productData, history));
                   setSubmitting(false);
                   setTimeout(() => {
                     dispatch(resetProduct());
                   }, 5000);
                 }}
               >
-                <Form className='bg-info shadow-md rounded px-8 pt-6 pb-8 mb-4'>
+                <Form className='bg-info shadow-md rounded px-4 pt-6 pb-8 mb-4'>
                   <Title align='text-center' margin='mx-auto'>
-                    Edit Your Product
+                    Edit Produk Anda
                   </Title>
 
                   {success && (
@@ -94,82 +106,90 @@ function EditProductPage() {
                       onRemoveAlert={() => dispatch(resetProduct())}
                     />
                   )}
-                  <Input
-                    name='name'
-                    type='text'
-                    id='name'
-                    placeholder='Enter Product Name'
-                    label='Name'
-                  />
-
-                  <Input
-                    name='price'
-                    type='number'
-                    id='price'
-                    placeholder='Enter Product Price'
-                    label='Price'
-                  />
-
-                  <Input
-                    name='quantity'
-                    type='number'
-                    id='quantity'
-                    placeholder='Enter Product Quantity'
-                    label='Quantity'
-                  />
-
-                  <Input
-                    name='brand'
-                    as='select'
-                    data={brands}
-                    id='brand'
-                    option='Choose Product Brand'
-                    placeholder='Enter Product Brand'
-                    label='Brand'
-                  />
-
-                  <Input
-                    name='description'
-                    as='textarea'
-                    id='description'
-                    placeholder='Enter Product Description'
-                    label='Description'
-                  />
-
-                  <Input
-                    label='Upload Your Image'
-                    id='image'
-                    accept='image/*'
-                    as='file'
-                    name='image'
-                    onChange={(e) => setImage(e.target.files[0])}
-                  />
-
-                  {image && (
-                    <img
-                      src={URL.createObjectURL(image)}
-                      alt='preview'
-                      className='w-40 h-48 mb-4 rounded-lg mx-auto'
+                  <div className='mt-8'>
+                    <Input
+                      name='name'
+                      type='text'
+                      id='name'
+                      placeholder='Masukkan Nama Produk'
+                      label='Nama Produk'
                     />
-                  )}
-                  {success && (
-                    <Alert
-                      message={message}
-                      success={true}
-                      onRemoveAlert={() => dispatch(resetProduct())}
+
+                    <Input
+                      name='category'
+                      as='select'
+                      id='category'
+                      data={categories}
+                      label='Pilih Kategori'
+                      option='Pilih Kategori'
                     />
-                  )}
-                  {error && (
-                    <Alert
-                      message={message}
-                      success={false}
-                      onRemoveAlert={() => dispatch(resetProduct())}
+
+                    <Input
+                      name='price'
+                      type='number'
+                      id='price'
+                      placeholder='Masukkan Harga Produk'
+                      label='Harga Produk'
                     />
-                  )}
-                  <div className='mt-5 w-48 mx-auto'>
-                    <Button background='bg-red-hell' size='extraBig'>
-                      Edit Product
-                    </Button>
+
+                    <div className='grid grid-cols-2 gap-3'>
+                      <Input
+                        name='quantity'
+                        type='number'
+                        id='quantity'
+                        placeholder='Jumlah Produk'
+                        label='Jumlah Produk'
+                      />
+
+                      <Input
+                        name='unit'
+                        as='select'
+                        id='unit'
+                        data={units}
+                        label='Satuan Produk'
+                        option='Satuan'
+                      />
+                    </div>
+
+                    <Input
+                      name='description'
+                      as='textarea'
+                      id='description'
+                      placeholder='Masukkan Deskripsi Produk'
+                      label='Deskirpsi Produk'
+                    />
+
+                    <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor={image}>
+                      Upload Gambar Produk
+                    </label>
+                    <div className='relative w-64 h-48 mx-auto'>
+                      <Input
+                        id='image'
+                        accept='image/*'
+                        as='file'
+                        name='image'
+                        onChange={(e) => setImage(e.target.files[0])}
+                      />
+
+                      {image && (
+                        <img
+                          src={URL.createObjectURL(image)}
+                          alt='preview'
+                          className='w-64 h-48 rounded-lg absolute inset-0'
+                        />
+                      )}
+                    </div>
+
+                    <div className='mt-5 w-48 mx-auto'>
+                      <Button
+                        background='bg-primary hover:bg-orange-400'
+                        variant='font-bold transition duration-300 mx-auto'
+                        size='extraBig'
+                        type='submit'
+                      >
+                        Edit Produk
+                      </Button>
+                    </div>
                   </div>
                 </Form>
               </Formik>

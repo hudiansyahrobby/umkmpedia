@@ -21,12 +21,13 @@ function ProductsPage(props) {
   const query = new URLSearchParams(props.location.search);
   const page = query.get('page') || 1;
   const searchQuery = query.get('search') || search;
+  const categoryQuery = query.get('category');
 
   const dispatch = useDispatch();
   const history = useHistory();
 
   useEffect(() => {
-    dispatch(getProducts(searchQuery, page));
+    dispatch(getProducts(searchQuery, page, categoryQuery));
     dispatch(getWishlist());
   }, [dispatch, page]);
 

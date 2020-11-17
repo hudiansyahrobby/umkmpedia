@@ -41,8 +41,13 @@ export default function Navbar({ onOpen }) {
     navbar = (
       <>
         <NavbarLink link='/profil' name='Profil' />
-        <NavbarLink link='/favorit' icon={<AiFillHeart />} data={wishlists?.length} />
-        <NavbarLink link='/keranjang' icon={<FaShoppingCart />} data={carts?.length} />
+
+        {user?.role === 'user' && (
+          <>
+            <NavbarLink link='/favorit' icon={<AiFillHeart />} data={wishlists?.length} />
+            <NavbarLink link='/keranjang' icon={<FaShoppingCart />} data={carts?.length} />
+          </>
+        )}
 
         <button
           className='p-2 rounded-lg bg-primary hover:bg-orange-300 transition duration-300 ease-in-out'

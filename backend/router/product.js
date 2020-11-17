@@ -7,7 +7,7 @@ const router = express.Router();
 
 const uploadFile = upload();
 
-router.get('/products', productController.getAllProducts);
+router.get('/products?', productController.getAllProducts);
 
 router.post(
   '/products',
@@ -16,11 +16,8 @@ router.post(
   uploadFile.single('image'),
   productController.addProduct,
 );
-router.get('/products/search', productController.searchProduct);
 
 router.get('/products/:id', productController.getProduct);
-
-// router.get('/products/:id', productController.getProductByBrand);
 
 router.put(
   '/products/:id',

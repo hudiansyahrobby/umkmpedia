@@ -11,16 +11,21 @@ import * as Yup from 'yup';
 import { useEffect } from 'react';
 import Layout from '../components/Layout';
 import Alert from '../components/Alert';
+import { getcategories } from '../actions/categoryActions';
+import { IoMdClose } from 'react-icons/io';
+import { IconContext } from 'react-icons';
 
 function AddProductPage() {
   const [image, setImage] = useState('');
   const dispatch = useDispatch();
   const history = useHistory();
   const { message, success, error } = useSelector((state) => state.product);
+  const { categories } = useSelector((state) => state.category);
 
   const units = ['kg', 'gram', 'buah', 'meter', 'kotak'];
 
   useEffect(() => {
+    dispatch(getcategories());
     dispatch(resetProduct());
   }, [dispatch]);
   return (
@@ -28,9 +33,17 @@ function AddProductPage() {
       <div className='w-full h-screen max-w-lg mx-auto mt-20'>
         <div className='px-6'>
           <Formik
-            initialValues={{ name: '', price: '', quantity: '', description: '', unit: '' }}
+            initialValues={{
+              name: '',
+              price: '',
+              quantity: '',
+              description: '',
+              unit: '',
+              category: '',
+            }}
             validationSchema={Yup.object({
               name: Yup.string().required('Wajib Diisi'),
+              category: Yup.string().required('Wajib Diisi'),
               price: Yup.number().required('Wajib Diisi').min(0, 'Harga Harus Lebih Dari 0'),
               quantity: Yup.number().required('Wajib Diisi').min(0, 'Kuantitas Harus Lebih Dari 0'),
               unit: Yup.string().required('Wajib Diisi'),
@@ -38,9 +51,13 @@ function AddProductPage() {
                 .required('Wajib Diisi')
                 .min(100, 'Deskripsi minimal 100 karakter'),
             })}
-            onSubmit={({ name, price, quantity, description, unit }, { setSubmitting }) => {
+            onSubmit={(
+              { name, category, price, quantity, description, unit },
+              { setSubmitting },
+            ) => {
               const productData = new FormData();
               productData.append('name', name);
+              productData.append('category', category);
               productData.append('price', price);
               productData.append('quantity', quantity);
               productData.append('unit', unit);
@@ -80,6 +97,15 @@ function AddProductPage() {
                   id='name'
                   placeholder='Masukkan Nama Produk'
                   label='Nama Produk'
+                />
+
+                <Input
+                  name='category'
+                  as='select'
+                  id='category'
+                  data={categories}
+                  label='Pilih Kategori'
+                  option='Pilih Kategori'
                 />
 
                 <Input
@@ -130,11 +156,24 @@ function AddProductPage() {
                   />
 
                   {image && (
-                    <img
-                      src={URL.createObjectURL(image)}
-                      alt='preview'
-                      className='w-64 h-48 rounded-lg absolute inset-0'
-                    />
+                    <>
+                      <img
+                        src={URL.createObjectURL(image)}
+                        alt='preview'
+                        className='w-64 h-48 rounded-lg absolute inset-0'
+                      />
+                      <IconContext.Provider
+                        value={{
+                          color: 'text-white',
+                          size: '1.2rem',
+                          className: 'absolute top-0 right-0 mt-2 mr-2',
+                        }}
+                      >
+                        <button onClick={() => setImage('')}>
+                          <IoMdClose />
+                        </button>
+                      </IconContext.Provider>
+                    </>
                   )}
                 </div>
 

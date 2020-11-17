@@ -14,9 +14,8 @@ function HomePage() {
   const { wishlists } = useSelector((state) => state.wishlist);
 
   useEffect(() => {
-    dispatch(getWishlist());
     dispatch(getProducts());
-  }, [dispatch, products.length]);
+  }, []);
 
   const onDeleteProductHandler = (id) => {
     dispatch(deleteProductById(id));

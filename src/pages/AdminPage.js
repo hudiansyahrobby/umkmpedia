@@ -14,6 +14,14 @@ function AdminPage() {
         </Title>
         <div className='text-right mt-4'>
           <Button
+            link='/admin/tambah-kategori'
+            background='bg-primary hover:bg-orange-400'
+            variant='mr-2 text-black font-bold transition duration-300'
+            size='small'
+          >
+            Tambah Kategori
+          </Button>
+          <Button
             link='/admin/tambah-produk'
             background='bg-primary hover:bg-orange-400'
             variant='text-black font-bold transition duration-300'

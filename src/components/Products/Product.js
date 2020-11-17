@@ -30,10 +30,11 @@ function Product({
   let card;
   if (direction === 'vertical') {
     card = (
-      <div className='verflow-hidden bg-white shadow-lg flex flex-col justify-between'>
+      <div className=' bg-white shadow-lg'>
         <ProductImage
           image={image}
           name={image}
+          user={user}
           onClick={() => onWishlist(id)}
           favorited={favorited}
         />
