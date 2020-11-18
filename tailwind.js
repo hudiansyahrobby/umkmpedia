@@ -1,4 +1,5 @@
 const { colors } = require('tailwindcss/defaultTheme');
+const { screens } = require('tailwindcss/defaultTheme');
 
 module.exports = {
   future: {
@@ -36,17 +37,14 @@ module.exports = {
         },
       },
       screens: {
-        smx: '696px',
-        mdx: '992px',
+        ...screens,
+        sm: '530px',
       },
-      backgroundImage: (theme) => ({
-        hero: "url('/images/shoe-1.png')",
-      }),
       borderRadius: {
         mammoth: '1.25rem',
       },
       fontSize: {
-        tiny: '0.5rem',
+        tiny: '0.65rem',
       },
     },
   },

@@ -42,7 +42,7 @@ export default function Navbar({ onOpen }) {
       <>
         <NavbarLink link='/profil' name='Profil' />
 
-        {user?.role === 'user' && (
+        {user?.user?.role === 'user' && (
           <>
             <NavbarLink link='/favorit' icon={<AiFillHeart />} data={wishlists?.length} />
             <NavbarLink link='/keranjang' icon={<FaShoppingCart />} data={carts?.length} />

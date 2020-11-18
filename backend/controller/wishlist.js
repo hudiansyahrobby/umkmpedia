@@ -1,19 +1,22 @@
 const Wishlist = require('../model/wishlist');
 const Product = require('../model/product');
+const { populate } = require('../model/wishlist');
 
 exports.getProductInWishlist = async (req, res, next) => {
   try {
-    const userData = await Wishlist.findOne({ userId: req.user._id });
+    const userData = await Wishlist.findOne({ userId: req.user._id })
+      .populate('products.category', '_id name')
+      .exec();
     if (!userData) {
       return res
         .status(200)
-        .json({ success: false, message: 'You have not added anything to your wishlist' });
+        .json({ success: false, message: 'Anda belum menambahkan barang favorit' });
     } else {
       const wishlist = userData.products;
       if (!wishlist) {
         return res
           .status(200)
-          .json({ success: false, message: 'You have not added anything to your wishlist' });
+          .json({ success: false, message: 'Anda belum menambahkan barang favorit' });
       }
       return res.status(200).json({ success: true, wishlist });
     }
@@ -25,15 +28,16 @@ exports.getProductInWishlist = async (req, res, next) => {
 exports.addProductToWishlist = async (req, res, next) => {
   const { id } = req.body;
 
-  const product = await Product.findOne({ _id: id });
+  const product = await Product.findOne({ _id: id }).populate('category', '_id name').exec();
 
-  const { name, price, image, _id } = product;
+  const { name, price, image, _id, category } = product;
 
   const newProduct = {
     productId: _id,
     name,
     price,
     image,
+    category,
   };
 
   try {
@@ -47,7 +51,7 @@ exports.addProductToWishlist = async (req, res, next) => {
         // execute this if item found in wishlist
         return res
           .status(400)
-          .json({ success: false, message: 'This Product has exist in wishlist' });
+          .json({ success: false, message: 'Anda telah menambahkan Produk ini' });
       } else {
         // execute this if item not found in wishlist
         wishlist.products.push(newProduct);

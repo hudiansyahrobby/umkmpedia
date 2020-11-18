@@ -33,12 +33,16 @@ exports.getAllProducts = async (req, res, next) => {
   let query = {};
   if (searchQuery) {
     query = { name: { $regex: searchQuery, $options: 'i' } };
-  } else if (categoryQuery) {
+  }
+
+  if (categoryQuery) {
     query = { category: categoryQuery };
   }
+
   console.log(query);
   try {
     const products = await Product.find(query)
+      .populate('category', '_id name')
       .sort({ updatedAt: -1 })
       .skip(page * itemPerPage)
       .limit(itemPerPage)
@@ -93,7 +97,7 @@ exports.deleteProduct = async (req, res, next) => {
 };
 
 exports.updateProduct = async (req, res, next) => {
-  const { name, price, description, size, quantity } = req.body;
+  const { name, price, description, unit, quantity, category } = req.body;
 
   const productId = req.params.id;
 
@@ -107,11 +111,12 @@ exports.updateProduct = async (req, res, next) => {
     name,
     price,
     description,
-    size,
+    unit,
     quantity,
-    image: req.file.path,
+    category,
+    image: req.file.filename,
   };
-
+  console.log('UPDATED PRODUCT', updatedProduct);
   try {
     const product = await Product.findByIdAndUpdate(productId, updatedProduct);
     if (!product) {

@@ -21,6 +21,7 @@ export const getWishlist = () => async (dispatch) => {
   dispatch({ type: WISHLIST.GET_PRODUCTS_WISHLIST_INIT });
   try {
     const { data } = await Axios.get('api/wishlist');
+    console.log(data);
     dispatch({
       type: WISHLIST.GET_PRODUCTS_WISHLIST_SUCCESS,
       payload: { wishlists: data.wishlist || [] },

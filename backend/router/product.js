@@ -7,7 +7,7 @@ const router = express.Router();
 
 const uploadFile = upload();
 
-router.get('/products?', productController.getAllProducts);
+router.get('/products', productController.getAllProducts);
 
 router.post(
   '/products',
@@ -26,6 +26,7 @@ router.put(
   uploadFile.single('image'),
   productController.updateProduct,
 );
+
 router.delete('/products/:id', verifyUser, verifyAdmin, productController.deleteProduct);
 
 module.exports = router;

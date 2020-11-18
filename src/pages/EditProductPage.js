@@ -18,6 +18,8 @@ import Layout from '../components/Layout';
 import Alert from '../components/Alert';
 import { getcategories } from '../actions/categoryActions';
 import { generatePublicPath } from '../utils/generatePublicPath';
+import { IconContext } from 'react-icons';
+import { IoMdClose } from 'react-icons/io';
 
 function EditProductPage() {
   const dispatch = useDispatch();
@@ -36,12 +38,12 @@ function EditProductPage() {
     return function cleanup() {
       dispatch(resetStateProduct());
     };
-  }, []);
+  }, [id]);
 
   return (
     <>
       <Layout>
-        {product.length > 0 ? (
+        {product?.length > 0 ? (
           <div className='w-full h-screen max-w-lg mx-auto mt-20'>
             <div className='px-6'>
               <Formik
@@ -172,11 +174,24 @@ function EditProductPage() {
                       />
 
                       {image && (
-                        <img
-                          src={URL.createObjectURL(image)}
-                          alt='preview'
-                          className='w-64 h-48 rounded-lg absolute inset-0'
-                        />
+                        <>
+                          <img
+                            src={URL.createObjectURL(image)}
+                            alt='preview'
+                            className='w-64 h-48 rounded-lg absolute inset-0'
+                          />
+                          <IconContext.Provider
+                            value={{
+                              color: 'text-white',
+                              size: '1.2rem',
+                              className: 'absolute top-0 right-0 mt-2 mr-2',
+                            }}
+                          >
+                            <button onClick={() => setImage('')}>
+                              <IoMdClose />
+                            </button>
+                          </IconContext.Provider>
+                        </>
                       )}
                     </div>
 

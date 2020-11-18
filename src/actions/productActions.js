@@ -31,6 +31,7 @@ export const getProducts = (word = '', page = 1, category = '') => async (dispat
       payload: { products: data.products, totalPage: data.totalPage },
     });
   } catch (error) {
+    console.log(error.response);
     dispatch({
       type: PRODUCT.GET_PRODUCTS__FAIL,
       payload: { message: error.response.data.message },

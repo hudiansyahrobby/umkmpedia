@@ -9,7 +9,7 @@ export default function Products({
 }) {
   const productEl =
     products?.length > 0 ? (
-      products.map(({ _id, name, price, image }) => {
+      products.map(({ _id, name, price, image, category }) => {
         const found = wishlists?.some((wishlist) => wishlist.productId === _id);
         if (found) {
           return (
@@ -20,6 +20,7 @@ export default function Products({
               price={price}
               image={image}
               favorited={true}
+              category={category}
               onDelete={onDelete}
               onWishlist={onRemoveWishlist}
               direction='vertical'
@@ -32,6 +33,7 @@ export default function Products({
               id={_id}
               name={name}
               price={price}
+              category={category}
               image={image}
               favorited={false}
               onDelete={onDelete}
@@ -48,9 +50,7 @@ export default function Products({
   return (
     <div className='mt-12'>
       {products?.length > 0 ? (
-        <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>
-          {productEl}
-        </div>
+        <div className='grid sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4'>{productEl}</div>
       ) : (
         productEl
       )}

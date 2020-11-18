@@ -15,6 +15,11 @@ const wishlistSchema = mongoose.Schema({
         type: String,
         required: true,
       },
+      category: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Category',
+        required: true,
+      },
       price: {
         type: Number,
         required: true,

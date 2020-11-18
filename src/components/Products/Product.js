@@ -6,7 +6,8 @@ import ProductTitle from './ProductTitle';
 import ProductStar from './ProductStar';
 import ProductPrice from './ProductPrice';
 import ProductAdminButton from './ProductAdminButton';
-import CartButton from '../Buttons/CartButton';
+import { Link } from 'react-router-dom';
+import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 
 function Product({
   id,
@@ -16,6 +17,7 @@ function Product({
   image,
   direction,
   onDelete,
+  category,
   onUpdate,
   favorited,
   onWishlist,
@@ -26,11 +28,10 @@ function Product({
   const onAddToCartHandler = (productId) => {
     dispatch(addToCart(productId));
   };
-
   let card;
   if (direction === 'vertical') {
     card = (
-      <div className=' bg-white shadow-lg'>
+      <div className='bg-white shadow-lg'>
         <ProductImage
           image={image}
           name={image}
@@ -40,6 +41,12 @@ function Product({
         />
         <div className='px-4'>
           <div className='pb-4'>
+            <Link
+              to={`/produk?category=${category._id}`}
+              className='bg-primary text-yellow-900 tracking-wide rounded-sm px-2 py-1 text-tiny font-bold inline-block mt-2'
+            >
+              {capitalizeFirstLetter(category.name)}
+            </Link>
             <ProductTitle name={name} id={id} />
             <ProductStar rating={5} color='text-yellow-600' size='1.6rem' />
             <ProductPrice price={price} />

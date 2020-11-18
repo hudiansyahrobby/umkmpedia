@@ -11,6 +11,7 @@ export default function Wishlists({ wishlists, onDelete, onRemoveWishlist }) {
             id={product.productId}
             name={product.name}
             favorited={true}
+            category={product.category}
             price={product.price}
             image={product.image}
             onWishlist={onRemoveWishlist}
