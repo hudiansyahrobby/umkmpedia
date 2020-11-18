@@ -6,10 +6,10 @@ export const addToCart = (id) => async (dispatch) => {
   try {
     const { data } = await Axios.post('api/cart', { id });
     if (data) {
-      const { cart, totalPrice } = data;
+      const { cart } = data;
       dispatch({
         type: CART.ADD_PRODUCT_TO_CART_SUCCESS,
-        payload: { cart, totalPrice },
+        payload: { cart },
       });
     }
   } catch (error) {
@@ -25,15 +25,15 @@ export const getCart = () => async (dispatch) => {
   try {
     const { data } = await Axios.get('api/cart');
     if (data.cart) {
-      const { products, totalPrice } = data.cart;
+      const { products } = data.cart;
       dispatch({
         type: CART.GET_PRODUCTS_CART_SUCCESS,
-        payload: { carts: products, totalPrice: totalPrice },
+        payload: { carts: products },
       });
     } else {
       dispatch({
         type: CART.GET_PRODUCTS_CART_SUCCESS,
-        payload: { carts: [], totalPrice: 0 },
+        payload: { carts: [] },
       });
     }
   } catch (error) {
@@ -57,41 +57,24 @@ export const deleteFromCart = (id) => async (dispatch) => {
   }
 };
 
-export const increaseProductQty = (cartData) => async (dispatch) => {
-  dispatch({ type: CART.INCREASE_PRODUCT_QTY_INIT });
+export const onChangeQuantity = (id, quantity) => async (dispatch) => {
+  const cartData = {
+    id,
+    quantity,
+  };
+  dispatch({ type: CART.CHANGE_PRODUCT_QTY_INIT });
   try {
-    const { data } = await Axios.post('api/cart/increase-quantity', cartData);
+    const { data } = await Axios.post('api/cart/change-quantity', cartData);
     if (data.cart) {
-      const { products, totalPrice } = data.cart;
+      const { products } = data.cart;
       dispatch({
-        type: CART.INCREASE_PRODUCT_QTY_SUCCESS,
-        payload: { carts: products, totalPrice: totalPrice },
+        type: CART.CHANGE_PRODUCT_QTY_SUCCESS,
+        payload: { carts: products },
       });
     }
   } catch (error) {
     dispatch({
-      type: CART.INCREASE_PRODUCT_QTY_FAIL,
-      payload: { message: error.response.data.message },
-    });
-  }
-};
-
-export const decreaseProductQty = (cartData) => async (dispatch) => {
-  dispatch({ type: CART.DECREASE_PRODUCT_QTY_INIT });
-
-  try {
-    const { data } = await Axios.post('api/cart/decrease-quantity', cartData);
-    if (data.cart) {
-      const { products, totalPrice } = data.cart;
-
-      dispatch({
-        type: CART.DECREASE_PRODUCT_QTY_SUCCESS,
-        payload: { carts: products, totalPrice: totalPrice },
-      });
-    }
-  } catch (error) {
-    dispatch({
-      type: CART.DECREASE_PRODUCT_QTY_FAIL,
+      type: CART.CHANGE_PRODUCT_QTY_FAIL,
       payload: { message: error.response.data.message },
     });
   }

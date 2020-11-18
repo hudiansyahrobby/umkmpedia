@@ -1,25 +1,21 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { decreaseProductQty, deleteFromCart, increaseProductQty } from '../../actions/cartActions';
+import { deleteFromCart, onChangeQuantity } from '../../actions/cartActions';
 import CartImage from './CartImage';
 import CartTitle from './CartTitle';
 import CartPrice from './CartPrice';
 import DeleteButton from '../Buttons/DeleteButton';
 import QuantityButton from '../Buttons/QuantityButton';
 
-function CartItem({ id, name, price, quantity, image, productId }) {
+function CartItem({ id, name, price, quantity, image, productId, stock }) {
   const dispatch = useDispatch();
 
   const onDeleteFromCartHandler = (id) => {
     dispatch(deleteFromCart(id));
   };
 
-  const onIncreaseQuantityHandler = (id) => {
-    dispatch(increaseProductQty({ id }));
-  };
-
-  const onDecreaseQuantityHandler = (id) => {
-    dispatch(decreaseProductQty({ id }));
+  const onChangeQuantityHandler = (id, quantity) => {
+    dispatch(onChangeQuantity(id, quantity));
   };
 
   return (
@@ -34,9 +30,9 @@ function CartItem({ id, name, price, quantity, image, productId }) {
       </div>
 
       <QuantityButton
-        onIncrease={() => onIncreaseQuantityHandler(productId)}
-        onDecrease={() => onDecreaseQuantityHandler(productId)}
+        onChangeQty={(e) => onChangeQuantityHandler(productId, e.target.value)}
         quantity={quantity}
+        stock={stock}
       />
     </div>
   );

@@ -7,11 +7,9 @@ const router = express.Router();
 
 router.get('/cart', verifyUser, cartController.getProductInCart);
 
-router.post('/cart/increase-quantity', verifyUser, cartController.increaseQuantity);
-
 router.post('/cart', verifyUser, cartController.addProductToCart);
 
-router.post('/cart/decrease-quantity', verifyUser, cartController.decreaseQuantity);
+router.post('/cart/change-quantity', verifyUser, cartController.changeQuantity);
 
 router.delete('/cart/:id', verifyUser, cartController.deleteProductFromCart);
 

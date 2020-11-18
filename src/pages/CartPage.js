@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCart } from '../actions/cartActions';
 import { addToOrder } from '../actions/orderActions';
@@ -8,18 +8,27 @@ import CartSkeleton from '../components/Carts/CartSkeleton';
 import CircleButton from '../components/Buttons/CircleButtons/CircleButton';
 import Layout from '../components/Layout';
 import Title from '../components/Title';
+import { calculateTotalPrice } from '../utils/CalculateTotalPrice';
 
 function CartPage() {
-  const { carts, totalPrice, loading } = useSelector((state) => state.cart);
+  const { carts, loading } = useSelector((state) => state.cart);
   const dispatch = useDispatch();
+  const [totalPrice, setTotalPrice] = useState(0);
 
   useEffect(() => {
     dispatch(getCart());
   }, [dispatch]);
 
+  useEffect(() => {
+    const price = calculateTotalPrice(carts);
+    setTotalPrice(price);
+    console.log('JALANNI');
+  }, [carts]);
+
   const onOrderHandler = () => {
     dispatch(addToOrder());
   };
+
   return (
     <Layout>
       <div className='mt-24 max-w-screen-xl'>
