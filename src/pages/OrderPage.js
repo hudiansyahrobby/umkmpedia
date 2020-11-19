@@ -50,9 +50,7 @@ export default function OrderPage() {
   };
 
   useEffect(() => {
-    dispatch(getCart());
     dispatch(getCity());
-    dispatch(getProvince());
     getAllCourierCost();
 
     return () => {

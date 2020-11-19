@@ -69,7 +69,7 @@ export const getProvince = () => async (dispatch) => {
   }
 };
 
-export const getCity = (provinceId) => async (dispatch) => {
+export const getCity = () => async (dispatch) => {
   dispatch({ type: USER.GET_CITY_INIT });
   try {
     const { data } = await Axios.get(`api/city`);

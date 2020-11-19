@@ -40,12 +40,12 @@ function Product({
           favorited={favorited}
         />
         <div className='px-4'>
-          <div className='pb-4'>
+          <div className='mb-4'>
             <Link
               to={`/produk?category=${category._id}`}
               className='bg-primary text-yellow-900 tracking-wide rounded-sm px-2 py-1 text-tiny font-bold inline-block mt-2'
             >
-              {capitalizeFirstLetter(category.name)}
+              {category.name.toUpperCase()}
             </Link>
             <ProductTitle name={name} id={id} />
             <ProductStar rating={5} color='text-yellow-600' size='1.6rem' />

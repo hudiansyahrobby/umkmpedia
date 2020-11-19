@@ -7,7 +7,7 @@ export default function MenuButton({ onOpen }) {
     <IconContext.Provider
       value={{
         className:
-          'sm:hidden cursor-pointer hover:text-gray-900 transition duration-300 ease-in-out',
+          'md:hidden cursor-pointer hover:text-gray-900 transition duration-300 ease-in-out',
         size: '2rem',
       }}
     >
