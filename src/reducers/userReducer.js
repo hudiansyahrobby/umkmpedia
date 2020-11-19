@@ -86,7 +86,7 @@ export default function userReducer(state = initialState, action) {
       state = {
         ...state,
         loading: false,
-        provinces: state.provinces.concat(action.payload.provinces),
+        provinces: action.payload.provinces,
       };
 
       break;
@@ -128,7 +128,7 @@ export default function userReducer(state = initialState, action) {
       state = {
         ...state,
         loading: false,
-        // user: action.payload.user,
+        user: action.payload.user,
       };
       break;
     case USER.UPDATE_PROFILE_FAIL:

@@ -89,10 +89,9 @@ export const updateProfile = (updatedProfile, history) => async (dispatch) => {
   dispatch({ type: USER.UPDATE_PROFILE_INIT });
   try {
     const { data } = await Axios.put('api/update-profile', updatedProfile);
-    console.log(data);
     dispatch({
       type: USER.UPDATE_PROFILE_SUCCESS,
-      // payload: { user: data.user },
+      payload: { user: data.user },
     });
     localStorage.setItem('user', JSON.stringify(data.user));
     history.push('/profil');
