@@ -3,6 +3,7 @@ import { GiFrayedArrow } from 'react-icons/gi';
 import { IconContext } from 'react-icons';
 
 export default function OrderItem({ items }) {
+  console.log('ITEMS', items);
   return (
     <ul className='mt-4'>
       {items?.map((cart) => {

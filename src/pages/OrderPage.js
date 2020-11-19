@@ -4,8 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, useHistory } from 'react-router-dom';
 import { getCost, resetOrder } from '../actions/orderActions';
-import { getCity, getProvince } from '../actions/userActions';
-import { getCart } from '../actions/cartActions';
+import { getCity } from '../actions/userActions';
 import { calculateTotalPrice } from '../utils/CalculateTotalPrice';
 import { numberWithDot } from '../utils/numberWithDot';
 import CourierLists from '../components/CourierLists/CourierLists';
@@ -18,11 +17,11 @@ import Button from '../components/Buttons/Button';
 
 export default function OrderPage() {
   const { couriers } = useSelector((state) => state.order);
-  const { carts } = useSelector((state) => state.cart);
   const { user, cities: address } = useSelector((state) => state.user);
   const [courierCost, setCourierCost] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
   const [bank, setBank] = useState('');
+  const [orderedItem, setOrderedItem] = useState([]);
 
   const dispatch = useDispatch();
   const history = useHistory();
@@ -53,19 +52,27 @@ export default function OrderPage() {
     dispatch(getCity());
     getAllCourierCost();
 
+    const orderItem = localStorage.getItem('orderItem');
+    const parsedItem = JSON.parse(orderItem);
+    setOrderedItem(parsedItem);
     return () => {
+      localStorage.removeItem('orderItem');
       dispatch(resetOrder());
     };
   }, []);
 
   useEffect(() => {
-    const cartPrice = calculateTotalPrice(carts);
+    const cartPrice = calculateTotalPrice(orderedItem);
     const totalPrice = cartPrice + +courierCost;
     setTotalPrice(totalPrice);
-  }, [carts, courierCost]);
+  }, [orderedItem, courierCost]);
 
   if (!user.fullAddress || !user.city || !user.province || !user.telephone) {
     return <Redirect to='/profil/update' />;
+  }
+  console.log('LOCAL', localStorage.getItem('orderItem'));
+  if (localStorage.getItem('orderItem') === null) {
+    return <Redirect to='/keranjang' />;
   }
 
   return (
@@ -75,7 +82,7 @@ export default function OrderPage() {
           Order
         </Title>
         <h2 className='mt-4 font-semibold'>Barang Pesanan</h2>
-        <OrderItem items={carts} />
+        <OrderItem items={orderedItem} />
 
         <h2 className='mt-8 text-center font-semibold'>Alamat Tujuan</h2>
         <AddressName address={address} user={user} />

@@ -2,7 +2,7 @@ import React from 'react';
 import Cart from './Cart';
 import { numberWithDot } from '../../utils/numberWithDot';
 
-export default function Carts({ carts, totalPrice }) {
+export default function Carts({ carts, totalPrice, onCheck, onChangeQty }) {
   return (
     <div className='mt-8 py-6 px-2 bg-red-lightest rounded-mammoth'>
       {carts?.map(({ _id, name, price, quantity, image, productId, stock }) => {
@@ -16,6 +16,8 @@ export default function Carts({ carts, totalPrice }) {
             quantity={quantity}
             image={image}
             stock={stock}
+            onCheck={onCheck}
+            onChangeQty={onChangeQty}
           />
         );
       })}

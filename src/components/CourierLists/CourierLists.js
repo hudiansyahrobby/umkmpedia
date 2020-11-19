@@ -12,7 +12,7 @@ export default function CourierLists({ courierList, onChange }) {
             {courier.costs.length > 0 ? (
               courier.costs.map((service) => {
                 return (
-                  <React.Fragment key={service.service}>
+                  <React.Fragment key={courier.code + '-' + service.service}>
                     <div className='flex items-center mb-2'>
                       <input
                         type='radio'

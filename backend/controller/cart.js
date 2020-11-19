@@ -77,14 +77,15 @@ exports.deleteProductFromCart = async (req, res, next) => {
 
 exports.changeQuantity = async (req, res, next) => {
   const { id, quantity } = req.body;
-
+  console.log(id);
+  console.log('quntity', quantity);
   try {
     const userCart = await Cart.findOne({ userId: req.user._id });
     const cart = userCart.products;
-    const index = cart.findIndex(({ productId }) => {
-      if (productId === id) return true;
-    });
-    cart[index].quantity = quantity;
+    const index = cart.findIndex(({ _id }) => _id.toString() === id.toString());
+    console.log('INDEX', index);
+    console.log('cart', cart);
+    cart[index].quantity = +quantity;
     await userCart.save();
     return res.status(200).json({ success: true, cart: userCart });
   } catch (error) {
