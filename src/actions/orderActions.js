@@ -1,15 +1,23 @@
 import Axios from '../Axios';
 import * as ORDER from '../constants/orderConstant';
 
-export const addToOrder = () => async (dispatch) => {
+export const addToOrder = (productItem, totalPrice, history) => async (dispatch) => {
+  const orderData = {
+    products: productItem,
+    totalPrice,
+  };
+  console.log('ORDER DATA', orderData);
   dispatch({ type: ORDER.ADD_ORDER_INIT });
   try {
-    await Axios.post('api/order');
+    const { data } = await Axios.post('api/order', orderData);
+    console.log('DATA RESPONSE', data);
     dispatch({
       type: ORDER.ADD_ORDER_SUCCESS,
-      payload: { message: 'Produk Berhasil Diorder' },
+      payload: {
+        order: data.order,
+      },
     });
-    alert('Thank you for Ordering');
+    history.push(`/order/${data.order._id}`);
   } catch (error) {
     dispatch({ type: ORDER.ADD_ORDER__FAIL, payload: { message: error.response.data.message } });
   }
@@ -31,12 +39,26 @@ export const getOrder = () => async (dispatch) => {
   }
 };
 
+export const getOrderById = (id) => async (dispatch) => {
+  dispatch({ type: ORDER.GET_ORDER_BY_ID_INIT });
+  try {
+    const { data } = await Axios.get(`api/order/${id}`);
+    dispatch({
+      type: ORDER.GET_ORDER_BY_ID_SUCCESS,
+      payload: { order: data.order },
+    });
+  } catch (error) {
+    dispatch({
+      type: ORDER.GET_ORDER_BY_ID_FAIL,
+      payload: { message: error.response.data.message },
+    });
+  }
+};
+
 export const getCost = (orderData) => async (dispatch) => {
-  console.log(orderData);
   dispatch({ type: ORDER.GET_COURIER_INIT });
   try {
     const { data } = await Axios.post(`api/courier`, orderData);
-    console.log(data);
     dispatch({
       type: ORDER.GET_COURIER_SUCCESS,
       payload: { courier: data.courier },
@@ -48,8 +70,4 @@ export const getCost = (orderData) => async (dispatch) => {
       payload: { message: error.response.data.message },
     });
   }
-};
-
-export const resetOrder = () => async (dispatch) => {
-  dispatch({ type: ORDER.RESET_ORDER });
 };

@@ -10,6 +10,14 @@ const orderSchema = mongoose.Schema({
     required: true,
     default: 0,
   },
+  token: {
+    type: String,
+    required: true,
+  },
+  redirect_url: {
+    type: String,
+    required: true,
+  },
   products: [
     {
       productId: {
@@ -17,6 +25,14 @@ const orderSchema = mongoose.Schema({
         required: true,
       },
       name: {
+        type: String,
+        required: true,
+      },
+      price: {
+        type: String,
+        required: true,
+      },
+      unit: {
         type: String,
         required: true,
       },

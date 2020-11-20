@@ -4,8 +4,11 @@ const initialState = {
   message: '',
   loading: false,
   orders: [],
+  order: [],
   totalPrice: 0,
   couriers: [],
+  token: null,
+  redirect_url: '',
 };
 
 export default function orderReducer(state = initialState, action) {
@@ -20,7 +23,7 @@ export default function orderReducer(state = initialState, action) {
       state = {
         ...state,
         loading: false,
-        message: action.payload.message,
+        orders: state.orders.concat(action.payload.order),
       };
       break;
     case ORDER.ADD_ORDER__FAIL:
@@ -51,6 +54,27 @@ export default function orderReducer(state = initialState, action) {
         message: action.payload.message,
       };
       break;
+    case ORDER.GET_ORDER_BY_ID_INIT:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case ORDER.GET_ORDER_BY_ID_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        order: action.payload.order,
+      };
+
+      break;
+    case ORDER.GET_ORDER_BY_ID_FAIL:
+      state = {
+        ...state,
+        loading: false,
+        message: action.payload.message,
+      };
+      break;
     case ORDER.GET_COURIER_INIT:
       state = {
         ...state,
@@ -70,9 +94,6 @@ export default function orderReducer(state = initialState, action) {
         loading: false,
         message: action.payload.message,
       };
-      break;
-    case ORDER.RESET_ORDER:
-      state = initialState;
       break;
     default:
       return state;

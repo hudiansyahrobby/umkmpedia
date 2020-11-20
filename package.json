@@ -9,6 +9,7 @@
     "axios": "^0.20.0",
     "draft-js": "^0.11.7",
     "formik": "^2.2.1",
+    "midtrans-client": "^1.2.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-draft-wysiwyg": "^1.14.5",

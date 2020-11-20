@@ -1,11 +1,10 @@
 const Order = require('../model/order');
-const Cart = require('../model/cart');
+const midtransClient = require('midtrans-client');
 const request = require('request');
 
 exports.getOrders = async (req, res, next) => {
   try {
-    const userData = await Order.find({ userId: req.user._id });
-    const order = userData;
+    const order = await Order.find({ userId: req.user._id });
     if (!order) {
       return res.status(200).json({ success: true, order: [] });
     }
@@ -15,34 +14,38 @@ exports.getOrders = async (req, res, next) => {
   }
 };
 
-exports.addToOrder = async (req, res, next) => {
+exports.getOrderById = async (req, res, next) => {
+  const { id } = req.params;
   try {
-    const { products, totalPrice } = await Cart.findOne({ userId: req.user._id });
-    const productData = products.map((product) => {
-      return {
-        productId: product.productId,
-        name: product.name,
-        quantity: product.quantity,
-      };
-    });
-
-    const newOrder = new Order({
-      userId: req.user._id,
-      products: productData,
-      totalPrice,
-    });
-
-    await newOrder.save();
-    return res.status(201).json({ success: true, order: newOrder });
+    const order = await Order.findById(id);
+    if (!order) {
+      return res.status(200).json({ success: true, order: [] });
+    }
+    return res.status(200).json({ success: true, order });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
 
+// exports.addToOrder = async (req, res, next) => {
+//   const { products, totalPrice } = req.body;
+//   try {
+//     const newOrder = new Order({
+//       userId: req.user._id,
+//       products,
+//       totalPrice,
+//     });
+
+//     await newOrder.save();
+//     return res.status(201).json({ success: true, order: newOrder });
+//   } catch (error) {
+//     return res.status(500).json({ success: false, message: error.message });
+//   }
+// };
+
 exports.getCost = async (req, res, next) => {
   const { destination, courier } = req.body;
-  // const { products, totalPrice } = await Cart.findOne({ userId: req.user._id });
-  const weight = 800;
+  const weight = 1000;
   // Origin Mataram
   const origin = 276;
   try {
@@ -66,45 +69,45 @@ exports.getCost = async (req, res, next) => {
   }
 };
 
-exports.postPayment = async (req, res, next) => {
-  console.log('POSTPAYMENT');
+exports.addToOrder = async (req, res, next) => {
+  const { totalPrice, products } = req.body;
+
   try {
-    var options = {
-      method: 'POST',
-      url: 'https://my.ipaymu.com/api/v2/payment/direct',
-      headers: {
-        'Content-Type': 'application/json',
-        signature: '[object Object]',
-        va: 'your_va',
-        timestamp: '20191209155701',
+    const newOrder = new Order({
+      userId: req.user._id,
+      totalPrice: totalPrice,
+      products: products,
+    });
+
+    // Create Snap API instance
+    let snap = new midtransClient.Snap({
+      // Set to true if you want Production Environment (accept real transaction).
+      isProduction: false,
+      serverKey: process.env.SERVER_KEY_MIDTRANS,
+    });
+
+    let parameter = {
+      transaction_details: {
+        order_id: newOrder._id,
+        gross_amount: totalPrice,
       },
-      formData: {
-        name: 'Buyer',
-        phone: '081999501092',
-        email: 'buyer@mail.com',
-        amount: '10000',
-        notifyUrl: 'https://mywebsite.com',
-        expired: '24',
-        expiredType: 'hours',
-        comments: 'Catatan',
-        referenceId: '1',
-        paymentMethod: 'cstore',
-        paymentChannel: 'indomaret',
-        'product[]': 'produk 1',
-        'qty[]': '1',
-        'price[]': '10000',
-        'weight[]': '1',
-        'width[]': '1',
-        'height[]': '1',
-        'length[]': '1',
-        deliveryArea: '76111',
-        deliveryAddress: 'Denpasar',
+      credit_card: {
+        secure: true,
+      },
+      customer_details: {
+        first_name: req.user.name,
+        email: req.user.email,
+        phone: req.user.telephone,
+      },
+      callbacks: {
+        finish: 'http://localhost:3000/keranjang',
       },
     };
-    request(options, function (error, response) {
-      if (error) throw new Error(error);
-      console.log(response.body);
-    });
+    const transaction = await snap.createTransaction(parameter);
+    newOrder.token = transaction.token;
+    newOrder.redirect_url = transaction.redirect_url;
+    await newOrder.save();
+    return res.status(200).json({ success: true, order: newOrder });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

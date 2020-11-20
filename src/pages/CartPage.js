@@ -9,6 +9,7 @@ import Layout from '../components/Layout';
 import Title from '../components/Title';
 import { calculateTotalPrice } from '../utils/CalculateTotalPrice';
 import { useHistory } from 'react-router-dom';
+import { addToOrder } from '../actions/orderActions';
 
 function CartPage() {
   const { carts, loading } = useSelector((state) => state.cart);
@@ -27,15 +28,13 @@ function CartPage() {
   }, [orderedItem]);
 
   const onOrderHandler = () => {
-    const order = JSON.stringify(orderedItem);
-    console.log(order);
-    localStorage.setItem('orderItem', order);
-    history.push('/order');
+    // const order = JSON.stringify(orderedItem);
+    // localStorage.setItem('orderItem', order);
+    // localStorage.setItem('totalPrice', totalPrice);
+    dispatch(addToOrder(orderedItem, totalPrice, history));
   };
 
   const onChangeQuantityHandler = (id, quantity) => {
-    console.log('ID', id);
-    console.log('quantity', quantity);
     dispatch(onChangeQuantity(id, quantity));
     setTotalPrice(0);
   };

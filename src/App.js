@@ -35,7 +35,7 @@ function App() {
       <UserRoute path='/keranjang' component={CartPage} />
       <UserRoute path='/pembayaran' component={PaymentPage} />
       <UserRoute path='/favorit' component={WishlistPage} />
-      <UserRoute path='/order' component={OrderPage} />
+      <UserRoute path='/order/:id' component={OrderPage} />
       <UserRoute path='/profil/update' component={AddressPage} />
       <UserRoute path='/profil' component={UserPage} />
       <Route path='/masuk' component={SigninPage} />

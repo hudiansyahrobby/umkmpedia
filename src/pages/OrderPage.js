@@ -2,30 +2,32 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, useHistory } from 'react-router-dom';
-import { getCost, resetOrder } from '../actions/orderActions';
+import { Redirect, useHistory, useParams } from 'react-router-dom';
+import { getCost, getOrder, getOrderById } from '../actions/orderActions';
 import { getCity } from '../actions/userActions';
 import { calculateTotalPrice } from '../utils/CalculateTotalPrice';
 import { numberWithDot } from '../utils/numberWithDot';
 import CourierLists from '../components/CourierLists/CourierLists';
 import AddressName from '../components/AddressName';
-import BankList from '../components/BankList';
+// import BankList from '../components/BankList';
 import OrderItem from '../components/OrderItem';
 import Layout from '../components/Layout';
 import Title from '../components/Title';
 import Button from '../components/Buttons/Button';
 
 export default function OrderPage() {
-  const { couriers } = useSelector((state) => state.order);
+  const { couriers, order } = useSelector((state) => state.order);
   const { user, cities: address } = useSelector((state) => state.user);
   const [courierCost, setCourierCost] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
-  const [bank, setBank] = useState('');
-  const [orderedItem, setOrderedItem] = useState([]);
-
+  // const [bank, setBank] = useState('');
+  // const [orderedItem, setOrderedItem] = useState([]);
+  console.log('ORDER', order);
+  console.log('couriers', couriers);
   const dispatch = useDispatch();
-  const history = useHistory();
-
+  // const history = useHistory();
+  const { id } = useParams();
+  console.log('ID', id);
   const courierList = ['jne', 'pos', 'tiki'];
 
   const getAllCourierCost = () => {
@@ -36,41 +38,39 @@ export default function OrderPage() {
       };
       courierList.map((courier) => {
         orderData.courier = courier;
-        dispatch(getCost(orderData));
+        // dispatch(getCost(orderData));
       });
     }
   };
-
   const onPayHandler = () => {
-    if (bank === '' || courierCost !== 0) {
-      return history.push('/pembayaran');
-    }
-    return alert('Mohon Pilih Salah satu Bank dan Kurir Pengiriman');
+    // if (courierCost !== 0) {
+    //   window.snap.pay(order?.token); // Replace it with your transaction token
+    // }
+    window.snap.pay(order?.token); // Replace it with your transaction token
+    // return alert('Mohon Pilih Salah satu Bank dan Kurir Pengiriman');
   };
 
   useEffect(() => {
     dispatch(getCity());
     getAllCourierCost();
-
-    const orderItem = localStorage.getItem('orderItem');
-    const parsedItem = JSON.parse(orderItem);
-    setOrderedItem(parsedItem);
+    dispatch(getOrderById(id));
+    // const orderItem = localStorage.getItem('orderItem');
+    // const parsedItem = JSON.parse(orderItem);
+    // setOrderedItem(parsedItem);
     return () => {
-      localStorage.removeItem('orderItem');
-      dispatch(resetOrder());
+      // localStorage.removeItem('orderItem');
     };
   }, []);
 
   useEffect(() => {
-    const cartPrice = calculateTotalPrice(orderedItem);
+    const cartPrice = calculateTotalPrice(order?.products);
     const totalPrice = cartPrice + +courierCost;
     setTotalPrice(totalPrice);
-  }, [orderedItem, courierCost]);
+  }, [order, courierCost]);
 
-  if (!user.fullAddress || !user.city || !user.province || !user.telephone) {
+  if (!user?.fullAddress || !user?.city || !user?.province || !user?.telephone) {
     return <Redirect to='/profil/update' />;
   }
-  console.log('LOCAL', localStorage.getItem('orderItem'));
   if (localStorage.getItem('orderItem') === null) {
     return <Redirect to='/keranjang' />;
   }
@@ -82,7 +82,7 @@ export default function OrderPage() {
           Order
         </Title>
         <h2 className='mt-4 font-semibold'>Barang Pesanan</h2>
-        <OrderItem items={orderedItem} />
+        <OrderItem items={order?.products} />
 
         <h2 className='mt-8 text-center font-semibold'>Alamat Tujuan</h2>
         <AddressName address={address} user={user} />
@@ -90,8 +90,8 @@ export default function OrderPage() {
         <h2 className='mt-8 text-center font-semibold'>Plih Kurir Pengiriman</h2>
         <CourierLists courierList={couriers} onChange={(e) => setCourierCost(e.target.value)} />
 
-        <h2 className='mt-8 text-center font-semibold'>Plih Bank Pembayaran</h2>
-        <BankList onChange={(e) => setBank(e.target.value)} />
+        {/* <h2 className='mt-8 text-center font-semibold'>Plih Bank Pembayaran</h2>
+        <BankList onChange={(e) => setBank(e.target.value)} /> */}
 
         <h2 className='mt-8 text-right font-bold'>Harga Total : Rp {numberWithDot(totalPrice)}</h2>
         <Button
