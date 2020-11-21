@@ -5,7 +5,7 @@ import Button from '../components/Buttons/Button';
 import * as Yup from 'yup';
 import { signin } from '../actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, useHistory } from 'react-router-dom';
+import { NavLink, Redirect, useHistory } from 'react-router-dom';
 import { Form, Formik } from 'formik';
 import Layout from '../components/Layout';
 
@@ -61,7 +61,10 @@ function SigninPage() {
                 label='Password'
               />
 
-              <div className='text-center'>
+              <NavLink to='/lupa-password' className='text-sm text-blue-400 font-bold'>
+                Lupa Password ?
+              </NavLink>
+              <div className='mt-2 text-center'>
                 <Button
                   background='bg-primary hover:bg-orange-400'
                   variant='font-bold transition duration-300 mx-auto'

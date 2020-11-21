@@ -48,7 +48,6 @@ function AddProductPage() {
   useEffect(() => {
     dispatch(getcategories());
     dispatch(getUnits());
-
     dispatch(resetProduct());
   }, [dispatch]);
 

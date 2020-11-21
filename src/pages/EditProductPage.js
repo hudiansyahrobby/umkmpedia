@@ -1,43 +1,103 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory, useParams } from 'react-router-dom';
+import { ErrorMessage, Field, Form, Formik } from 'formik';
+import * as Yup from 'yup';
+import { EditorState, convertFromHTML, ContentState } from 'draft-js';
+import { Editor } from 'react-draft-wysiwyg';
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { convertToHTML } from 'draft-convert';
+import useDeepCompareEffect from 'use-deep-compare-effect';
+import CreatableSelect from 'react-select/creatable';
+
 import Button from '../components/Buttons/Button';
 import Input from '../components/Input';
 import Title from '../components/Title';
+import Layout from '../components/Layout';
+import Alert from '../components/Alert';
+import FileInput from '../components/Forms/FileInput';
+import InputLabel from '../components/Forms/InputLabel';
+
 import {
   updateProductById,
   getProductById,
   resetProduct,
   resetStateProduct,
 } from '../actions/productActions';
-import { useDispatch, useSelector } from 'react-redux';
-import { useHistory, useParams } from 'react-router-dom';
-import { Form, Formik } from 'formik';
-import * as Yup from 'yup';
-import { useEffect } from 'react';
-import Layout from '../components/Layout';
-import Alert from '../components/Alert';
-import { getcategories } from '../actions/categoryActions';
-import { IconContext } from 'react-icons';
-import { IoMdClose } from 'react-icons/io';
+import { addCategories, getcategories } from '../actions/categoryActions';
+import { addUnit, getUnits } from '../actions/unitActions';
+import { capitalizeFirstLetter } from '../utils/capitalizeFirstLetter';
 
 function EditProductPage() {
   const dispatch = useDispatch();
   const { id } = useParams();
-
-  const units = ['kg', 'gram', 'buah', 'meter', 'kotak'];
   const history = useHistory();
-  const { categories } = useSelector((state) => state.category);
-  const { message, success, error, product } = useSelector((state) => state.product);
-  const [image, setImage] = useState('');
 
-  useEffect(() => {
+  const { message, success, error, product } = useSelector((state) => state.product);
+  const { categories, loading: isCategoryLoading } = useSelector((state) => state.category);
+  const { units, loading: isUnitLoading } = useSelector((state) => state.unit);
+
+  const [image, setImage] = useState('');
+  const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
+  const [convertedContent, setConvertedContent] = useState(null);
+
+  const categoryOptions = categories?.map((category) => ({
+    value: category._id,
+    label: capitalizeFirstLetter(category.name),
+  }));
+
+  const unitOptions = units?.map(({ _id, unit }) => ({
+    value: _id,
+    label: capitalizeFirstLetter(unit),
+  }));
+
+  const getIntialValues = useCallback(() => {
     dispatch(getcategories());
+    dispatch(getUnits());
     dispatch(getProductById(id));
     dispatch(resetProduct());
+  }, [id, dispatch]);
+
+  useEffect(() => {
+    getIntialValues();
     return () => {
       dispatch(resetStateProduct());
     };
-  }, [dispatch, id]);
+  }, [dispatch, id, getIntialValues]);
+
+  useDeepCompareEffect(() => {
+    if (product?.length > 0) {
+      setImage(product[0].image);
+
+      const blocksFromHTML = convertFromHTML(product[0].description);
+      const content = ContentState.createFromBlockArray(blocksFromHTML);
+      setEditorState(EditorState.createWithContent(content));
+    }
+  }, [product]);
+
+  const handleEditorChange = (state) => {
+    setEditorState(state);
+    convertContentToHTML();
+  };
+
+  const convertContentToHTML = () => {
+    let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
+    setConvertedContent(currentContentAsHTML);
+  };
+
+  const handleCreateCategory = (name) => {
+    const categoryData = {
+      name,
+    };
+    dispatch(addCategories(categoryData));
+  };
+
+  const handleCreateUnit = (unit) => {
+    const unitData = {
+      unit,
+    };
+    dispatch(addUnit(unitData));
+  };
 
   return (
     <>
@@ -52,7 +112,8 @@ function EditProductPage() {
                   quantity: product[0].quantity,
                   category: product[0].category,
                   unit: product[0].unit,
-                  description: product[0].description,
+                  weight: product[0].weight,
+                  description: convertedContent,
                 }}
                 validationSchema={Yup.object({
                   name: Yup.string().required('Wajib Diisi'),
@@ -62,14 +123,12 @@ function EditProductPage() {
                   quantity: Yup.number()
                     .required('Wajib Diisi')
                     .min(0, 'Jumlah harus lebih besar dari nol'),
+                  weight: Yup.number().required('Wajib Diisi').min(0, 'Berat Harus Lebih Dari 0'),
                   category: Yup.string().required('Wajib Diisi'),
                   unit: Yup.string().required('Wajib Diisi'),
-                  description: Yup.string()
-                    .required('Wajib Diisi')
-                    .min(100, 'Minimal 100 karakter'),
                 })}
                 onSubmit={(
-                  { name, price, quantity, category, description, unit },
+                  { name, price, quantity, category, weight, unit },
                   { setSubmitting },
                 ) => {
                   const productData = new FormData();
@@ -77,9 +136,10 @@ function EditProductPage() {
                   productData.append('price', price);
                   productData.append('quantity', quantity);
                   productData.append('unit', unit);
+                  productData.append('weight', weight);
                   productData.append('category', category);
                   productData.append('image', image);
-                  productData.append('description', description);
+                  productData.append('description', convertedContent);
 
                   dispatch(updateProductById(id, productData, history));
                   setSubmitting(false);
@@ -116,13 +176,40 @@ function EditProductPage() {
                       label='Nama Produk'
                     />
 
-                    <Input
+                    <InputLabel id='category' label='Kategori' />
+                    <Field
                       name='category'
-                      as='select'
-                      id='category'
-                      data={categories}
-                      label='Pilih Kategori'
-                      option='Pilih Kategori'
+                      component={({ field, form }) => (
+                        <CreatableSelect
+                          isClearable
+                          isDisabled={isCategoryLoading}
+                          isLoading={isCategoryLoading}
+                          formatCreateLabel={(inputValue) => `Buat "${inputValue}"`}
+                          onChange={(option) => {
+                            console.log(option);
+                            if (option) {
+                              form.setFieldValue(field.name, option.value);
+                            } else {
+                              form.setFieldValue(field.name, '');
+                            }
+                          }}
+                          placeholder='Pilih Kategori'
+                          onCreateOption={handleCreateCategory}
+                          options={categoryOptions}
+                          value={
+                            categoryOptions
+                              ? categoryOptions.find((option) => option.value === field.value)
+                              : ''
+                          }
+                          onBlur={field.onBlur}
+                        />
+                      )}
+                    />
+
+                    <ErrorMessage
+                      name='category'
+                      component='p'
+                      className='mt-2 text-red-600 text-sm'
                     />
 
                     <Input
@@ -142,57 +229,61 @@ function EditProductPage() {
                         label='Jumlah Produk'
                       />
 
-                      <Input
-                        name='unit'
-                        as='select'
-                        id='unit'
-                        data={units}
-                        label='Satuan Produk'
-                        option='Satuan'
-                      />
+                      <div>
+                        <InputLabel id='unit' label='Satuan' />
+
+                        <Field
+                          name='unit'
+                          component={({ field, form }) => (
+                            <CreatableSelect
+                              isClearable
+                              isDisabled={isUnitLoading}
+                              isLoading={isUnitLoading}
+                              placeholder='Pilih Satuan'
+                              formatCreateLabel={(inputValue) => `Buat "${inputValue}"`}
+                              onChange={(option) => form.setFieldValue(field.name, option.label)}
+                              onCreateOption={handleCreateUnit}
+                              options={unitOptions}
+                              value={
+                                categoryOptions
+                                  ? categoryOptions.find((option) => option.value === field.value)
+                                  : ''
+                              }
+                              name='unit'
+                              onBlur={field.onBlur}
+                            />
+                          )}
+                        />
+
+                        <ErrorMessage
+                          name='satuan'
+                          component='p'
+                          className='mt-2 text-red-600 text-sm'
+                        />
+                      </div>
                     </div>
 
-                    <Input
-                      name='description'
-                      as='textarea'
-                      id='description'
-                      placeholder='Masukkan Deskripsi Produk'
-                      label='Deskirpsi Produk'
+                    <InputLabel id='description' label='Deskirpsi Produk' />
+
+                    <Editor
+                      editorState={editorState}
+                      onEditorStateChange={handleEditorChange}
+                      wrapperClassName='p-1 border border-gray-300'
+                      editorClassName='bg-gray-400 p-1 border border-gray-300'
+                      editorStyle={{ height: '250px' }}
+                      toolbarClassName='border border-gray-300'
                     />
 
-                    <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor={image}>
-                      Upload Gambar Produk
-                    </label>
-                    <div className='relative w-64 h-48 mx-auto'>
-                      <Input
-                        id='image'
-                        accept='image/*'
-                        as='file'
-                        name='image'
-                        onChange={(e) => setImage(e.target.files[0])}
-                      />
-
-                      {image && (
-                        <>
-                          <img
-                            src={URL.createObjectURL(image)}
-                            alt='preview'
-                            className='w-64 h-48 rounded-lg absolute inset-0'
-                          />
-                          <IconContext.Provider
-                            value={{
-                              color: 'text-white',
-                              size: '1.2rem',
-                              className: 'absolute top-0 right-0 mt-2 mr-2',
-                            }}
-                          >
-                            <button onClick={() => setImage('')}>
-                              <IoMdClose />
-                            </button>
-                          </IconContext.Provider>
-                        </>
-                      )}
-                    </div>
+                    <FileInput
+                      id='image'
+                      accept='image/*'
+                      as='file'
+                      name='image'
+                      image={image}
+                      label='Upload Gambar Produk'
+                      onChange={(e) => setImage(e.target.files[0])}
+                      onDelete={(e) => setImage('')}
+                    />
 
                     <div className='mt-5 w-48 mx-auto'>
                       <Button

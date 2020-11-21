@@ -2,6 +2,7 @@ import React from 'react';
 import InputLabel from './InputLabel';
 import { IoMdClose } from 'react-icons/io';
 import { IconContext } from 'react-icons';
+import { generatePublicPath } from '../../utils/generatePublicPath';
 
 export default function FileInput({ id, label, onChange, onDelete, name, accept, image }) {
   return (
@@ -31,10 +32,15 @@ export default function FileInput({ id, label, onChange, onDelete, name, accept,
         {image && (
           <>
             <img
-              src={URL.createObjectURL(image)}
+              src={generatePublicPath(image)}
               alt='preview'
               className='w-64 h-48 rounded-lg absolute inset-0'
             />
+            {/* <img
+              src={URL.createObjectURL(image)}
+              alt='preview'
+              className='w-64 h-48 rounded-lg absolute inset-0'
+            /> */}
             <IconContext.Provider
               value={{
                 color: 'text-white',
