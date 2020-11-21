@@ -7,7 +7,18 @@ import CartPrice from './CartPrice';
 import DeleteButton from '../Buttons/DeleteButton';
 import QuantityButton from '../Buttons/QuantityButton';
 
-function CartItem({ id, name, price, quantity, image, productId, stock, onCheck, onChangeQty }) {
+function CartItem({
+  id,
+  name,
+  price,
+  quantity,
+  image,
+  productId,
+  stock,
+  onCheck,
+  onChangeQty,
+  unit,
+}) {
   const dispatch = useDispatch();
   const onDeleteFromCartHandler = (id) => {
     dispatch(deleteFromCart(id));
@@ -33,7 +44,13 @@ function CartItem({ id, name, price, quantity, image, productId, stock, onCheck,
         </label>
       </div>
 
-      <QuantityButton onChangeQty={onChangeQty} quantity={quantity} stock={stock} id={id} />
+      <QuantityButton
+        onChangeQty={onChangeQty}
+        quantity={quantity}
+        stock={stock}
+        id={id}
+        unit={unit}
+      />
     </div>
   );
 }

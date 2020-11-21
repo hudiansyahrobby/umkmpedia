@@ -2,6 +2,7 @@ import Axios from '../Axios';
 import * as PRODUCT from '../constants/productConstants';
 
 export const addNewProduct = (products, history) => async (dispatch) => {
+  console.log('ADD PRODUCTS', products);
   dispatch({ type: PRODUCT.ADD_PRODUCT_INIT });
   try {
     const { data } = await Axios.post('api/products', products, {
@@ -9,8 +10,9 @@ export const addNewProduct = (products, history) => async (dispatch) => {
         'Content-Type': 'multipart/data',
       },
     });
+    console.log('DATA', data);
     dispatch({ type: PRODUCT.ADD_PRODUCT_SUCCESS, payload: { product: data.product } });
-    history.push('/products');
+    history.push('/produk');
   } catch (error) {
     dispatch({
       type: PRODUCT.ADD_PRODUCT__FAIL,

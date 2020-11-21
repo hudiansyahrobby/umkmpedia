@@ -2,8 +2,8 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, useHistory, useParams } from 'react-router-dom';
-import { getCost, getOrder, getOrderById } from '../actions/orderActions';
+import { Redirect, useParams } from 'react-router-dom';
+import { getCost, getOrderById, resetOrder } from '../actions/orderActions';
 import { getCity } from '../actions/userActions';
 import { calculateTotalPrice } from '../utils/CalculateTotalPrice';
 import { numberWithDot } from '../utils/numberWithDot';
@@ -20,14 +20,8 @@ export default function OrderPage() {
   const { user, cities: address } = useSelector((state) => state.user);
   const [courierCost, setCourierCost] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
-  // const [bank, setBank] = useState('');
-  // const [orderedItem, setOrderedItem] = useState([]);
-  console.log('ORDER', order);
-  console.log('couriers', couriers);
   const dispatch = useDispatch();
-  // const history = useHistory();
   const { id } = useParams();
-  console.log('ID', id);
   const courierList = ['jne', 'pos', 'tiki'];
 
   const getAllCourierCost = () => {
@@ -38,27 +32,24 @@ export default function OrderPage() {
       };
       courierList.map((courier) => {
         orderData.courier = courier;
-        // dispatch(getCost(orderData));
+        dispatch(getCost(orderData));
       });
     }
   };
   const onPayHandler = () => {
-    // if (courierCost !== 0) {
-    //   window.snap.pay(order?.token); // Replace it with your transaction token
-    // }
-    window.snap.pay(order?.token); // Replace it with your transaction token
-    // return alert('Mohon Pilih Salah satu Bank dan Kurir Pengiriman');
+    if (courierCost !== 0) {
+      return window.snap.pay(order?.token); // Replace it with your transaction token
+    }
+    // window.snap.pay(order?.token); // Replace it with your transaction token
+    return alert('Mohon Pilih Salah satu Bank dan Kurir Pengiriman');
   };
 
   useEffect(() => {
     dispatch(getCity());
     getAllCourierCost();
     dispatch(getOrderById(id));
-    // const orderItem = localStorage.getItem('orderItem');
-    // const parsedItem = JSON.parse(orderItem);
-    // setOrderedItem(parsedItem);
     return () => {
-      // localStorage.removeItem('orderItem');
+      resetOrder();
     };
   }, []);
 
@@ -70,9 +61,6 @@ export default function OrderPage() {
 
   if (!user?.fullAddress || !user?.city || !user?.province || !user?.telephone) {
     return <Redirect to='/profil/update' />;
-  }
-  if (localStorage.getItem('orderItem') === null) {
-    return <Redirect to='/keranjang' />;
   }
 
   return (
@@ -89,9 +77,6 @@ export default function OrderPage() {
 
         <h2 className='mt-8 text-center font-semibold'>Plih Kurir Pengiriman</h2>
         <CourierLists courierList={couriers} onChange={(e) => setCourierCost(e.target.value)} />
-
-        {/* <h2 className='mt-8 text-center font-semibold'>Plih Bank Pembayaran</h2>
-        <BankList onChange={(e) => setBank(e.target.value)} /> */}
 
         <h2 className='mt-8 text-right font-bold'>Harga Total : Rp {numberWithDot(totalPrice)}</h2>
         <Button

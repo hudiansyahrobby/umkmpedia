@@ -19,7 +19,8 @@ exports.signup = async (req, res, next) => {
 
 exports.signin = async (req, res, next) => {
   const { email, password } = req.body;
-  console.log('email');
+  console.log('email', email);
+  console.log('password', password);
   try {
     const user = await User.findOne({ email }).populate('address').exec();
 

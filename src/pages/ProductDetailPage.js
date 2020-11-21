@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductById, resetStateProduct } from '../actions/productActions';
+
 import { useParams } from 'react-router-dom';
 // import Reviews from '../components/Reviews/Reviews';
 import { addToCart } from '../actions/cartActions';
@@ -8,7 +9,7 @@ import { addToWishlist, deleteFromWishlist, getWishlist } from '../actions/wishl
 import Layout from '../components/Layout';
 import ProductStar from '../components/Products/ProductStar';
 import ProductDetailImage from '../components/Products/ProductDetailImage';
-import ProductDetailReview from '../components/Products/ProductDetailReview';
+// import ProductDetailReview from '../components/Products/ProductDetailReview'
 import ProductPrice from '../components/Products/ProductPrice';
 import CartButton from '../components/Buttons/CartButton';
 import FavoriteButton from '../components/Buttons/FavoriteButton';

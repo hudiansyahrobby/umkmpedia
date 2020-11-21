@@ -2,7 +2,6 @@ import React from 'react';
 import { numberWithDot } from '../../utils/numberWithDot';
 
 export default function CourierLists({ courierList, onChange }) {
-  console.log('CLIST', courierList);
   const _couriersList = courierList?.map((courier) => {
     return (
       <React.Fragment key={courier.code}>

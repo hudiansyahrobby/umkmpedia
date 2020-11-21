@@ -1,9 +1,9 @@
 import React from 'react';
 
-export default function QuantityButton({ quantity, stock, onChangeQty, id }) {
+export default function QuantityButton({ quantity, stock, onChangeQty, id, unit }) {
   return (
     <div>
-      <label className='block text-gray-700 font-bold mb-2 text-xs'>Jumlah</label>
+      <label className='block text-gray-700 font-bold mb-2 text-xs'>Jumlah ({unit})</label>
       <div className='relative'>
         <select
           className='block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline text-gray-700'

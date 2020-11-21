@@ -95,6 +95,9 @@ export default function orderReducer(state = initialState, action) {
         message: action.payload.message,
       };
       break;
+    case ORDER.RESET_ORDER:
+      state = initialState;
+      break;
     default:
       return state;
   }

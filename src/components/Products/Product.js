@@ -7,7 +7,6 @@ import ProductStar from './ProductStar';
 import ProductPrice from './ProductPrice';
 import ProductAdminButton from './ProductAdminButton';
 import { Link } from 'react-router-dom';
-import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 
 function Product({
   id,
@@ -45,7 +44,7 @@ function Product({
               to={`/produk?category=${category._id}`}
               className='bg-primary text-yellow-900 tracking-wide rounded-sm px-2 py-1 text-tiny font-bold inline-block mt-2'
             >
-              {category.name.toUpperCase()}
+              {category?.name?.toUpperCase()}
             </Link>
             <ProductTitle name={name} id={id} />
             <ProductStar rating={5} color='text-yellow-600' size='1.6rem' />

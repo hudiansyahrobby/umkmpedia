@@ -32,13 +32,13 @@ export default function NavbarLink({ link, name, icon, data, exact, dropdown }) 
           {name}
         </NavLink>
         {dropdown?.length > 0 && (
-          <div className='absolute left-0 mt-5 w-full h-64 px-4 py-6 bg-white hidden group-hover:block border-b border-gray-300'>
-            <ul className='grid md:grid-cols-5 lg:grid-cols-8 gap-6 text-black font-semibold '>
+          <div className='absolute left-0 mt-5 w-full shadow-lg px-4 py-6 bg-white hidden group-hover:block border-b border-gray-300'>
+            <ul className='grid grid-rows-4 grid-flow-col gap-1 text-black font-semibold'>
               {dropdown?.map((_dropdown) => {
                 return (
                   <React.Fragment key={_dropdown._id}>
-                    <li>
-                      <NavLink to={`/produk?category=${_dropdown._id}`}>
+                    <li className='hover:bg-gray-300 p-2'>
+                      <NavLink to={`/produk?category=${_dropdown._id}`} className='block'>
                         {capitalizeFirstLetter(_dropdown.name)}
                       </NavLink>
                     </li>

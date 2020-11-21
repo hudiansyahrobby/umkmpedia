@@ -8,6 +8,7 @@ const productRoute = require('./router/product');
 const cartRoute = require('./router/cart');
 const wishlistRoute = require('./router/wishlist');
 const categoryRoute = require('./router/category');
+const unitRoute = require('./router/unit');
 const orderRoute = require('./router/order');
 const path = require('path');
 
@@ -31,6 +32,7 @@ app.use('/api', cartRoute);
 app.use('/api', wishlistRoute);
 app.use('/api', categoryRoute);
 app.use('/api', orderRoute);
+app.use('/api', unitRoute);
 
 app.listen(PORT, () => {
   console.log(`Listening to Port ${PORT}`);

@@ -13,7 +13,7 @@ import { useHistory, useParams } from 'react-router-dom';
 
 export default function EditCategoryPage() {
   const dispatch = useDispatch();
-  const { category, error, loading, success, message } = useSelector((state) => state.category);
+  const { category, error, success, message } = useSelector((state) => state.category);
   const { id } = useParams();
   const history = useHistory();
 

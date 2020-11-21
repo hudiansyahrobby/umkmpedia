@@ -21,6 +21,7 @@ export default function AddressName({ address, user }) {
         </React.Fragment>
       );
     }
+    return null;
   });
 
   return <div className='mt-4 flex items-center border-2 border-primary p-4'>{userAddress}</div>;

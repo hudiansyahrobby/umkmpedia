@@ -5,7 +5,7 @@ import { numberWithDot } from '../../utils/numberWithDot';
 export default function Carts({ carts, totalPrice, onCheck, onChangeQty }) {
   return (
     <div className='mt-8 py-6 px-2 bg-red-lightest rounded-mammoth'>
-      {carts?.map(({ _id, name, price, quantity, image, productId, stock }) => {
+      {carts?.map(({ _id, name, price, quantity, image, productId, stock, unit }) => {
         return (
           <Cart
             key={productId}
@@ -16,6 +16,7 @@ export default function Carts({ carts, totalPrice, onCheck, onChangeQty }) {
             quantity={quantity}
             image={image}
             stock={stock}
+            unit={unit}
             onCheck={onCheck}
             onChangeQty={onChangeQty}
           />

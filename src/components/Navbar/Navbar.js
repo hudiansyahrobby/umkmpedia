@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink, useHistory } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 import { signout } from '../../actions/userActions';
 import { FaShoppingCart } from 'react-icons/fa';
@@ -10,7 +10,6 @@ import { getCart } from '../../actions/cartActions';
 import NavbarLink from './NavbarLink';
 import MenuButton from '../Buttons/MenuButton';
 import { getcategories } from '../../actions/categoryActions';
-import { capitalizeFirstLetter } from '../../utils/capitalizeFirstLetter';
 
 export default function Navbar({ onOpen }) {
   const user = useSelector((state) => state.user);

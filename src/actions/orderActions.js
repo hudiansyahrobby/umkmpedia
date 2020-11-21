@@ -6,11 +6,9 @@ export const addToOrder = (productItem, totalPrice, history) => async (dispatch)
     products: productItem,
     totalPrice,
   };
-  console.log('ORDER DATA', orderData);
   dispatch({ type: ORDER.ADD_ORDER_INIT });
   try {
     const { data } = await Axios.post('api/order', orderData);
-    console.log('DATA RESPONSE', data);
     dispatch({
       type: ORDER.ADD_ORDER_SUCCESS,
       payload: {
@@ -64,10 +62,13 @@ export const getCost = (orderData) => async (dispatch) => {
       payload: { courier: data.courier },
     });
   } catch (error) {
-    console.log(error);
     dispatch({
       type: ORDER.GET_COURIER_FAIL,
       payload: { message: error.response.data.message },
     });
   }
+};
+
+export const resetOrder = () => async (dispatch) => {
+  dispatch({ type: ORDER.RESET_ORDER });
 };

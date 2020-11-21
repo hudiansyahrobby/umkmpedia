@@ -1,7 +1,7 @@
 const Product = require('../model/product');
 
 exports.addProduct = async (req, res, next) => {
-  const { name, price, description, unit, quantity, category } = req.body;
+  const { name, price, description, unit, weight, quantity, category } = req.body;
 
   if (!req.file) {
     return res.status(400).json({ success: false, message: 'Image is not valid' });
@@ -13,10 +13,11 @@ exports.addProduct = async (req, res, next) => {
     description,
     unit,
     quantity,
+    weight,
     category,
     image: req.file.filename,
   });
-
+  console.log('NEW PRODUCT', newProduct);
   try {
     await newProduct.save();
     return res.status(201).json({ success: true, product: newProduct });
@@ -39,7 +40,6 @@ exports.getAllProducts = async (req, res, next) => {
     query = { category: categoryQuery };
   }
 
-  console.log(query);
   try {
     const products = await Product.find(query)
       .populate('category', '_id name')
@@ -97,7 +97,7 @@ exports.deleteProduct = async (req, res, next) => {
 };
 
 exports.updateProduct = async (req, res, next) => {
-  const { name, price, description, unit, quantity, category } = req.body;
+  const { name, price, description, unit, weight, quantity, category } = req.body;
 
   const productId = req.params.id;
 
@@ -112,11 +112,12 @@ exports.updateProduct = async (req, res, next) => {
     price,
     description,
     unit,
+    weight,
     quantity,
     category,
     image: req.file.filename,
   };
-  console.log('UPDATED PRODUCT', updatedProduct);
+
   try {
     const product = await Product.findByIdAndUpdate(productId, updatedProduct);
     if (!product) {

@@ -70,7 +70,6 @@ export default function categoryReducer(state = initialState, action) {
         ...state,
         loading: false,
         categories: action.payload.categories,
-        totalPage: action.payload.totalPage,
       };
       break;
     case CATEGORY.GET_CATEGORIES__FAIL:

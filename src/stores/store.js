@@ -6,6 +6,7 @@ import cartReducer from '../reducers/cartReducer';
 import wishlistReducer from '../reducers/wishListReducer';
 import orderReducer from '../reducers/orderReducer';
 import categoryReducer from '../reducers/categoryReducer';
+import unitReducer from '../reducers/unitReducer';
 
 const reducer = combineReducers({
   user: userReducer,
@@ -14,6 +15,7 @@ const reducer = combineReducers({
   wishlist: wishlistReducer,
   order: orderReducer,
   category: categoryReducer,
+  unit: unitReducer,
   // review: reviewReducer,
 });
 

@@ -29,7 +29,7 @@ function ProductsPage(props) {
   useEffect(() => {
     dispatch(getProducts(searchQuery, page, categoryQuery));
     dispatch(getWishlist());
-  }, [dispatch, page]);
+  }, [dispatch, page, categoryQuery]);
 
   const onSearchHandler = (e) => {
     e.preventDefault();

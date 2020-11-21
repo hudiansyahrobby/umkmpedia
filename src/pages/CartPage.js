@@ -28,9 +28,9 @@ function CartPage() {
   }, [orderedItem]);
 
   const onOrderHandler = () => {
-    // const order = JSON.stringify(orderedItem);
-    // localStorage.setItem('orderItem', order);
-    // localStorage.setItem('totalPrice', totalPrice);
+    const order = JSON.stringify(orderedItem);
+    localStorage.setItem('orderItem', order);
+    localStorage.setItem('totalPrice', totalPrice);
     dispatch(addToOrder(orderedItem, totalPrice, history));
   };
 

@@ -12,7 +12,7 @@ import List from '../components/List';
 
 function AddCategoryPage() {
   const dispatch = useDispatch();
-  const { categories, error, loading, success, message } = useSelector((state) => state.category);
+  const { categories, error, success, message } = useSelector((state) => state.category);
 
   useEffect(() => {
     dispatch(getcategories());

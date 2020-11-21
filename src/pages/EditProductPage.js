@@ -17,7 +17,6 @@ import { useEffect } from 'react';
 import Layout from '../components/Layout';
 import Alert from '../components/Alert';
 import { getcategories } from '../actions/categoryActions';
-import { generatePublicPath } from '../utils/generatePublicPath';
 import { IconContext } from 'react-icons';
 import { IoMdClose } from 'react-icons/io';
 
@@ -35,10 +34,10 @@ function EditProductPage() {
     dispatch(getcategories());
     dispatch(getProductById(id));
     dispatch(resetProduct());
-    return function cleanup() {
+    return () => {
       dispatch(resetStateProduct());
     };
-  }, [id]);
+  }, [dispatch, id]);
 
   return (
     <>
