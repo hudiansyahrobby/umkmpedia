@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { onChangeQuantity } from '../actions/cartActions';
+import { deleteFromCart, onChangeQuantity } from '../actions/cartActions';
 import Button from '../components/Buttons/Button';
 import Carts from '../components/Carts/Carts';
 import CartSkeleton from '../components/Carts/CartSkeleton';
@@ -23,6 +23,11 @@ function CartPage() {
     setTotalPrice(price);
   }, [orderedItem]);
 
+  useEffect(() => {
+    setTotalPrice(0);
+    setOrderedItem([]);
+  }, [carts]);
+
   const onOrderHandler = () => {
     const order = JSON.stringify(orderedItem);
     localStorage.setItem('orderItem', order);
@@ -33,6 +38,10 @@ function CartPage() {
   const onChangeQuantityHandler = (id, quantity) => {
     dispatch(onChangeQuantity(id, quantity));
     setTotalPrice(0);
+  };
+
+  const onDeleteFromCartHandler = (id) => {
+    dispatch(deleteFromCart(id));
   };
 
   const onCheckHandler = (checked, name) => {
@@ -83,6 +92,7 @@ function CartPage() {
             totalPrice={totalPrice}
             onCheck={(e) => onCheckHandler(e.target.checked, e.target.name)}
             onChangeQty={onChangeQuantityHandler}
+            onDelete={onDeleteFromCartHandler}
           />
         )}
 

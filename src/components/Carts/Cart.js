@@ -1,6 +1,4 @@
 import React from 'react';
-import { useDispatch } from 'react-redux';
-import { deleteFromCart } from '../../actions/cartActions';
 import CartImage from './CartImage';
 import CartTitle from './CartTitle';
 import CartPrice from './CartPrice';
@@ -18,12 +16,8 @@ function CartItem({
   onCheck,
   onChangeQty,
   unit,
+  onDelete,
 }) {
-  const dispatch = useDispatch();
-  const onDeleteFromCartHandler = (id) => {
-    dispatch(deleteFromCart(id));
-  };
-
   return (
     <div className='flex justify-between items-center mt-4 p-4'>
       <div className='flex items-center'>
@@ -39,7 +33,7 @@ function CartItem({
           <div>
             <CartTitle name={name} productId={productId} />
             <CartPrice price={price} />
-            <DeleteButton onClick={() => onDeleteFromCartHandler(id)} />
+            <DeleteButton onClick={() => onDelete(id)} />
           </div>
         </label>
       </div>
