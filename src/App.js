@@ -39,7 +39,7 @@ function App() {
         <UserRoute path='/keranjang' component={CartPage} />
         <UserRoute path='/pembayaran' component={PaymentPage} />
         <UserRoute path='/favorit' component={WishlistPage} />
-        <UserRoute path='/order/:id' component={OrderPage} />
+        <UserRoute path='/order' component={OrderPage} />
         <UserRoute path='/profil/update' component={UpdateProfilePage} />
         <UserRoute path='/profil' component={UserPage} />
         <Route path='/password-baru/:resetToken' component={PostNewPasswordPage} />

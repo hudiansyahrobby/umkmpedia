@@ -79,35 +79,50 @@ exports.addToOrder = async (req, res, next) => {
       products: products,
     });
 
-    // Create Snap API instance
-    let snap = new midtransClient.Snap({
-      // Set to true if you want Production Environment (accept real transaction).
-      isProduction: false,
-      serverKey: process.env.SERVER_KEY_MIDTRANS,
-    });
-
-    let parameter = {
-      transaction_details: {
-        order_id: newOrder._id,
-        gross_amount: totalPrice,
-      },
-      credit_card: {
-        secure: true,
-      },
-      customer_details: {
-        first_name: req.user.name,
-        email: req.user.email,
-        phone: req.user.telephone,
-      },
-      callbacks: {
-        finish: 'http://localhost:3000/keranjang',
-      },
-    };
-    const transaction = await snap.createTransaction(parameter);
-    newOrder.token = transaction.token;
-    newOrder.redirect_url = transaction.redirect_url;
     await newOrder.save();
     return res.status(200).json({ success: true, order: newOrder });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.getPayment = async (req, res, next) => {
+  const { totalPrice } = req.body;
+  console.log('BODY', req.body);
+  console.log('TOTAL', totalPrice);
+  // Create Snap API instance
+  let snap = new midtransClient.Snap({
+    // Set to true if you want Production Environment (accept real transaction).
+    isProduction: false,
+    serverKey: process.env.SERVER_KEY_MIDTRANS,
+  });
+
+  let parameter = {
+    transaction_details: {
+      order_id: 'order-id-node-' + Math.round(new Date().getTime() / 1000),
+      gross_amount: totalPrice,
+    },
+    credit_card: {
+      secure: true,
+    },
+    customer_details: {
+      first_name: req.user.name,
+      email: req.user.email,
+      phone: req.user.telephone,
+    },
+    callbacks: {
+      finish: 'http://localhost:3000/keranjang',
+    },
+  };
+  try {
+    const transaction = await snap.createTransaction(parameter);
+    return res.status(200).json({
+      success: true,
+      result: {
+        token: transaction.token,
+        redirect_url: transaction.redirect_url,
+      },
+    });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

@@ -54,6 +54,28 @@ export default function orderReducer(state = initialState, action) {
         message: action.payload.message,
       };
       break;
+    case ORDER.GET_PAYMENT_INIT:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case ORDER.GET_PAYMENT_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        token: action.payload.payment.token,
+        redirect_url: action.payload.payment.redirect_url,
+      };
+
+      break;
+    case ORDER.GET_PAYMENT__FAIL:
+      state = {
+        ...state,
+        loading: false,
+        message: action.payload.message,
+      };
+      break;
     case ORDER.GET_ORDER_BY_ID_INIT:
       state = {
         ...state,

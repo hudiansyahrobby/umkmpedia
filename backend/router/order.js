@@ -13,6 +13,6 @@ router.get('/order', verifyUser, orderController.getOrders);
 
 router.post('/order', verifyUser, orderController.addToOrder);
 
-// router.post('/payment', verifyUser, orderController.postPayment);
+router.post('/payment', verifyUser, orderController.getPayment);
 
 module.exports = router;

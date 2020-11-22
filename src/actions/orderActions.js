@@ -69,6 +69,23 @@ export const getCost = (orderData) => async (dispatch) => {
   }
 };
 
+export const getPayment = (totalPrice) => async (dispatch) => {
+  console.log('ACTION TOTAL', totalPrice);
+  dispatch({ type: ORDER.GET_PAYMENT_INIT });
+  try {
+    const { data } = await Axios.post(`api/payment`, totalPrice);
+    dispatch({
+      type: ORDER.GET_PAYMENT_SUCCESS,
+      payload: { payment: data.result },
+    });
+  } catch (error) {
+    dispatch({
+      type: ORDER.GET_PAYMENT__FAIL,
+      payload: { message: error.response.data.message },
+    });
+  }
+};
+
 export const resetOrder = () => async (dispatch) => {
   dispatch({ type: ORDER.RESET_ORDER });
 };

@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, useParams } from 'react-router-dom';
-import { getCost, getOrderById, resetOrder } from '../actions/orderActions';
+import { Redirect } from 'react-router-dom';
+import { getCost, getPayment, resetOrder } from '../actions/orderActions';
 import { getCity } from '../actions/userActions';
-import { calculateTotalPrice } from '../utils/CalculateTotalPrice';
 import { numberWithDot } from '../utils/numberWithDot';
 import CourierLists from '../components/CourierLists/CourierLists';
 import AddressName from '../components/AddressName';
-// import BankList from '../components/BankList';
 import OrderItem from '../components/OrderItem';
 import Layout from '../components/Layout';
 import Title from '../components/Title';
@@ -15,12 +13,14 @@ import Button from '../components/Buttons/Button';
 import { useCallback } from 'react';
 
 export default function OrderPage() {
-  const { couriers, order } = useSelector((state) => state.order);
+  const { couriers, token } = useSelector((state) => state.order);
   const { user, cities: address } = useSelector((state) => state.user);
   const [courierCost, setCourierCost] = useState(0);
+  const [orderItemPrice, setOrderItemPrice] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
+  const [orderItem, setOrderItem] = useState([]);
+
   const dispatch = useDispatch();
-  const { id } = useParams();
   const courierList = ['jne', 'pos', 'tiki'];
 
   const getAllCourierCost = useCallback(() => {
@@ -38,31 +38,44 @@ export default function OrderPage() {
 
   const onPayHandler = () => {
     if (courierCost !== 0) {
-      return window.snap.pay(order?.token); // Replace it with your transaction token
+      return window.snap.pay(token); // Replace it with your transaction token
     }
     // window.snap.pay(order?.token); // Replace it with your transaction token
     return alert('Mohon Pilih Salah satu Bank dan Kurir Pengiriman');
   };
 
+  const onChangeCourier = (e) => {
+    setCourierCost(+e.target.value);
+
+    const totalPrice = +orderItemPrice + +e.target.value;
+
+    setTotalPrice(totalPrice);
+    const price = {
+      totalPrice,
+    };
+    dispatch(getPayment(price));
+  };
+
+  useEffect(() => {
+    const orderItem = JSON.parse(localStorage.getItem('orderItem'));
+    const totalPriceWithoutCourier = +localStorage.getItem('totalPrice');
+    setOrderItem(orderItem);
+    setOrderItemPrice(totalPriceWithoutCourier);
+    setTotalPrice(totalPriceWithoutCourier);
+
+    getAllCourierCost();
+  }, []);
+
   useEffect(() => {
     dispatch(getCity());
-    getAllCourierCost();
-    dispatch(getOrderById(id));
     return () => {
       resetOrder();
     };
-  }, [id, dispatch, getAllCourierCost]);
-
-  useEffect(() => {
-    const cartPrice = calculateTotalPrice(order?.products);
-    const totalPrice = cartPrice + +courierCost;
-    setTotalPrice(totalPrice);
-  }, [order, courierCost]);
+  }, [dispatch]);
 
   if (!user?.fullAddress || !user?.city || !user?.province || !user?.telephone) {
     return <Redirect to='/profil/update' />;
   }
-
   return (
     <Layout>
       <div className='mt-24 mx-4'>
@@ -70,13 +83,13 @@ export default function OrderPage() {
           Order
         </Title>
         <h2 className='mt-4 font-semibold'>Barang Pesanan</h2>
-        <OrderItem items={order?.products} />
+        <OrderItem items={orderItem} />
 
         <h2 className='mt-8 text-center font-semibold'>Alamat Tujuan</h2>
         <AddressName address={address} user={user} />
 
         <h2 className='mt-8 text-center font-semibold'>Plih Kurir Pengiriman</h2>
-        <CourierLists courierList={couriers} onChange={(e) => setCourierCost(e.target.value)} />
+        <CourierLists courierList={couriers} onChange={onChangeCourier} />
 
         <h2 className='mt-8 text-right font-bold'>Harga Total : Rp {numberWithDot(totalPrice)}</h2>
         <Button
