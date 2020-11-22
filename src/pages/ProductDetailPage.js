@@ -5,7 +5,7 @@ import { getProductById, resetStateProduct } from '../actions/productActions';
 import { useParams } from 'react-router-dom';
 // import Reviews from '../components/Reviews/Reviews';
 import { addToCart } from '../actions/cartActions';
-import { addToWishlist, deleteFromWishlist, getWishlist } from '../actions/wishlistActions';
+import { addToWishlist, deleteFromWishlist } from '../actions/wishlistActions';
 import Layout from '../components/Layout';
 import ProductStar from '../components/Products/ProductStar';
 import ProductDetailImage from '../components/Products/ProductDetailImage';
@@ -30,7 +30,6 @@ function ProductDetailPage() {
 
   useEffect(() => {
     dispatch(getProductById(id));
-    dispatch(getWishlist(id));
 
     return function cleanup() {
       dispatch(resetStateProduct());

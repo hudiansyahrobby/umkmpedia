@@ -19,7 +19,7 @@ import Layout from '../components/Layout';
 import Alert from '../components/Alert';
 
 import { addNewProduct, resetProduct } from '../actions/productActions';
-import { addCategories, getcategories } from '../actions/categoryActions';
+import { addCategories } from '../actions/categoryActions';
 import { addUnit, getUnits } from '../actions/unitActions';
 
 import { capitalizeFirstLetter } from '../utils/capitalizeFirstLetter';
@@ -29,11 +29,12 @@ function AddProductPage() {
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
   const [convertedContent, setConvertedContent] = useState(null);
 
-  const dispatch = useDispatch();
-  const history = useHistory();
   const { message, success, error } = useSelector((state) => state.product);
   const { categories, loading: isCategoryLoading } = useSelector((state) => state.category);
   const { units, loading: isUnitLoading } = useSelector((state) => state.unit);
+
+  const dispatch = useDispatch();
+  const history = useHistory();
 
   const categoryOptions = categories?.map((category) => ({
     value: category._id,
@@ -46,14 +47,12 @@ function AddProductPage() {
   }));
 
   useEffect(() => {
-    dispatch(getcategories());
     dispatch(getUnits());
     dispatch(resetProduct());
   }, [dispatch]);
 
   const handleEditorChange = (state) => {
     setEditorState(state);
-    convertContentToHTML();
   };
 
   const convertContentToHTML = () => {
@@ -97,6 +96,7 @@ function AddProductPage() {
               unit: Yup.string().required('Wajib Diisi'),
             })}
             onSubmit={({ name, price, quantity, weight, unit, category }, { setSubmitting }) => {
+              convertContentToHTML(editorState);
               const productData = new FormData();
               productData.append('name', name);
               productData.append('category', category);

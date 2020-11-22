@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 
@@ -24,6 +24,7 @@ export default function Navbar({ onOpen }) {
     if (user.authenticated) {
       dispatch(getWishlist());
     }
+    console.log('WISHLIST');
   }, [wishlists]);
 
   useDeepCompareEffect(() => {

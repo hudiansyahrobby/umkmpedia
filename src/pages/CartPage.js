@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getCart, onChangeQuantity } from '../actions/cartActions';
+import { onChangeQuantity } from '../actions/cartActions';
 import Button from '../components/Buttons/Button';
 import Carts from '../components/Carts/Carts';
 import CartSkeleton from '../components/Carts/CartSkeleton';
@@ -17,10 +17,6 @@ function CartPage() {
   const history = useHistory();
   const [totalPrice, setTotalPrice] = useState(0);
   const [orderedItem, setOrderedItem] = useState([]);
-
-  useEffect(() => {
-    dispatch(getCart());
-  }, [dispatch]);
 
   useEffect(() => {
     const price = calculateTotalPrice(orderedItem);

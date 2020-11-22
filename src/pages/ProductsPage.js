@@ -1,10 +1,9 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import Title from '../components/Title';
 import Products from '../components/Products/Products';
 import { deleteProductById, getProducts } from '../actions/productActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToWishlist, deleteFromWishlist, getWishlist } from '../actions/wishlistActions';
+import { addToWishlist, deleteFromWishlist } from '../actions/wishlistActions';
 import Layout from '../components/Layout';
 import ProductSkeleton from '../components/Products/ProductSkeleton';
 import ReactPaginate from 'react-paginate';
@@ -20,7 +19,8 @@ function ProductsPage(props) {
   // Get page and search query
   const query = new URLSearchParams(props.location.search);
   const page = query.get('page') || 1;
-  const searchQuery = query.get('search') || search;
+  // const page = React.memo(() =>)
+  const searchQuery = query.get('search') || '';
   const categoryQuery = query.get('category') || '';
 
   const dispatch = useDispatch();
@@ -28,8 +28,7 @@ function ProductsPage(props) {
 
   useEffect(() => {
     dispatch(getProducts(searchQuery, page, categoryQuery));
-    dispatch(getWishlist());
-  }, [dispatch, page, categoryQuery]);
+  }, [dispatch, page, categoryQuery, searchQuery]);
 
   const onSearchHandler = (e) => {
     e.preventDefault();

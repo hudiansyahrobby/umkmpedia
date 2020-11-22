@@ -1,22 +1,13 @@
 import React from 'react';
-
 import { useDispatch, useSelector } from 'react-redux';
-
-import { useEffect } from 'react';
 import Layout from '../components/Layout';
-import { getcategories, resetCategory } from '../actions/categoryActions';
+import { resetCategory } from '../actions/categoryActions';
 import Alert from '../components/Alert';
-
-import AddCategoryForm from '../components/Forms/AddCategoryForm';
 import List from '../components/List';
 
-function AddCategoryPage() {
+export default function CategoryListPage() {
   const dispatch = useDispatch();
   const { categories, error, success, message } = useSelector((state) => state.category);
-
-  useEffect(() => {
-    dispatch(getcategories());
-  }, [dispatch]);
 
   return (
     <Layout>
@@ -31,13 +22,10 @@ function AddCategoryPage() {
             onRemoveAlert={() => dispatch(resetCategory())}
           />
         )}
-        <div className='grid grid-cols-1 sm:grid-cols-2'>
-          <AddCategoryForm />
+        <div className='grid grid-cols-1'>
           <List title='Daftar Kategori' lists={categories} />
         </div>
       </div>
     </Layout>
   );
 }
-
-export default AddCategoryPage;

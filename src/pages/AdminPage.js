@@ -14,12 +14,12 @@ function AdminPage() {
         </Title>
         <div className='text-right mt-4'>
           <Button
-            link='/admin/tambah-kategori'
+            link='/admin/daftar-kategori'
             background='bg-primary hover:bg-orange-400'
             variant='mr-2 text-black font-bold transition duration-300'
             size='small'
           >
-            Tambah Kategori
+            Daftar Kategori
           </Button>
           <Button
             link='/admin/tambah-produk'

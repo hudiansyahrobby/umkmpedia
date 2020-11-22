@@ -1,5 +1,3 @@
-/* eslint-disable array-callback-return */
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect, useParams } from 'react-router-dom';
@@ -14,6 +12,7 @@ import OrderItem from '../components/OrderItem';
 import Layout from '../components/Layout';
 import Title from '../components/Title';
 import Button from '../components/Buttons/Button';
+import { useCallback } from 'react';
 
 export default function OrderPage() {
   const { couriers, order } = useSelector((state) => state.order);
@@ -24,7 +23,7 @@ export default function OrderPage() {
   const { id } = useParams();
   const courierList = ['jne', 'pos', 'tiki'];
 
-  const getAllCourierCost = () => {
+  const getAllCourierCost = useCallback(() => {
     if (user.city) {
       const orderData = {
         destination: user.city,
@@ -32,10 +31,11 @@ export default function OrderPage() {
       };
       courierList.map((courier) => {
         orderData.courier = courier;
-        dispatch(getCost(orderData));
+        return dispatch(getCost(orderData));
       });
     }
-  };
+  }, [courierList, dispatch, user.city]);
+
   const onPayHandler = () => {
     if (courierCost !== 0) {
       return window.snap.pay(order?.token); // Replace it with your transaction token
@@ -51,7 +51,7 @@ export default function OrderPage() {
     return () => {
       resetOrder();
     };
-  }, []);
+  }, [id, dispatch, getAllCourierCost]);
 
   useEffect(() => {
     const cartPrice = calculateTotalPrice(order?.products);

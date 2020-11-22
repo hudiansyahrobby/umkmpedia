@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { EditorState, convertFromHTML, ContentState } from 'draft-js';
+import { EditorState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { convertToHTML } from 'draft-convert';
@@ -24,7 +24,7 @@ import {
   resetProduct,
   resetStateProduct,
 } from '../actions/productActions';
-import { addCategories, getcategories } from '../actions/categoryActions';
+import { addCategories } from '../actions/categoryActions';
 import { addUnit, getUnits } from '../actions/unitActions';
 import { capitalizeFirstLetter } from '../utils/capitalizeFirstLetter';
 
@@ -52,7 +52,6 @@ function EditProductPage() {
   }));
 
   const getIntialValues = useCallback(() => {
-    dispatch(getcategories());
     dispatch(getUnits());
     dispatch(getProductById(id));
     dispatch(resetProduct());

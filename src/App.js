@@ -5,9 +5,9 @@ import { isUserLoggedIn } from './actions/userActions';
 import Spinner from './components/Spinner/Spinner';
 import AdminRoute from './HOC/AdminRoute';
 import UserRoute from './HOC/UserRoute';
-const AddCategoryPage = lazy(() => import('./pages/AddCategoryPage'));
+const CategoryListPage = lazy(() => import('./pages/CategoryListPage'));
 const AddProductPage = lazy(() => import('./pages/AddProductPage'));
-const AddressPage = lazy(() => import('./pages/AddressPage'));
+const UpdateProfilePage = lazy(() => import('./pages/UpdateProfilePage'));
 const AdminPage = lazy(() => import('./pages/AdminPage'));
 const CartPage = lazy(() => import('./pages/CartPage'));
 const EditCategoryPage = lazy(() => import('./pages/EditCategoryPage'));
@@ -32,7 +32,7 @@ function App() {
     <Suspense fallback={<Spinner />}>
       <Switch>
         <AdminRoute path='/admin/tambah-produk' component={AddProductPage} />
-        <AdminRoute path='/admin/tambah-kategori' component={AddCategoryPage} />
+        <AdminRoute path='/admin/daftar-kategori' component={CategoryListPage} />
         <AdminRoute path='/admin/edit-kategori/:id' component={EditCategoryPage} />
         <AdminRoute path='/admin/edit-produk/:id' component={EditProductPage} />
         <AdminRoute path='/admin' component={AdminPage} />
@@ -40,7 +40,7 @@ function App() {
         <UserRoute path='/pembayaran' component={PaymentPage} />
         <UserRoute path='/favorit' component={WishlistPage} />
         <UserRoute path='/order/:id' component={OrderPage} />
-        <UserRoute path='/profil/update' component={AddressPage} />
+        <UserRoute path='/profil/update' component={UpdateProfilePage} />
         <UserRoute path='/profil' component={UserPage} />
         <Route path='/password-baru/:resetToken' component={PostNewPasswordPage} />
         <Route path='/lupa-password' component={ResetPasswordPage} />

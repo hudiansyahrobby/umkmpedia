@@ -2,9 +2,7 @@ import React, { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { getCart } from '../actions/cartActions';
 import { getOrder } from '../actions/orderActions';
-import { getWishlist } from '../actions/wishlistActions';
 import UserCards from '../components/Cards/UserCards';
 import Layout from '../components/Layout';
 import Title from '../components/Title';
@@ -19,8 +17,6 @@ function UserPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getWishlist());
-    dispatch(getCart());
     dispatch(getOrder());
   }, [dispatch]);
 

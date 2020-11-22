@@ -6,7 +6,7 @@ import Button from '../components/Buttons/Button';
 import Layout from '../components/Layout';
 import Title from '../components/Title';
 
-export default function AddressPage() {
+export default function UpdateProfilePage() {
   const { provinces, cities, user } = useSelector((state) => state.user);
   const [name, setName] = useState(user.name);
   const [telephone, setTelephone] = useState(user.telephone);

@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import Title from '../components/Title';
-import { deleteFromWishlist, getWishlist } from '../actions/wishlistActions';
+import { deleteFromWishlist } from '../actions/wishlistActions';
 import { useDispatch, useSelector } from 'react-redux';
 import Wishlists from '../components/Wishlists/Wishlists';
 import Layout from '../components/Layout';
@@ -13,10 +13,6 @@ function WishlistPage() {
   const onDeleteProductHandler = (id) => {
     dispatch(deleteFromWishlist(id));
   };
-
-  useEffect(() => {
-    dispatch(getWishlist());
-  }, [dispatch]);
 
   const onRemoveWishlist = (id) => {
     dispatch(deleteFromWishlist(id));

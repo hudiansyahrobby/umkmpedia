@@ -21,11 +21,11 @@ export const addNewProduct = (products, history) => async (dispatch) => {
   }
 };
 
-export const getProducts = (word = '', page = 1, category = '') => async (dispatch) => {
+export const getProducts = (search = '', page = 1, category = '') => async (dispatch) => {
   dispatch({ type: PRODUCT.GET_PRODUCTS_INIT });
   try {
     const { data } = await Axios.get(
-      `api/products?search=${word}&page=${page}&category=${category}`,
+      `api/products?search=${search}&page=${page}&category=${category}`,
     );
     console.log('DATA:', data);
     dispatch({
