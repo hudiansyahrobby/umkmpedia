@@ -11,6 +11,10 @@ router.post('/signin', authController.signin);
 
 router.post('/signout', authController.signout);
 
+router.post('/reset-password', authController.postResetPassword);
+
+router.post('/new-password/:resetPasswordToken', authController.postNewPassword);
+
 router.get('/province', verifyUser, authController.getProvince);
 
 router.get('/city', verifyUser, authController.getCity);

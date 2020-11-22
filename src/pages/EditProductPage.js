@@ -7,7 +7,7 @@ import { EditorState, convertFromHTML, ContentState } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
 import { convertToHTML } from 'draft-convert';
-import useDeepCompareEffect from 'use-deep-compare-effect';
+// import useDeepCompareEffect from 'use-deep-compare-effect';
 import CreatableSelect from 'react-select/creatable';
 
 import Button from '../components/Buttons/Button';
@@ -65,15 +65,15 @@ function EditProductPage() {
     };
   }, [dispatch, id, getIntialValues]);
 
-  useDeepCompareEffect(() => {
-    if (product?.length > 0) {
-      setImage(product[0].image);
+  // useDeepCompareEffect(() => {
+  //   if (product?.length > 0) {
+  //     setImage(product[0].image);
 
-      const blocksFromHTML = convertFromHTML(product[0].description);
-      const content = ContentState.createFromBlockArray(blocksFromHTML);
-      setEditorState(EditorState.createWithContent(content));
-    }
-  }, [product]);
+  //     const blocksFromHTML = convertFromHTML(product[0].description);
+  //     const content = ContentState.createFromBlockArray(blocksFromHTML);
+  //     setEditorState(EditorState.createWithContent(content));
+  //   }
+  // }, [product]);
 
   const handleEditorChange = (state) => {
     setEditorState(state);

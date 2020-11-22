@@ -14,8 +14,10 @@ import EditProductPage from './pages/EditProductPage';
 import HomePage from './pages/HomePage';
 import OrderPage from './pages/OrderPage';
 import PaymentPage from './pages/PaymentPage';
+import PostNewPasswordPage from './pages/PostNewPasswordPage';
 import ProductDetailPage from './pages/ProductDetailPage';
 import ProductsPage from './pages/ProductsPage';
+import ResetPasswordPage from './pages/ResetPasswordPage';
 import SigninPage from './pages/SigninPage';
 import SignupPage from './pages/SignupPage';
 import UserPage from './pages/UserPage';
@@ -38,6 +40,8 @@ function App() {
       <UserRoute path='/order/:id' component={OrderPage} />
       <UserRoute path='/profil/update' component={AddressPage} />
       <UserRoute path='/profil' component={UserPage} />
+      <Route path='/password-baru/:resetToken' component={PostNewPasswordPage} />
+      <Route path='/lupa-password' component={ResetPasswordPage} />
       <Route path='/masuk' component={SigninPage} />
       <Route path='/daftar' component={SignupPage} />
       <Route path='/produk/:id' component={ProductDetailPage} />

@@ -1,5 +1,8 @@
-const User = require('../model/user');
 const request = require('request');
+const crypto = require('crypto');
+const nodemailer = require('nodemailer');
+const sendGridTransport = require('nodemailer-sendgrid-transport');
+const User = require('../model/user');
 
 exports.signup = async (req, res, next) => {
   const user = await User.findOne({ email: req.body.email });
@@ -19,8 +22,7 @@ exports.signup = async (req, res, next) => {
 
 exports.signin = async (req, res, next) => {
   const { email, password } = req.body;
-  console.log('email', email);
-  console.log('password', password);
+
   try {
     const user = await User.findOne({ email }).populate('address').exec();
 
@@ -48,6 +50,61 @@ exports.signin = async (req, res, next) => {
 exports.signout = async (req, res, next) => {
   res.clearCookie('jwt');
   return res.status(200).json({ success: true, message: 'Succesfully Sign out' });
+};
+
+exports.postResetPassword = async (req, res, next) => {
+  const { email } = req.body;
+  try {
+    const resetPasswordToken = crypto.randomBytes(20).toString('hex');
+    const resetTokenExpired = Date.now() + 3600000;
+    const user = User.findOneAndUpdate({ email }, { resetPasswordToken, resetTokenExpired });
+    if (!user) return res.status(400).json({ success: false, message: 'User Tidak ditemukan' });
+
+    const transporter = nodemailer.createTransport(
+      sendGridTransport({
+        auth: {
+          api_key: process.env.SENDGRID_API_KEY,
+        },
+      }),
+    );
+
+    const mailOptions = {
+      from: 'umkmpedia@shop.com',
+      to: user.email,
+      subject: 'Link To Reset Password',
+      html: `
+      <h5>Link To <a href='http://localhost:3000/${resetPasswordToken}'>Reset Password</a>
+      `,
+    };
+
+    await transporter.sendMail(mailOptions);
+    res.status(200).json({ success: true, message: 'Berhasil Mengirim Email Reset Password' });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.postNewPassword = async (req, res, next) => {
+  const { password } = req.body;
+  const { resetPasswordToken } = req.params;
+  console.log(resetPasswordToken);
+  console.log(password);
+  try {
+    const user = await User.findOne({ resetPasswordToken, resetTokenExpired: { $gt: Date.now() } });
+
+    if (!user) {
+      return res.status(400).json({ success: false, message: 'Token sudah tidak valid' });
+    }
+
+    user.password = password;
+    user.resetPasswordToken = undefined;
+    user.resetTokenExpired = undefined;
+
+    await user.save();
+    return res.status(201).json({ success: true, message: 'Berhasil Mengubah Password' });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
 };
 
 exports.getProvince = (req, res, next) => {

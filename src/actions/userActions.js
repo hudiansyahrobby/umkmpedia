@@ -52,6 +52,30 @@ export const isUserLoggedIn = (history) => async (dispatch) => {
   }
 };
 
+export const resetPassword = (email) => async (dispatch) => {
+  dispatch({ type: USER.RESET_PASSWORD_INIT });
+  try {
+    const { data } = await Axios.post('/api/reset-password', email);
+    dispatch({ type: USER.RESET_PASSWORD_SUCCESS, payload: { message: data.message } });
+  } catch (error) {
+    dispatch({ type: USER.SIGN_IN__FAIL, payload: { message: error.response.data.message } });
+  }
+};
+
+export const postNewPassword = (password, resetToken, history) => async (dispatch) => {
+  dispatch({ type: USER.POST_NEW_PASSWORD_INIT });
+  console.log('PASSWORD', password);
+  console.log('resetToken', resetToken);
+  try {
+    const { data } = await Axios.post(`/api/new-password/${resetToken}`, password);
+    console.log('DATA', data);
+    dispatch({ type: USER.RESET_PASSWORD_SUCCESS, payload: { message: data.message } });
+    history.push('/masuk');
+  } catch (error) {
+    dispatch({ type: USER.SIGN_IN__FAIL, payload: { message: error.response.data.message } });
+  }
+};
+
 export const getProvince = () => async (dispatch) => {
   dispatch({ type: USER.GET_PROVINCE_INIT });
   try {

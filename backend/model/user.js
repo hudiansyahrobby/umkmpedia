@@ -17,7 +17,7 @@ const userSchema = mongoose.Schema(
     },
     password: {
       type: String,
-      minlength: [6, 'Password must be at least 12 characters long'],
+      minlength: [6, 'Password must be at least 6 characters long'],
       required: true,
     },
     telephone: {
@@ -43,6 +43,12 @@ const userSchema = mongoose.Schema(
     },
     refreshToken: {
       type: String,
+    },
+    resetPasswordToken: {
+      type: String,
+    },
+    resetTokenExpired: {
+      type: Date,
     },
     cart: [
       {

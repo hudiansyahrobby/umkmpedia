@@ -76,6 +76,25 @@ export default function userReducer(state = initialState, action) {
         message: action.payload,
       };
       break;
+    case USER.RESET_PASSWORD_INIT:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case USER.RESET_PASSWORD_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+      };
+      break;
+    case USER.RESET_PASSWORD__FAIL:
+      state = {
+        ...state,
+        loading: false,
+        message: action.payload,
+      };
+      break;
     case USER.GET_PROVINCE_INIT:
       state = {
         ...state,
