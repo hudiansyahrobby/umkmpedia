@@ -3,7 +3,7 @@ import { useTable, useGlobalFilter, usePagination } from 'react-table';
 import { columnsz, dataz } from './dataSource';
 import { GlobalFilter } from './GlobalFilter';
 
-export default function Table() {
+export default function Table({ title }) {
   const columns = useMemo(() => columnsz, []);
   const data = useMemo(() => dataz, []);
 
@@ -37,7 +37,7 @@ export default function Table() {
   return (
     <>
       <div className='mx-3 mt-8'>
-        <h2 className='mb-4 font-semibold'>Latest Order</h2>
+        <h2 className='mb-4 font-semibold'>{title}</h2>
         <GlobalFilter filter={globalFilter} setFilter={setGlobalFilter} />
         <table {...getTableProps()} className='mt-4'>
           <thead>

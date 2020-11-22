@@ -2,7 +2,26 @@ const Order = require('../model/order');
 const midtransClient = require('midtrans-client');
 const request = require('request');
 
-exports.getOrders = async (req, res, next) => {
+exports.getAllOrders = async (req, res, next) => {
+  const page = +req.query.page - 1 || 0;
+  const itemPerPage = 8;
+
+  try {
+    const order = await Order.find({})
+      .sort({ updatedAt: -1 })
+      .skip(page * itemPerPage)
+      .limit(itemPerPage)
+      .exec();
+    if (!order) {
+      return res.status(200).json({ success: true, order: [] });
+    }
+    return res.status(200).json({ success: true, order });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.getOrdersByUser = async (req, res, next) => {
   try {
     const order = await Order.find({ userId: req.user._id });
     if (!order) {

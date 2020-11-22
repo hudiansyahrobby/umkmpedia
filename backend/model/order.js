@@ -8,15 +8,6 @@ const orderSchema = mongoose.Schema({
   totalPrice: {
     type: Number,
     required: true,
-    default: 0,
-  },
-  token: {
-    type: String,
-    required: true,
-  },
-  redirect_url: {
-    type: String,
-    required: true,
   },
   products: [
     {

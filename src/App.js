@@ -5,6 +5,8 @@ import { isUserLoggedIn } from './actions/userActions';
 import Spinner from './components/Spinner/Spinner';
 import AdminRoute from './HOC/AdminRoute';
 import UserRoute from './HOC/UserRoute';
+const HistoryDetailPage = lazy(() => import('./pages/HistoryDetailPage'));
+const HistoryPage = lazy(() => import('./pages/HistoryPage'));
 const CategoryListPage = lazy(() => import('./pages/CategoryListPage'));
 const AddProductPage = lazy(() => import('./pages/AddProductPage'));
 const UpdateProfilePage = lazy(() => import('./pages/UpdateProfilePage'));
@@ -40,6 +42,8 @@ function App() {
         <UserRoute path='/pembayaran' component={PaymentPage} />
         <UserRoute path='/favorit' component={WishlistPage} />
         <UserRoute path='/order' component={OrderPage} />
+        <UserRoute path='/riwayat-pembelian/:id' component={HistoryDetailPage} />
+        <UserRoute path='/riwayat-pembelian' component={HistoryPage} />
         <UserRoute path='/profil/update' component={UpdateProfilePage} />
         <UserRoute path='/profil' component={UserPage} />
         <Route path='/password-baru/:resetToken' component={PostNewPasswordPage} />

@@ -9,7 +9,6 @@ import Layout from '../components/Layout';
 import Title from '../components/Title';
 import { calculateTotalPrice } from '../utils/CalculateTotalPrice';
 import { useHistory } from 'react-router-dom';
-import { addToOrder } from '../actions/orderActions';
 
 function CartPage() {
   const { carts, loading } = useSelector((state) => state.cart);
@@ -33,7 +32,6 @@ function CartPage() {
     localStorage.setItem('orderItem', order);
     localStorage.setItem('totalPrice', totalPrice);
     history.push('/order');
-    // dispatch(addToOrder(orderedItem, totalPrice, history));
   };
 
   const onChangeQuantityHandler = (id, quantity) => {

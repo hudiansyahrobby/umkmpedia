@@ -7,9 +7,11 @@ const router = express.Router();
 
 router.post('/courier', verifyUser, orderController.getCost);
 
+router.get('/order/user', verifyUser, orderController.getOrdersByUser);
+
 router.get('/order/:id', verifyUser, orderController.getOrderById);
 
-router.get('/order', verifyUser, orderController.getOrders);
+router.get('/order/admin', verifyUser, orderController.getAllOrders);
 
 router.post('/order', verifyUser, orderController.addToOrder);
 
