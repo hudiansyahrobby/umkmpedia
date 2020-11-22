@@ -10,6 +10,7 @@ import { getCart } from '../../actions/cartActions';
 import NavbarLink from './NavbarLink';
 import MenuButton from '../Buttons/MenuButton';
 import { getcategories } from '../../actions/categoryActions';
+import useDeepCompareEffect from 'use-deep-compare-effect';
 
 export default function Navbar({ onOpen }) {
   const user = useSelector((state) => state.user);
@@ -19,13 +20,29 @@ export default function Navbar({ onOpen }) {
   const { wishlists } = useSelector((state) => state.wishlist);
   const { categories } = useSelector((state) => state.category);
 
-  useEffect(() => {
+  useDeepCompareEffect(() => {
     if (user.authenticated) {
       dispatch(getWishlist());
+    }
+  }, [wishlists]);
+
+  useDeepCompareEffect(() => {
+    if (user.authenticated) {
       dispatch(getCart());
     }
+  }, [carts]);
+
+  useDeepCompareEffect(() => {
     dispatch(getcategories());
-  }, [dispatch, user.authenticated]);
+  }, [categories]);
+
+  // useEffect(() => {
+  //   if (user.authenticated) {
+  //     dispatch(getWishlist());
+  //     dispatch(getCart());
+  //   }
+  //   dispatch(getcategories());
+  // }, [dispatch, user.authenticated]);
 
   const onSignOutHandler = async () => {
     dispatch(signout(history));

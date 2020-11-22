@@ -4,7 +4,7 @@ import Title from '../components/Title';
 import Products from '../components/Products/Products';
 import { deleteProductById, getProducts } from '../actions/productActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { addToWishlist, deleteFromWishlist, getWishlist } from '../actions/wishlistActions';
+import { addToWishlist, deleteFromWishlist } from '../actions/wishlistActions';
 import Layout from '../components/Layout';
 import ProductSkeleton from '../components/Products/ProductSkeleton';
 
@@ -14,7 +14,7 @@ function HomePage() {
   const { wishlists } = useSelector((state) => state.wishlist);
 
   useEffect(() => {
-    dispatch(getWishlist);
+    // dispatch(getWishlist);
     dispatch(getProducts());
   }, [dispatch]);
 
