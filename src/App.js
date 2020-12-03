@@ -25,6 +25,7 @@ const SigninPage = lazy(() => import('./pages/SigninPage'));
 const SignupPage = lazy(() => import('./pages/SignupPage'));
 const UserPage = lazy(() => import('./pages/UserPage'));
 const WishlistPage = lazy(() => import('./pages/WishListPage'));
+const AddResiPage = lazy(() => import('./pages/AddResiPage'));
 
 function App() {
   const dispatch = useDispatch();
@@ -37,6 +38,7 @@ function App() {
         <AdminRoute path='/admin/daftar-kategori' component={CategoryListPage} />
         <AdminRoute path='/admin/edit-kategori/:id' component={EditCategoryPage} />
         <AdminRoute path='/admin/edit-produk/:id' component={EditProductPage} />
+        <UserRoute path='/admin/tambah-resi/:id' component={AddResiPage} />
         <AdminRoute path='/admin' component={AdminPage} />
         <UserRoute path='/keranjang' component={CartPage} />
         <UserRoute path='/pembayaran' component={PaymentPage} />

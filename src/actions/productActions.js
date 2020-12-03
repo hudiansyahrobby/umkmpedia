@@ -30,10 +30,13 @@ export const getProducts = (search = '', page = 1, category = '') => async (disp
     console.log('DATA:', data);
     dispatch({
       type: PRODUCT.GET_PRODUCTS_SUCCESS,
-      payload: { products: data.products, totalPage: data.totalPage },
+      payload: {
+        products: data.products,
+        totalPage: data.totalPage,
+        totalProducts: data.totalProducts,
+      },
     });
   } catch (error) {
-    console.log(error.response);
     dispatch({
       type: PRODUCT.GET_PRODUCTS__FAIL,
       payload: { message: error.response.data.message },

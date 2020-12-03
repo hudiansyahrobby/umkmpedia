@@ -127,3 +127,19 @@ export const updateProfile = (updatedProfile, history) => async (dispatch) => {
     });
   }
 };
+
+export const getTotalUsers = () => async (dispatch) => {
+  dispatch({ type: USER.GET_TOTAL_USERS_INIT });
+  try {
+    const { data } = await Axios.get('api/users');
+    dispatch({
+      type: USER.GET_TOTAL_USERS_SUCCESS,
+      payload: { totalUsers: data.totalUsers },
+    });
+  } catch (error) {
+    dispatch({
+      type: USER.GET_TOTAL_USERS_FAIL,
+      payload: { message: error },
+    });
+  }
+};

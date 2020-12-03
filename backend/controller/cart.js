@@ -14,7 +14,7 @@ exports.getProductInCart = async (req, res, next) => {
 exports.addProductToCart = async (req, res, next) => {
   const { id } = req.body;
   const product = await Product.findOne({ _id: id });
-  const { _id, name, price, image, unit, quantity: stock } = product;
+  const { _id, name, price, image, unit, quantity: stock, weight, category } = product;
 
   const newProduct = {
     productId: _id,
@@ -22,6 +22,8 @@ exports.addProductToCart = async (req, res, next) => {
     price,
     image,
     unit,
+    weight,
+    category,
     stock,
   };
   try {

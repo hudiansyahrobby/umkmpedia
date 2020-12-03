@@ -19,7 +19,7 @@ function ProductsPage(props) {
   // Get page and search query
   const query = new URLSearchParams(props.location.search);
   const page = query.get('page') || 1;
-  // const page = React.memo(() =>)
+
   const searchQuery = query.get('search') || '';
   const categoryQuery = query.get('category') || '';
 

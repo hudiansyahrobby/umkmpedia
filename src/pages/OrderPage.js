@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
-import { getCost, getPayment, resetOrder } from '../actions/orderActions';
+import { Redirect, useHistory } from 'react-router-dom';
+import { addToOrder, getCost, getPayment, resetOrder } from '../actions/orderActions';
 import { getCity } from '../actions/userActions';
 import { numberWithDot } from '../utils/numberWithDot';
 import CourierLists from '../components/CourierLists/CourierLists';
@@ -14,7 +14,7 @@ import { useCallback } from 'react';
 
 export default function OrderPage() {
   const { couriers, token } = useSelector((state) => state.order);
-  const { user, cities: address } = useSelector((state) => state.user);
+  const { user, cities } = useSelector((state) => state.user);
   const [courierCost, setCourierCost] = useState(0);
   const [orderItemPrice, setOrderItemPrice] = useState(0);
   const [totalPrice, setTotalPrice] = useState(0);
@@ -22,6 +22,13 @@ export default function OrderPage() {
 
   const dispatch = useDispatch();
   const courierList = ['jne', 'pos', 'tiki'];
+
+  const filteredCity = cities?.filter((city, index) => city.city_id === user.city);
+
+  let userAddress;
+  if (filteredCity?.length > 0) {
+    userAddress = `${user.fullAddress}, ${filteredCity[0].type} ${filteredCity[0].city_name} , Provinsi ${filteredCity[0].province}, Kode Pos ${filteredCity[0].postal_code}`;
+  }
 
   const getAllCourierCost = useCallback(() => {
     if (user.city) {
@@ -38,9 +45,27 @@ export default function OrderPage() {
 
   const onPayHandler = () => {
     if (courierCost !== 0) {
-      return window.snap.pay(token); // Replace it with your transaction token
+      return window.snap.pay(token, {
+        onSuccess: ({ gross_amount, transaction_id }) => {
+          const orderData = {
+            products: orderItem,
+            transaction_id,
+            totalPrice: gross_amount,
+            shipping_address: userAddress,
+          };
+          alert('Pembelian Berhasil');
+          return dispatch(addToOrder(orderData));
+        },
+        onPending: ({ gross_amount, transaction_id }) => {
+          alert('Silahkan Lakukan Pembayaran');
+          return dispatch(addToOrder(orderItem, transaction_id, gross_amount));
+        },
+        onError: () => {
+          return alert('Mohon Maaf Terjadi Error');
+        },
+      });
     }
-    // window.snap.pay(order?.token); // Replace it with your transaction token
+
     return alert('Mohon Pilih Salah satu Bank dan Kurir Pengiriman');
   };
 
@@ -86,7 +111,7 @@ export default function OrderPage() {
         <OrderItem items={orderItem} />
 
         <h2 className='mt-8 text-center font-semibold'>Alamat Tujuan</h2>
-        <AddressName address={address} user={user} />
+        <AddressName address={userAddress} />
 
         <h2 className='mt-8 text-center font-semibold'>Plih Kurir Pengiriman</h2>
         <CourierLists courierList={couriers} onChange={onChangeCourier} />

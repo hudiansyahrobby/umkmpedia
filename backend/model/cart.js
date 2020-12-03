@@ -36,6 +36,15 @@ const cartSchema = mongoose.Schema({
         type: String,
         required: true,
       },
+      weight: {
+        type: Number,
+        required: true,
+      },
+      category: {
+        type: mongoose.Schema.ObjectId,
+        ref: 'Category',
+        required: true,
+      },
     },
   ],
 });

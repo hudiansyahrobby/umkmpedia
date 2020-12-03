@@ -7,6 +7,7 @@ const initialState = {
   message: '',
   provinces: [],
   cities: [],
+  totalUsers: 0,
   loading: false,
 };
 
@@ -151,6 +152,26 @@ export default function userReducer(state = initialState, action) {
       };
       break;
     case USER.UPDATE_PROFILE_FAIL:
+      state = {
+        ...state,
+        loading: false,
+        message: action.payload.message,
+      };
+      break;
+    case USER.GET_TOTAL_USERS_INIT:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case USER.GET_TOTAL_USERS_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        totalUsers: action.payload.totalUsers,
+      };
+      break;
+    case USER.GET_TOTAL_USERS_FAIL:
       state = {
         ...state,
         loading: false,

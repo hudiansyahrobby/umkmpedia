@@ -76,7 +76,6 @@ exports.postResetPassword = async (req, res, next) => {
       <h5>Link To <a href='http://localhost:3000/${resetPasswordToken}'>Reset Password</a>
       `,
     };
-
     await transporter.sendMail(mailOptions);
     res.status(200).json({ success: true, message: 'Berhasil Mengirim Email Reset Password' });
   } catch (error) {
@@ -162,5 +161,14 @@ exports.updateProfile = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.getTotalUsers = async (req, res, next) => {
+  try {
+    const totalUsers = await User.countDocuments({}).exec();
+    return res.status(200).json({ totalUsers });
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
   }
 };

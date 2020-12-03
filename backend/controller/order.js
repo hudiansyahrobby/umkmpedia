@@ -11,23 +11,55 @@ exports.getAllOrders = async (req, res, next) => {
       .sort({ updatedAt: -1 })
       .skip(page * itemPerPage)
       .limit(itemPerPage)
+      .populate('category')
       .exec();
+
     if (!order) {
       return res.status(200).json({ success: true, order: [] });
     }
-    return res.status(200).json({ success: true, order });
+
+    const totalOrders = await Order.countDocuments({}).exec();
+    const totalPage = Math.ceil(totalOrders / itemPerPage);
+
+    return res.status(200).json({
+      success: true,
+      order,
+      totalOrders: totalOrders,
+      page: page + 1,
+      pageSize: itemPerPage,
+      totalPage: totalPage,
+    });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
 
 exports.getOrdersByUser = async (req, res, next) => {
+  const page = +req.query.page - 1 || 0;
+  const itemPerPage = 6;
+
   try {
-    const order = await Order.find({ userId: req.user._id });
+    const order = await Order.find({ userId: req.user._id })
+      .sort({ updatedAt: -1 })
+      .skip(page * itemPerPage)
+      .limit(itemPerPage)
+      .populate('products.category')
+      .exec();
     if (!order) {
       return res.status(200).json({ success: true, order: [] });
     }
-    return res.status(200).json({ success: true, order });
+
+    const totalProducts = await Order.countDocuments({ userId: req.user._id }).exec();
+    const totalPage = Math.ceil(totalProducts / itemPerPage);
+
+    return res.status(200).json({
+      success: true,
+      order,
+      totalProducts: totalProducts,
+      page: page + 1,
+      pageSize: itemPerPage,
+      totalPage: totalPage,
+    });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -36,31 +68,16 @@ exports.getOrdersByUser = async (req, res, next) => {
 exports.getOrderById = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const order = await Order.findById(id);
+    const order = await Order.find({ transaction_id: id });
     if (!order) {
       return res.status(200).json({ success: true, order: [] });
     }
+    console.log('ORDER', order);
     return res.status(200).json({ success: true, order });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
 };
-
-// exports.addToOrder = async (req, res, next) => {
-//   const { products, totalPrice } = req.body;
-//   try {
-//     const newOrder = new Order({
-//       userId: req.user._id,
-//       products,
-//       totalPrice,
-//     });
-
-//     await newOrder.save();
-//     return res.status(201).json({ success: true, order: newOrder });
-//   } catch (error) {
-//     return res.status(500).json({ success: false, message: error.message });
-//   }
-// };
 
 exports.getCost = async (req, res, next) => {
   const { destination, courier } = req.body;
@@ -89,15 +106,15 @@ exports.getCost = async (req, res, next) => {
 };
 
 exports.addToOrder = async (req, res, next) => {
-  const { totalPrice, products } = req.body;
-
+  const { products, transaction_id, totalPrice, shipping_address } = req.body;
   try {
     const newOrder = new Order({
       userId: req.user._id,
-      totalPrice: totalPrice,
-      products: products,
+      products,
+      transaction_id,
+      totalPrice,
+      shipping_address,
     });
-
     await newOrder.save();
     return res.status(200).json({ success: true, order: newOrder });
   } catch (error) {
@@ -107,8 +124,6 @@ exports.addToOrder = async (req, res, next) => {
 
 exports.getPayment = async (req, res, next) => {
   const { totalPrice } = req.body;
-  console.log('BODY', req.body);
-  console.log('TOTAL', totalPrice);
   // Create Snap API instance
   let snap = new midtransClient.Snap({
     // Set to true if you want Production Environment (accept real transaction).
@@ -130,7 +145,7 @@ exports.getPayment = async (req, res, next) => {
       phone: req.user.telephone,
     },
     callbacks: {
-      finish: 'http://localhost:3000/keranjang',
+      finish: 'http://localhost:3000/riwayat-pembelian',
     },
   };
   try {
@@ -144,5 +159,73 @@ exports.getPayment = async (req, res, next) => {
     });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.checkPayment = async (req, res, next) => {
+  console.log(`- Received check transaction status request:`, req.body);
+
+  // [0] Setup API client and config
+  let core = new midtransClient.CoreApi({
+    isProduction: false,
+    serverKey: process.env.SERVER_KEY_MIDTRANS,
+    clientKey: process.env.CLIENT_KEY_MIDTRANS,
+  });
+
+  core.transaction.status(req.params.id).then((transactionStatusObject) => {
+    // let orderId = transactionStatusObject.order_id;
+    // let transactionStatus = transactionStatusObject.transaction_status;
+    // let fraudStatus = transactionStatusObject.fraud_status;
+    return res.status(200).json({ success: true, transaction: transactionStatusObject });
+
+    // let summary = `Transaction Result. Order ID: ${orderId}. Transaction status: ${transactionStatus}. Fraud status: ${fraudStatus}.<br>Raw transaction status:<pre>${JSON.stringify(
+    //   transactionStatusObject,
+    //   null,
+    //   2,
+    // )}</pre>`;
+
+    // [5.A] Handle transaction status on your backend
+    // Sample transactionStatus handling logic
+    // if (transactionStatus === 'capture') {
+    // if (fraudStatus === 'challenge') {
+    // TODO set transaction status on your databaase to 'challenge'
+    // } else if (fraudStatus === 'accept') {
+    // TODO set transaction status on your databaase to 'success'
+    // }
+    // } else if (transactionStatus === 'settlement') {
+    // TODO set transaction status on your databaase to 'success'
+    // Note: Non card transaction will become 'settlement' on payment success
+    // Credit card will also become 'settlement' D+1, which you can ignore
+    // because most of the time 'capture' is enough to be considered as success
+    // } else if (
+    //   transactionStatus === 'cancel' ||
+    //   transactionStatus === 'deny' ||
+    //   transactionStatus === 'expire'
+    // ) {
+    // TODO set transaction status on your databaase to 'failure'
+    // } else if (transactionStatus === 'pending') {
+    // TODO set transaction status on your databaase to 'pending' / waiting payment
+    // } else if (transactionStatus === 'refund') {
+    // TODO set transaction status on your databaase to 'refund'
+    // }
+    // console.log(summary);
+  });
+};
+
+exports.addResi = async (req, res, next) => {
+  const { resiNumber } = req.body;
+  console.log('RESI NUMBER', resiNumber);
+  try {
+    const orderItem = await Order.findOne({ transaction_id: req.params.id });
+
+    if (!orderItem) {
+      return res.status(400).json({ message: 'Tidak Bisa Mengupdate Item yang Tidak Ada' });
+    }
+    orderItem.resiNumber = resiNumber;
+    console.log('ORDER ITEM', orderItem);
+    await orderItem.save();
+    return res.status(200).json({ message: 'Berhasil Menambahkan Nomer Resi' });
+  } catch (error) {
+    return res.status(400).json({ message: error.message });
   }
 };

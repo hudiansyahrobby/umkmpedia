@@ -21,4 +21,6 @@ router.get('/city', verifyUser, authController.getCity);
 
 router.put('/update-profile', verifyUser, authController.updateProfile);
 
+router.get('/users', verifyUser, authController.getTotalUsers);
+
 module.exports = router;
