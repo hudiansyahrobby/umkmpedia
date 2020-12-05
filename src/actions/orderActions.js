@@ -2,7 +2,6 @@ import Axios from '../Axios';
 import * as ORDER from '../constants/orderConstant';
 
 export const addToOrder = (orderData) => async (dispatch) => {
-  console.log('ORDER DATA', orderData);
   dispatch({ type: ORDER.ADD_ORDER_INIT });
   try {
     const { data } = await Axios.post('api/order', orderData);
@@ -117,7 +116,6 @@ export const getTransactionStatus = (id) => async (dispatch) => {
 };
 
 export const addResi = (id, resiData, history) => async (dispatch) => {
-  console.log('RESI DATA', resiData);
   dispatch({ type: ORDER.ADD_RESI_INIT });
   try {
     await Axios.put(`api/order/${id}`, resiData);

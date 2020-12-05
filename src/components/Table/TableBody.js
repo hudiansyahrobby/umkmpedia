@@ -15,7 +15,7 @@ export default function TableBody({ row }) {
                 {products.map(({ _id, name, quantity, unit }) => {
                   return (
                     <li key={_id}>
-                      {name} - {quantity} {unit}
+                      {name} - {quantity} {unit.unit}
                     </li>
                   );
                 })}

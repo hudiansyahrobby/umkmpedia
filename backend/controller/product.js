@@ -4,7 +4,7 @@ exports.addProduct = async (req, res, next) => {
   const { name, price, description, unit, weight, quantity, category } = req.body;
 
   if (!req.file) {
-    return res.status(400).json({ success: false, message: 'Image is not valid' });
+    return res.status(400).json({ success: false, message: 'Gambar Tidak valid' });
   }
 
   const newProduct = new Product({
@@ -48,7 +48,7 @@ exports.getAllProducts = async (req, res, next) => {
       .limit(itemPerPage)
       .exec();
     if (!products) {
-      return res.status(400).json({ success: false, message: 'Product not found' });
+      return res.status(400).json({ success: false, message: 'Produk Tidak Ditemukan' });
     }
 
     const totalProducts = await Product.countDocuments(query).exec();
@@ -71,7 +71,7 @@ exports.getProduct = async (req, res, next) => {
   try {
     const product = await Product.findOne({ _id: productId }).populate('unit');
     if (!product) {
-      return res.status(400).json({ success: false, message: 'Product not found' });
+      return res.status(400).json({ success: false, message: 'Produk Tidak Ditemukan' });
     }
 
     return res.status(200).json({ success: true, product });
@@ -87,10 +87,10 @@ exports.deleteProduct = async (req, res, next) => {
     if (!product) {
       return res
         .status(400)
-        .json({ success: false, message: "Can't delete product that doesn't exist" });
+        .json({ success: false, message: 'Tidak Dapat Menghapus Produk yang Tidak Ada' });
     }
 
-    return res.status(200).json({ success: true, message: 'Product successfully deleted' });
+    return res.status(200).json({ success: true, message: 'Produk Berhasil Dihapus' });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -117,10 +117,10 @@ exports.updateProduct = async (req, res, next) => {
     if (!product) {
       return res
         .status(400)
-        .json({ success: false, message: "Can't update product that doesn't exist" });
+        .json({ success: false, message: 'Tidak Dapat Mengupdate Produk yang Tidak Ada' });
     }
 
-    return res.status(200).json({ success: true, message: 'Product successfully updated' });
+    return res.status(200).json({ success: true, message: 'Produk Berhasil diupdate' });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

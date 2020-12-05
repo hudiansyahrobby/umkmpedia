@@ -20,7 +20,7 @@ export default function Wishlists({ wishlists, onDelete, onRemoveWishlist }) {
         );
       })
     ) : (
-      <h1>Anda Belum Menambahkan Produk dalam Daftar Keinginan</h1>
+      <h1 className='text-center'>Anda Belum Menambahkan Produk dalam Daftar Keinginan</h1>
     );
   return (
     <div className='mt-12'>

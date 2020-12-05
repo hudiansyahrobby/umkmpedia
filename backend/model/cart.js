@@ -33,7 +33,8 @@ const cartSchema = mongoose.Schema({
         required: true,
       },
       unit: {
-        type: String,
+        type: mongoose.Schema.ObjectId,
+        ref: 'Unit',
         required: true,
       },
       weight: {

@@ -86,8 +86,6 @@ exports.postResetPassword = async (req, res, next) => {
 exports.postNewPassword = async (req, res, next) => {
   const { password } = req.body;
   const { resetPasswordToken } = req.params;
-  console.log(resetPasswordToken);
-  console.log(password);
   try {
     const user = await User.findOne({ resetPasswordToken, resetTokenExpired: { $gt: Date.now() } });
 

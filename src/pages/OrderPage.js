@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, useHistory } from 'react-router-dom';
+import { Redirect } from 'react-router-dom';
 import { addToOrder, getCost, getPayment, resetOrder } from '../actions/orderActions';
 import { getCity } from '../actions/userActions';
 import { numberWithDot } from '../utils/numberWithDot';
@@ -11,6 +11,7 @@ import Layout from '../components/Layout';
 import Title from '../components/Title';
 import Button from '../components/Buttons/Button';
 import { useCallback } from 'react';
+import { calculateTotalPrice } from '../utils/CalculateTotalPrice';
 
 export default function OrderPage() {
   const { couriers, token } = useSelector((state) => state.order);
@@ -83,11 +84,10 @@ export default function OrderPage() {
 
   useEffect(() => {
     const orderItem = JSON.parse(localStorage.getItem('orderItem'));
-    const totalPriceWithoutCourier = +localStorage.getItem('totalPrice');
+    const totalPriceWithoutCourier = calculateTotalPrice(orderItem);
     setOrderItem(orderItem);
     setOrderItemPrice(totalPriceWithoutCourier);
     setTotalPrice(totalPriceWithoutCourier);
-
     getAllCourierCost();
   }, []);
 

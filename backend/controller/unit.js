@@ -3,7 +3,6 @@ const Unit = require('../model/unit');
 exports.addUnit = async (req, res, next) => {
   const { unit } = req.body;
   const loweredCaseUnit = unit.toLowerCase();
-  console.log(' UNIT', unit);
 
   const isUnitExist = await Unit.findOne({ name: loweredCaseUnit });
 
@@ -14,7 +13,7 @@ exports.addUnit = async (req, res, next) => {
   const newUnit = new Unit({
     unit: loweredCaseUnit,
   });
-  console.log('NEW UNIT', newUnit);
+
   try {
     await newUnit.save();
     return res.status(201).json({ success: true, unit: newUnit });

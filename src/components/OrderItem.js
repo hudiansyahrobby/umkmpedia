@@ -3,7 +3,6 @@ import { GiFrayedArrow } from 'react-icons/gi';
 import { IconContext } from 'react-icons';
 
 export default function OrderItem({ items }) {
-  console.log('ITEMS', items);
   return (
     <ul className='mt-4'>
       {items?.map((cart) => {
@@ -17,7 +16,7 @@ export default function OrderItem({ items }) {
               </span>
             </IconContext.Provider>
             <span className='font-semibold'>
-              {cart.name} - {cart.quantity} {cart.unit}
+              {cart.name} - {cart.quantity} {cart.unit.unit}
             </span>
           </li>
         );

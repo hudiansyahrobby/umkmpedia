@@ -1,6 +1,5 @@
 const Wishlist = require('../model/wishlist');
 const Product = require('../model/product');
-const { populate } = require('../model/wishlist');
 
 exports.getProductInWishlist = async (req, res, next) => {
   try {

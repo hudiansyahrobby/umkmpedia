@@ -1,4 +1,6 @@
 const Order = require('../model/order');
+const Product = require('../model/product');
+const Cart = require('../model/cart');
 const midtransClient = require('midtrans-client');
 const request = require('request');
 
@@ -11,7 +13,8 @@ exports.getAllOrders = async (req, res, next) => {
       .sort({ updatedAt: -1 })
       .skip(page * itemPerPage)
       .limit(itemPerPage)
-      .populate('category')
+      .populate('products.category')
+      .populate('products.unit', '_id unit')
       .exec();
 
     if (!order) {
@@ -44,6 +47,7 @@ exports.getOrdersByUser = async (req, res, next) => {
       .skip(page * itemPerPage)
       .limit(itemPerPage)
       .populate('products.category')
+      .populate('products.unit', '_id unit')
       .exec();
     if (!order) {
       return res.status(200).json({ success: true, order: [] });
@@ -68,7 +72,9 @@ exports.getOrdersByUser = async (req, res, next) => {
 exports.getOrderById = async (req, res, next) => {
   const { id } = req.params;
   try {
-    const order = await Order.find({ transaction_id: id });
+    const order = await Order.find({ transaction_id: id })
+      .populate('products.category')
+      .populate('products.unit', '_id unit');
     if (!order) {
       return res.status(200).json({ success: true, order: [] });
     }
@@ -107,7 +113,25 @@ exports.getCost = async (req, res, next) => {
 
 exports.addToOrder = async (req, res, next) => {
   const { products, transaction_id, totalPrice, shipping_address } = req.body;
+
   try {
+    for (let index = 0; index < products.length; index++) {
+      await Product.findByIdAndUpdate(products[index].productId, {
+        $inc: { quantity: -products[index].quantity },
+      });
+    }
+
+    const userData = await Cart.findOne({ userId: req.user._id });
+    const cart = userData.products;
+    for (let index = 0; index < products.length; index++) {
+      const updatedCart = cart.filter(
+        (_cart) => _cart.productId.toString() !== products[index].productId.toString(),
+      );
+      userData.products = updatedCart;
+      console.log('USER DATA', userData.products);
+      await userData.save();
+    }
+
     const newOrder = new Order({
       userId: req.user._id,
       products,
@@ -115,6 +139,8 @@ exports.addToOrder = async (req, res, next) => {
       totalPrice,
       shipping_address,
     });
+
+    console.log('NEW ORDER', newOrder);
     await newOrder.save();
     return res.status(200).json({ success: true, order: newOrder });
   } catch (error) {
@@ -214,7 +240,6 @@ exports.checkPayment = async (req, res, next) => {
 
 exports.addResi = async (req, res, next) => {
   const { resiNumber } = req.body;
-  console.log('RESI NUMBER', resiNumber);
   try {
     const orderItem = await Order.findOne({ transaction_id: req.params.id });
 
@@ -222,7 +247,6 @@ exports.addResi = async (req, res, next) => {
       return res.status(400).json({ message: 'Tidak Bisa Mengupdate Item yang Tidak Ada' });
     }
     orderItem.resiNumber = resiNumber;
-    console.log('ORDER ITEM', orderItem);
     await orderItem.save();
     return res.status(200).json({ message: 'Berhasil Menambahkan Nomer Resi' });
   } catch (error) {

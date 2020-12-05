@@ -6,6 +6,7 @@ import { getOrderById, getTransactionStatus } from '../actions/orderActions';
 import Button from '../components/Buttons/Button';
 import Layout from '../components/Layout';
 import TableHeader from '../components/Table/TableHeader';
+import { capitalizeFirstLetter } from '../utils/capitalizeFirstLetter';
 import { generatePublicPath } from '../utils/generatePublicPath';
 import { numberWithDot } from '../utils/numberWithDot';
 
@@ -88,14 +89,16 @@ export default function HistoryDetailPage() {
                                 </div>
                                 <div className='ml-4'>
                                   <div className='text-sm font-medium text-gray-900'>{name}</div>
-                                  <div className='text-sm text-gray-500'>{category.name}</div>
+                                  <div className='text-sm text-gray-500'>
+                                    {capitalizeFirstLetter(category.name)}
+                                  </div>
                                 </div>
                               </div>
                             </td>
 
                             <td className='px-6 py-4 whitespace-nowrap'>
                               <span className='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800'>
-                                {quantity} {unit}
+                                {quantity} {unit.unit}
                               </span>
                             </td>
 

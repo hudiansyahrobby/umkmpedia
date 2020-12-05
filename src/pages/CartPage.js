@@ -30,7 +30,6 @@ function CartPage() {
   const onOrderHandler = () => {
     const order = JSON.stringify(orderedItem);
     localStorage.setItem('orderItem', order);
-    localStorage.setItem('totalPrice', totalPrice);
     history.push('/order');
   };
 
@@ -68,7 +67,6 @@ function CartPage() {
       const checkedItem = orderedItem.filter((item) => {
         return item.name !== name;
       });
-      console.log('CHECKED', checkedItem);
       setOrderedItem(checkedItem);
     }
   };

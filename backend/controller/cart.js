@@ -3,8 +3,11 @@ const Product = require('../model/product');
 
 exports.getProductInCart = async (req, res, next) => {
   try {
-    const userData = await Cart.findOne({ userId: req.user._id }).populate('cart').exec();
-    const cart = userData;
+    const cart = await Cart.findOne({ userId: req.user._id })
+      .populate('products.unit', '_id unit')
+      .exec();
+
+    console.log('CART', cart);
     return res.status(200).json({ success: true, cart });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
@@ -27,7 +30,7 @@ exports.addProductToCart = async (req, res, next) => {
     stock,
   };
   try {
-    const cart = await Cart.findOne({ userId: req.user._id }).populate('cart').exec();
+    const cart = await Cart.findOne({ userId: req.user._id });
 
     if (cart) {
       // Find if the product exist in cart
@@ -62,16 +65,12 @@ exports.addProductToCart = async (req, res, next) => {
 exports.deleteProductFromCart = async (req, res, next) => {
   const productItemId = req.params.id;
   try {
-    const userData = await Cart.findOne({ userId: req.user._id }).populate('cart').exec();
+    const userData = await Cart.findOne({ userId: req.user._id });
     const cart = userData.products;
     const updatedCart = cart.filter((_cart) => _cart._id.toString() !== productItemId.toString());
     userData.products = updatedCart;
-    const totalPrice = userData.products.reduce((accumulator, currentValue) => {
-      return accumulator + currentValue.price * currentValue.quantity;
-    }, 0);
-    userData.totalPrice = totalPrice;
     await userData.save();
-    return res.status(200).json({ success: true, message: 'Item successfully delete from cart' });
+    return res.status(200).json({ success: true, message: 'Item berhasil dihapus dari keranjang' });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }
@@ -79,14 +78,10 @@ exports.deleteProductFromCart = async (req, res, next) => {
 
 exports.changeQuantity = async (req, res, next) => {
   const { id, quantity } = req.body;
-  console.log(id);
-  console.log('quntity', quantity);
   try {
     const userCart = await Cart.findOne({ userId: req.user._id });
     const cart = userCart.products;
     const index = cart.findIndex(({ _id }) => _id.toString() === id.toString());
-    console.log('INDEX', index);
-    console.log('cart', cart);
     cart[index].quantity = +quantity;
     await userCart.save();
     return res.status(200).json({ success: true, cart: userCart });

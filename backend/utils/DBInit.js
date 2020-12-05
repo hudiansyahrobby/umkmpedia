@@ -10,6 +10,9 @@ exports.DBInit = () =>
     process.env.MONGO_URI,
     { useNewUrlParser: true, useUnifiedTopology: true, useFindAndModify: false },
     () => {
+      // Order.deleteMany({}).then(() => {
+      //   console.log('deleted');
+      // });
       // User.update({}, { $set: { address: [] } }, { upsert: false, multi: true }).then(() =>
       //   console.log('berhasil'),
       // );
