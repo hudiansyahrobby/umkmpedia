@@ -1,4 +1,4 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { isUserLoggedIn } from './actions/userActions';
@@ -29,6 +29,7 @@ const AddResiPage = lazy(() => import('./pages/AddResiPage'));
 
 function App() {
   const dispatch = useDispatch();
+
   dispatch(isUserLoggedIn());
 
   return (

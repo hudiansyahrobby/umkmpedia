@@ -1,5 +1,6 @@
 import Axios from '../Axios';
 import * as USER from '../constants/userConstants';
+import jwt from 'jsonwebtoken';
 
 export const signup = (user, history) => async (dispatch) => {
   dispatch({ type: USER.SIGN_UP_INIT });
@@ -18,6 +19,7 @@ export const signout = (history) => async (dispatch) => {
     await Axios.post('/api/signout');
     dispatch({ type: USER.SIGN_OUT_SUCCESS });
     localStorage.removeItem('token');
+    localStorage.removeItem('user');
     history.push('/masuk');
   } catch (error) {
     dispatch({ type: USER.SIGN_OUT__FAIL, payload: { message: 'Gagal Logout' } });
@@ -30,25 +32,27 @@ export const signin = (userData) => async (dispatch) => {
     const { data } = await Axios.post('/api/signin', userData);
     if (data) {
       const { accessToken, user } = data;
+      console.log('LOGIN DATA', data);
       localStorage.setItem('token', accessToken);
       localStorage.setItem('user', JSON.stringify(user));
-      console.log(user);
       dispatch({ type: USER.SIGN_IN_SUCCESS, payload: { token: accessToken, user } });
     }
   } catch (error) {
-    console.log(error);
     dispatch({ type: USER.SIGN_IN__FAIL, payload: { message: error.response.data.message } });
   }
 };
 
-export const isUserLoggedIn = (history) => async (dispatch) => {
+export const isUserLoggedIn = () => async (dispatch) => {
   const token = localStorage.getItem('token');
   const user = JSON.parse(localStorage.getItem('user'));
-  if (token && user) {
+  try {
+    jwt.verify(token, 'uE9kTv=xcbasuAG!U^bgLf8^g6rn*_LJ_vJZ2BYDPLH#K5jp$dSNt_HjRBd_FRjS');
+
     dispatch({ type: USER.SIGN_IN_SUCCESS, payload: { token, user } });
-  } else {
-    localStorage.removeItem('token');
+  } catch (error) {
+    console.log('ERROR', error);
     dispatch({ type: USER.SIGN_IN__FAIL, payload: 'Token Tidak Valid' });
+    return localStorage.clear();
   }
 };
 
