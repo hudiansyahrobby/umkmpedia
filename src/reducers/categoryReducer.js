@@ -131,6 +131,7 @@ export default function categoryReducer(state = initialState, action) {
       state = {
         ...state,
         message: '',
+        category: [],
         success: false,
         error: false,
       };

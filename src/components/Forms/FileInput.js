@@ -4,7 +4,7 @@ import { IoMdClose } from 'react-icons/io';
 import { IconContext } from 'react-icons';
 import { generatePublicPath } from '../../utils/generatePublicPath';
 
-export default function FileInput({ id, label, onChange, onDelete, name, accept, image }) {
+function FileInput({ id, label, onChange, onDelete, name, accept, image, editImageState }) {
   return (
     <>
       <InputLabel id={id} label={label} />
@@ -31,16 +31,20 @@ export default function FileInput({ id, label, onChange, onDelete, name, accept,
 
         {image && (
           <>
-            <img
-              src={generatePublicPath(image)}
-              alt='preview'
-              className='w-64 h-48 rounded-lg absolute inset-0'
-            />
-            {/* <img
-              src={URL.createObjectURL(image)}
-              alt='preview'
-              className='w-64 h-48 rounded-lg absolute inset-0'
-            /> */}
+            {editImageState ? (
+              <img
+                src={URL.createObjectURL(image)}
+                alt='preview'
+                className='w-64 h-48 rounded-lg absolute inset-0'
+              />
+            ) : (
+              <img
+                src={generatePublicPath(image)}
+                alt='preview'
+                className='w-64 h-48 rounded-lg absolute inset-0'
+              />
+            )}
+
             <IconContext.Provider
               value={{
                 color: 'text-white',
@@ -58,3 +62,5 @@ export default function FileInput({ id, label, onChange, onDelete, name, accept,
     </>
   );
 }
+
+export default FileInput;

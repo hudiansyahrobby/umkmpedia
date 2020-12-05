@@ -17,8 +17,10 @@ function UserPage() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    dispatch(getOrder());
-  }, [dispatch]);
+    if (user?.role === 'user') {
+      dispatch(getOrder());
+    }
+  }, [dispatch, user.role]);
 
   if (!authenticated) {
     return <Redirect to='/masuk' />;
@@ -34,7 +36,9 @@ function UserPage() {
 
         <div className='mt-8'>
           <UserBiodata name={user?.name} email={user?.email} />
-          <UserCards wishlists={wishlists} carts={carts} orders={orders} />
+          {user?.role === 'user' && (
+            <UserCards wishlists={wishlists} carts={carts} orders={orders} />
+          )}
         </div>
       </div>
     </Layout>

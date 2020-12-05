@@ -19,6 +19,10 @@ export default function EditCategoryPage() {
 
   useEffect(() => {
     dispatch(getCategoryById(id));
+
+    return () => {
+      dispatch(resetCategory());
+    };
   }, [dispatch, id]);
 
   return (

@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
-import { EditorState } from 'draft-js';
+import { EditorState, ContentState, convertToRaw } from 'draft-js';
+import htmlToDraft from 'html-to-draftjs';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { convertToHTML } from 'draft-convert';
-// import useDeepCompareEffect from 'use-deep-compare-effect';
+import draftToHtml from 'draftjs-to-html';
 import CreatableSelect from 'react-select/creatable';
 
 import Button from '../components/Buttons/Button';
@@ -38,9 +38,21 @@ function EditProductPage() {
   const { units, loading: isUnitLoading } = useSelector((state) => state.unit);
 
   const [image, setImage] = useState('');
-  const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
-  const [convertedContent, setConvertedContent] = useState(null);
+  const [editImage, setEditImage] = useState(false);
+  const [editorState, setEditorState] = useState('');
+  console.log(editorState);
+  useEffect(() => {
+    if (product?.length > 0) {
+      console.log('rednder');
+      setEditorState(() =>
+        EditorState.createWithContent(
+          ContentState.createFromBlockArray(htmlToDraft(product[0].description)),
+        ),
+      );
+    }
+  }, [product]);
 
+  console.log('product', product);
   const categoryOptions = categories?.map((category) => ({
     value: category._id,
     label: capitalizeFirstLetter(category.name),
@@ -64,25 +76,11 @@ function EditProductPage() {
     };
   }, [dispatch, id, getIntialValues]);
 
-  // useDeepCompareEffect(() => {
-  //   if (product?.length > 0) {
-  //     setImage(product[0].image);
-
-  //     const blocksFromHTML = convertFromHTML(product[0].description);
-  //     const content = ContentState.createFromBlockArray(blocksFromHTML);
-  //     setEditorState(EditorState.createWithContent(content));
-  //   }
-  // }, [product]);
-
-  const handleEditorChange = (state) => {
-    setEditorState(state);
-    convertContentToHTML();
-  };
-
-  const convertContentToHTML = () => {
-    let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
-    setConvertedContent(currentContentAsHTML);
-  };
+  useEffect(() => {
+    if (product?.length > 0) {
+      setImage(product[0].image);
+    }
+  }, [product]);
 
   const handleCreateCategory = (name) => {
     const categoryData = {
@@ -110,9 +108,8 @@ function EditProductPage() {
                   price: product[0].price,
                   quantity: product[0].quantity,
                   category: product[0].category,
-                  unit: product[0].unit,
+                  unit: product[0].unit._id,
                   weight: product[0].weight,
-                  description: convertedContent,
                 }}
                 validationSchema={Yup.object({
                   name: Yup.string().required('Wajib Diisi'),
@@ -130,6 +127,7 @@ function EditProductPage() {
                   { name, price, quantity, category, weight, unit },
                   { setSubmitting },
                 ) => {
+                  const description = draftToHtml(convertToRaw(editorState.getCurrentContent()));
                   const productData = new FormData();
                   productData.append('name', name);
                   productData.append('price', price);
@@ -138,8 +136,9 @@ function EditProductPage() {
                   productData.append('weight', weight);
                   productData.append('category', category);
                   productData.append('image', image);
-                  productData.append('description', convertedContent);
-
+                  productData.append('description', description);
+                  console.log('IMAGE', image);
+                  console.log('productData', productData);
                   dispatch(updateProductById(id, productData, history));
                   setSubmitting(false);
                   setTimeout(() => {
@@ -240,12 +239,19 @@ function EditProductPage() {
                               isLoading={isUnitLoading}
                               placeholder='Pilih Satuan'
                               formatCreateLabel={(inputValue) => `Buat "${inputValue}"`}
-                              onChange={(option) => form.setFieldValue(field.name, option.label)}
+                              onChange={(option) => {
+                                console.log(option);
+                                if (option) {
+                                  form.setFieldValue(field.name, option.value);
+                                } else {
+                                  form.setFieldValue(field.name, '');
+                                }
+                              }}
                               onCreateOption={handleCreateUnit}
                               options={unitOptions}
                               value={
-                                categoryOptions
-                                  ? categoryOptions.find((option) => option.value === field.value)
+                                unitOptions
+                                  ? unitOptions.find((option) => option.value === field.value)
                                   : ''
                               }
                               name='unit'
@@ -266,7 +272,7 @@ function EditProductPage() {
 
                     <Editor
                       editorState={editorState}
-                      onEditorStateChange={handleEditorChange}
+                      onEditorStateChange={(content) => setEditorState(content)}
                       wrapperClassName='p-1 border border-gray-300'
                       editorClassName='bg-gray-400 p-1 border border-gray-300'
                       editorStyle={{ height: '250px' }}
@@ -278,9 +284,13 @@ function EditProductPage() {
                       accept='image/*'
                       as='file'
                       name='image'
+                      editImageState={editImage}
                       image={image}
                       label='Upload Gambar Produk'
-                      onChange={(e) => setImage(e.target.files[0])}
+                      onChange={(e) => {
+                        setEditImage(true);
+                        setImage(e.target.files[0]);
+                      }}
                       onDelete={(e) => setImage('')}
                     />
 

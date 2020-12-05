@@ -23,10 +23,16 @@ export default function Drawer({ open }) {
 
       {user?.role === 'admin' && <DrawerLink link='/admin' name='Admin' />}
 
-      {user?.role === 'user' || user?.role === 'admin' ? (
+      {user?.role === 'user' && (
         <>
           <DrawerLink link='/keranjang' name='Keranjang' />
           <DrawerLink link='/favorit' name='Produk Favorit' />
+        </>
+      )}
+
+      {user?.role === 'user' || user?.role === 'admin' ? (
+        <>
+          <DrawerLink link='/profil' name='Profil' />
           <DrawerLink button name='Keluar' onClick={onSignoutHandler} />
         </>
       ) : (

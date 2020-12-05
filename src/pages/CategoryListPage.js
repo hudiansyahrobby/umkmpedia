@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../components/Layout';
 import { resetCategory } from '../actions/categoryActions';
@@ -8,6 +8,12 @@ import List from '../components/List';
 export default function CategoryListPage() {
   const dispatch = useDispatch();
   const { categories, error, success, message } = useSelector((state) => state.category);
+
+  useEffect(() => {
+    return () => {
+      dispatch(resetCategory());
+    };
+  }, [dispatch]);
 
   return (
     <Layout>

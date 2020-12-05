@@ -32,7 +32,6 @@ export const signin = (userData) => async (dispatch) => {
     const { data } = await Axios.post('/api/signin', userData);
     if (data) {
       const { accessToken, user } = data;
-      console.log('LOGIN DATA', data);
       localStorage.setItem('token', accessToken);
       localStorage.setItem('user', JSON.stringify(user));
       dispatch({ type: USER.SIGN_IN_SUCCESS, payload: { token: accessToken, user } });

@@ -21,14 +21,14 @@ export default function Navbar({ onOpen }) {
   const { categories } = useSelector((state) => state.category);
 
   useDeepCompareEffect(() => {
-    if (user.authenticated) {
+    if (user?.user?.role === 'user') {
       dispatch(getWishlist());
     }
     console.log('WISHLIST');
   }, [wishlists]);
 
   useDeepCompareEffect(() => {
-    if (user.authenticated) {
+    if (user?.user?.role === 'user') {
       dispatch(getCart());
     }
   }, [carts]);
@@ -37,20 +37,12 @@ export default function Navbar({ onOpen }) {
     dispatch(getcategories());
   }, [categories]);
 
-  // useEffect(() => {
-  //   if (user.authenticated) {
-  //     dispatch(getWishlist());
-  //     dispatch(getCart());
-  //   }
-  //   dispatch(getcategories());
-  // }, [dispatch, user.authenticated]);
-
   const onSignOutHandler = async () => {
     dispatch(signout(history));
   };
 
   let navbar;
-  if (!user.authenticated) {
+  if (!user?.authenticated) {
     navbar = (
       <>
         <NavbarLink link='/masuk' name='Masuk' />

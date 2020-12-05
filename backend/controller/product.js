@@ -17,7 +17,7 @@ exports.addProduct = async (req, res, next) => {
     category,
     image: req.file.filename,
   });
-  console.log('NEW PRODUCT', newProduct);
+
   try {
     await newProduct.save();
     return res.status(201).json({ success: true, product: newProduct });
@@ -69,7 +69,7 @@ exports.getAllProducts = async (req, res, next) => {
 exports.getProduct = async (req, res, next) => {
   const productId = req.params.id;
   try {
-    const product = await Product.findOne({ _id: productId });
+    const product = await Product.findOne({ _id: productId }).populate('unit');
     if (!product) {
       return res.status(400).json({ success: false, message: 'Product not found' });
     }
@@ -97,15 +97,9 @@ exports.deleteProduct = async (req, res, next) => {
 };
 
 exports.updateProduct = async (req, res, next) => {
-  const { name, price, description, unit, weight, quantity, category } = req.body;
+  const { name, price, description, unit, weight, quantity, category, image } = req.body;
 
   const productId = req.params.id;
-
-  if (!req.file) {
-    return res.status(400).json({ success: false, message: 'Image is not valid' });
-  }
-
-  // #TASK : DELETE IMAGE THAT IS NOT USER ANYMORE
 
   const updatedProduct = {
     name,
@@ -115,7 +109,7 @@ exports.updateProduct = async (req, res, next) => {
     weight,
     quantity,
     category,
-    image: req.file.filename,
+    image: image || req.file.filename,
   };
 
   try {

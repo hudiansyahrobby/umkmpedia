@@ -14,8 +14,12 @@ function SigninPage() {
   const user = useSelector((state) => state.user);
   const history = useHistory();
 
-  if (user?.authenticated) {
+  if (user?.user?.role === 'user') {
     return <Redirect to='/profil' />;
+  }
+
+  if (user?.user?.role === 'admin') {
+    return <Redirect to='/admin' />;
   }
 
   return (

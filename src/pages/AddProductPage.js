@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useHistory } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { ErrorMessage, Field, Form, Formik } from 'formik';
 import * as Yup from 'yup';
 
 import CreatableSelect from 'react-select/creatable';
-import { EditorState } from 'draft-js';
+import { EditorState, convertToRaw } from 'draft-js';
 import { Editor } from 'react-draft-wysiwyg';
 import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
-import { convertToHTML } from 'draft-convert';
+import draftToHtml from 'draftjs-to-html';
 
 import Button from '../components/Buttons/Button';
 import Input from '../components/Input';
@@ -27,7 +27,6 @@ import { capitalizeFirstLetter } from '../utils/capitalizeFirstLetter';
 function AddProductPage() {
   const [image, setImage] = useState('');
   const [editorState, setEditorState] = useState(() => EditorState.createEmpty());
-  const [convertedContent, setConvertedContent] = useState(null);
 
   const { message, success, error } = useSelector((state) => state.product);
   const { categories, loading: isCategoryLoading } = useSelector((state) => state.category);
@@ -36,29 +35,28 @@ function AddProductPage() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const categoryOptions = categories?.map((category) => ({
-    value: category._id,
-    label: capitalizeFirstLetter(category.name),
-  }));
+  const categoryOptions = useMemo(
+    () =>
+      categories?.map((category) => ({
+        value: category._id,
+        label: capitalizeFirstLetter(category.name),
+      })),
+    [categories],
+  );
 
-  const unitOptions = units?.map(({ _id, unit }) => ({
-    value: _id,
-    label: capitalizeFirstLetter(unit),
-  }));
+  const unitOptions = useMemo(
+    () =>
+      units?.map(({ _id, unit }) => ({
+        value: _id,
+        label: capitalizeFirstLetter(unit),
+      })),
+    [units],
+  );
 
   useEffect(() => {
     dispatch(getUnits());
     dispatch(resetProduct());
   }, [dispatch]);
-
-  const handleEditorChange = (state) => {
-    setEditorState(state);
-  };
-
-  const convertContentToHTML = () => {
-    let currentContentAsHTML = convertToHTML(editorState.getCurrentContent());
-    setConvertedContent(currentContentAsHTML);
-  };
 
   const handleCreateCategory = (name) => {
     const categoryData = {
@@ -96,7 +94,7 @@ function AddProductPage() {
               unit: Yup.string().required('Wajib Diisi'),
             })}
             onSubmit={({ name, price, quantity, weight, unit, category }, { setSubmitting }) => {
-              convertContentToHTML(editorState);
+              const description = draftToHtml(convertToRaw(editorState.getCurrentContent()));
               const productData = new FormData();
               productData.append('name', name);
               productData.append('category', category);
@@ -105,7 +103,8 @@ function AddProductPage() {
               productData.append('weight', weight);
               productData.append('unit', unit);
               productData.append('image', image);
-              productData.append('description', convertedContent);
+              productData.append('description', description);
+              console.log(productData);
               dispatch(addNewProduct(productData, history));
               setSubmitting(false);
               setTimeout(() => {
@@ -204,12 +203,12 @@ function AddProductPage() {
                           isLoading={isUnitLoading}
                           placeholder='Pilih Satuan'
                           formatCreateLabel={(inputValue) => `Buat "${inputValue}"`}
-                          onChange={(option) => form.setFieldValue(field.name, option.label)}
+                          onChange={(option) => form.setFieldValue(field.name, option.value)}
                           onCreateOption={handleCreateUnit}
                           options={unitOptions}
                           value={
-                            categoryOptions
-                              ? categoryOptions.find((option) => option.value === field.value)
+                            unitOptions
+                              ? unitOptions.find((option) => option.value === field.value)
                               : ''
                           }
                           name='unit'
@@ -230,7 +229,7 @@ function AddProductPage() {
 
                 <Editor
                   editorState={editorState}
-                  onEditorStateChange={handleEditorChange}
+                  onEditorStateChange={(content) => setEditorState(content)}
                   wrapperClassName='p-1 border border-gray-300'
                   editorClassName='bg-gray-400 p-1 border border-gray-300'
                   editorStyle={{ height: '250px' }}
@@ -243,9 +242,10 @@ function AddProductPage() {
                   as='file'
                   name='image'
                   image={image}
+                  editImageState={true}
                   label='Upload Gambar Produk'
                   onChange={(e) => setImage(e.target.files[0])}
-                  onDelete={(e) => setImage('')}
+                  onDelete={() => setImage('')}
                 />
 
                 <div className='mt-5 w-48 mx-auto'>
