@@ -36,7 +36,6 @@ export const getOrderByUser = (page = 1) => async (dispatch) => {
   dispatch({ type: ORDER.GET_ORDER_INIT });
   try {
     const { data } = await Axios.get(`api/order/user?page=${page}`);
-    console.log('ORDER', data);
     dispatch({
       type: ORDER.GET_ORDER_SUCCESS,
       payload: { orders: data.order, totalPage: data.totalPage },
@@ -82,10 +81,10 @@ export const getCost = (orderData) => async (dispatch) => {
   }
 };
 
-export const getPayment = (totalPrice) => async (dispatch) => {
+export const getPayment = (paymentData) => async (dispatch) => {
   dispatch({ type: ORDER.GET_PAYMENT_INIT });
   try {
-    const { data } = await Axios.post(`api/payment`, totalPrice);
+    const { data } = await Axios.post(`api/payment`, paymentData);
     dispatch({
       type: ORDER.GET_PAYMENT_SUCCESS,
       payload: { payment: data.result },

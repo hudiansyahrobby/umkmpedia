@@ -1,4 +1,3 @@
-const request = require('request');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
 const sendGridTransport = require('nodemailer-sendgrid-transport');
@@ -99,42 +98,6 @@ exports.postNewPassword = async (req, res, next) => {
 
     await user.save();
     return res.status(201).json({ success: true, message: 'Berhasil Mengubah Password' });
-  } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-exports.getProvince = (req, res, next) => {
-  try {
-    const options = {
-      method: 'GET',
-      url: 'https://api.rajaongkir.com/starter/province',
-      headers: { key: process.env.RAJA_ONGKIR_API_KEY },
-    };
-
-    request(options, function (error, response, body) {
-      if (error) throw new Error(error);
-      const result = JSON.parse(body);
-      return res.status(201).json({ success: true, provinces: result.rajaongkir.results });
-    });
-  } catch (error) {
-    return res.status(500).json({ success: false, message: error.message });
-  }
-};
-
-exports.getCity = (req, res, next) => {
-  try {
-    const options = {
-      method: 'GET',
-      url: 'https://api.rajaongkir.com/starter/city',
-      headers: { key: process.env.RAJA_ONGKIR_API_KEY },
-    };
-
-    request(options, function (error, response, body) {
-      if (error) throw new Error(error);
-      const result = JSON.parse(body);
-      return res.status(201).json({ success: true, cities: result.rajaongkir.results });
-    });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
   }

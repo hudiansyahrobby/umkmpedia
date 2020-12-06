@@ -1,33 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-import { getCity, getProvince, updateProfile } from '../actions/userActions';
+import { updateProfile } from '../actions/userActions';
 import Button from '../components/Buttons/Button';
 import Layout from '../components/Layout';
 import Title from '../components/Title';
 
+import CITIES from '../data/cities.json';
+import PROVINCES from '../data/provinces.json';
+
 export default function UpdateProfilePage() {
-  const { provinces, cities, user } = useSelector((state) => state.user);
+  const { user } = useSelector((state) => state.user);
   const [name, setName] = useState(user.name);
   const [telephone, setTelephone] = useState(user.telephone);
   const [fullAddress, setFullAddress] = useState(user.fullAddress);
   const [myCity, setMyCity] = useState('');
   const [myProvince, setMyProvince] = useState('');
-  const [city, setCity] = useState([]);
-
+  const [cityByProvince, setCityByProvince] = useState([]);
   const dispatch = useDispatch();
   const history = useHistory();
-
-  useEffect(() => {
-    dispatch(getProvince());
-    dispatch(getCity());
-  }, [dispatch, user.province]);
 
   const onChangeProvinceHandler = (e) => {
     const provinceId = e.target.value;
     setMyProvince(provinceId);
-    const filteredCity = cities.filter((city) => city.province_id === provinceId);
-    setCity(filteredCity);
+    const filteredCity = CITIES.cities.filter((city) => city.province_id === provinceId);
+    setCityByProvince(filteredCity);
   };
 
   const onSubmitHandler = (e) => {
@@ -41,17 +38,15 @@ export default function UpdateProfilePage() {
     };
     dispatch(updateProfile(updatedProfile, history));
   };
-  console.log('CITY', city);
+
   return (
     <Layout>
       <div className='mt-24 mb-4 px-6 w-full'>
         <Title margin='mx-auto' align='text-center'>
           Update Profil
         </Title>
-        {provinces.length > 0 && cities.length > 0 && user ? (
+        {user ? (
           <>
-            {console.log(user)}
-
             <form onSubmit={onSubmitHandler}>
               <div className='mb-4'>
                 <label className='block text-gray-700 text-sm font-bold mb-2' htmlFor='nama'>
@@ -95,7 +90,7 @@ export default function UpdateProfilePage() {
                   className='block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline'
                 >
                   <option>Pilih Provinsi Tujuan Pengiriman</option>
-                  {provinces?.map(({ province_id, province }) => {
+                  {PROVINCES?.provinces?.map(({ province_id, province }) => {
                     return (
                       <option key={province_id} value={province_id}>
                         {province}
@@ -123,11 +118,12 @@ export default function UpdateProfilePage() {
                   name='kota'
                   id='kota'
                   value={myCity}
+                  disabled={!myProvince}
                   onChange={(e) => setMyCity(e.target.value)}
                   className='block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline'
                 >
                   <option>Pilih Kota/Kabupaten Tujuan Pengiriman</option>
-                  {city?.map(({ city_id, city_name, type }) => {
+                  {cityByProvince?.map(({ city_id, city_name, type }) => {
                     return (
                       <option key={city_id} value={city_id}>
                         {type} {city_name}

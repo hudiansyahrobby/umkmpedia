@@ -79,39 +79,6 @@ export const postNewPassword = (password, resetToken, history) => async (dispatc
   }
 };
 
-export const getProvince = () => async (dispatch) => {
-  dispatch({ type: USER.GET_PROVINCE_INIT });
-  try {
-    const { data } = await Axios.get('api/province');
-    console.log(data);
-    dispatch({
-      type: USER.GET_PROVINCE_SUCCESS,
-      payload: { provinces: data.provinces },
-    });
-  } catch (error) {
-    dispatch({
-      type: USER.GET_PROVINCE_FAIL,
-      payload: { message: error.response.data.message },
-    });
-  }
-};
-
-export const getCity = () => async (dispatch) => {
-  dispatch({ type: USER.GET_CITY_INIT });
-  try {
-    const { data } = await Axios.get(`api/city`);
-    dispatch({
-      type: USER.GET_CITY_SUCCESS,
-      payload: { cities: data.cities },
-    });
-  } catch (error) {
-    dispatch({
-      type: USER.GET_CITY_FAIL,
-      payload: { message: error.response.data.message },
-    });
-  }
-};
-
 export const updateProfile = (updatedProfile, history) => async (dispatch) => {
   dispatch({ type: USER.UPDATE_PROFILE_INIT });
   try {

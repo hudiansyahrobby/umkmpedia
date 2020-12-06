@@ -15,10 +15,6 @@ router.post('/reset-password', authController.postResetPassword);
 
 router.post('/new-password/:resetPasswordToken', authController.postNewPassword);
 
-router.get('/province', verifyUser, authController.getProvince);
-
-router.get('/city', verifyUser, authController.getCity);
-
 router.put('/update-profile', verifyUser, authController.updateProfile);
 
 router.get('/users', verifyUser, authController.getTotalUsers);

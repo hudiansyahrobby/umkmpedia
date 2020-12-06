@@ -128,7 +128,6 @@ exports.addToOrder = async (req, res, next) => {
         (_cart) => _cart.productId.toString() !== products[index].productId.toString(),
       );
       userData.products = updatedCart;
-      console.log('USER DATA', userData.products);
       await userData.save();
     }
 
@@ -140,7 +139,6 @@ exports.addToOrder = async (req, res, next) => {
       shipping_address,
     });
 
-    console.log('NEW ORDER', newOrder);
     await newOrder.save();
     return res.status(200).json({ success: true, order: newOrder });
   } catch (error) {
@@ -149,7 +147,15 @@ exports.addToOrder = async (req, res, next) => {
 };
 
 exports.getPayment = async (req, res, next) => {
-  const { totalPrice } = req.body;
+  const { courierCost, orderItem } = req.body;
+
+  let totalPrice = courierCost;
+
+  for (let index = 0; index < orderItem.length; index++) {
+    const productId = orderItem[index].productId;
+    const product = await Product.findById({ _id: productId });
+    totalPrice += product.price;
+  }
   // Create Snap API instance
   let snap = new midtransClient.Snap({
     // Set to true if you want Production Environment (accept real transaction).
@@ -191,7 +197,6 @@ exports.getPayment = async (req, res, next) => {
 exports.checkPayment = async (req, res, next) => {
   console.log(`- Received check transaction status request:`, req.body);
 
-  // [0] Setup API client and config
   let core = new midtransClient.CoreApi({
     isProduction: false,
     serverKey: process.env.SERVER_KEY_MIDTRANS,
@@ -199,42 +204,7 @@ exports.checkPayment = async (req, res, next) => {
   });
 
   core.transaction.status(req.params.id).then((transactionStatusObject) => {
-    // let orderId = transactionStatusObject.order_id;
-    // let transactionStatus = transactionStatusObject.transaction_status;
-    // let fraudStatus = transactionStatusObject.fraud_status;
     return res.status(200).json({ success: true, transaction: transactionStatusObject });
-
-    // let summary = `Transaction Result. Order ID: ${orderId}. Transaction status: ${transactionStatus}. Fraud status: ${fraudStatus}.<br>Raw transaction status:<pre>${JSON.stringify(
-    //   transactionStatusObject,
-    //   null,
-    //   2,
-    // )}</pre>`;
-
-    // [5.A] Handle transaction status on your backend
-    // Sample transactionStatus handling logic
-    // if (transactionStatus === 'capture') {
-    // if (fraudStatus === 'challenge') {
-    // TODO set transaction status on your databaase to 'challenge'
-    // } else if (fraudStatus === 'accept') {
-    // TODO set transaction status on your databaase to 'success'
-    // }
-    // } else if (transactionStatus === 'settlement') {
-    // TODO set transaction status on your databaase to 'success'
-    // Note: Non card transaction will become 'settlement' on payment success
-    // Credit card will also become 'settlement' D+1, which you can ignore
-    // because most of the time 'capture' is enough to be considered as success
-    // } else if (
-    //   transactionStatus === 'cancel' ||
-    //   transactionStatus === 'deny' ||
-    //   transactionStatus === 'expire'
-    // ) {
-    // TODO set transaction status on your databaase to 'failure'
-    // } else if (transactionStatus === 'pending') {
-    // TODO set transaction status on your databaase to 'pending' / waiting payment
-    // } else if (transactionStatus === 'refund') {
-    // TODO set transaction status on your databaase to 'refund'
-    // }
-    // console.log(summary);
   });
 };
 

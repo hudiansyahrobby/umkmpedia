@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import { useDispatch, useSelector } from 'react-redux';
 import { Redirect } from 'react-router-dom';
-import { getOrder } from '../actions/orderActions';
+import { getOrderByUser } from '../actions/orderActions';
 import UserCards from '../components/Cards/UserCards';
 import Layout from '../components/Layout';
 import Title from '../components/Title';
@@ -18,7 +18,7 @@ function UserPage() {
 
   useEffect(() => {
     if (user?.role === 'user') {
-      dispatch(getOrder());
+      dispatch(getOrderByUser());
     }
   }, [dispatch, user.role]);
 
