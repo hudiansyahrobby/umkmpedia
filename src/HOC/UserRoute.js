@@ -8,13 +8,10 @@ export default function UserRoute({ component: Component, ...rest }) {
       {...rest}
       component={(props) => {
         const token = localStorage.getItem('token');
-        console.log('USER ROUTE TOKEN LS', token);
         try {
-          jwt.verify(token, 'uE9kTv=xcbasuAG!U^bgLf8^g6rn*_LJ_vJZ2BYDPLH#K5jp$dSNt_HjRBd_FRjS');
-          console.log('VALID TOKEN USER ROUTE');
+          jwt.verify(token, process.env.REACT_APP_ACCESS_TOKEN_SECRET);
           return <Component {...props} />;
         } catch (error) {
-          console.log('USER ROUTE EROR', error);
           localStorage.clear();
           return <Redirect to='/masuk' />;
         }

@@ -3,7 +3,7 @@ import axios from 'axios';
 const fetchClient = () => {
   // Create instance
   let instance = axios.create({
-    baseURL: 'http://localhost:5000/',
+    baseURL: process.env.REACT_APP_SERVER_URL,
   });
 
   // Set the AUTH token for any request

@@ -16,7 +16,6 @@ const reducer = combineReducers({
   order: orderReducer,
   category: categoryReducer,
   unit: unitReducer,
-  // review: reviewReducer,
 });
 
 const composeEnhancer = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;

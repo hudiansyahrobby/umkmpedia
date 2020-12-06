@@ -62,7 +62,6 @@ export const onChangeQuantity = (id, quantity) => async (dispatch) => {
     id,
     quantity,
   };
-  console.log('CART DATA', cartData);
   dispatch({ type: CART.CHANGE_PRODUCT_QTY_INIT });
   try {
     const { data } = await Axios.post('api/cart/change-quantity', cartData);

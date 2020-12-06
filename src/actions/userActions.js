@@ -45,11 +45,10 @@ export const isUserLoggedIn = () => async (dispatch) => {
   const token = localStorage.getItem('token');
   const user = JSON.parse(localStorage.getItem('user'));
   try {
-    jwt.verify(token, 'uE9kTv=xcbasuAG!U^bgLf8^g6rn*_LJ_vJZ2BYDPLH#K5jp$dSNt_HjRBd_FRjS');
+    jwt.verify(token, process.env.REACT_APP_ACCESS_TOKEN_SECRET);
 
     dispatch({ type: USER.SIGN_IN_SUCCESS, payload: { token, user } });
   } catch (error) {
-    console.log('ERROR', error);
     dispatch({ type: USER.SIGN_IN__FAIL, payload: 'Token Tidak Valid' });
     return localStorage.clear();
   }
@@ -67,11 +66,8 @@ export const resetPassword = (email) => async (dispatch) => {
 
 export const postNewPassword = (password, resetToken, history) => async (dispatch) => {
   dispatch({ type: USER.POST_NEW_PASSWORD_INIT });
-  console.log('PASSWORD', password);
-  console.log('resetToken', resetToken);
   try {
     const { data } = await Axios.post(`/api/new-password/${resetToken}`, password);
-    console.log('DATA', data);
     dispatch({ type: USER.RESET_PASSWORD_SUCCESS, payload: { message: data.message } });
     history.push('/masuk');
   } catch (error) {
@@ -90,7 +86,6 @@ export const updateProfile = (updatedProfile, history) => async (dispatch) => {
     localStorage.setItem('user', JSON.stringify(data.user));
     history.push('/profil');
   } catch (error) {
-    console.log(error);
     dispatch({
       type: USER.UPDATE_PROFILE_FAIL,
       payload: { message: error },

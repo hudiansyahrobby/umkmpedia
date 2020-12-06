@@ -176,9 +176,6 @@ exports.getPayment = async (req, res, next) => {
       email: req.user.email,
       phone: req.user.telephone,
     },
-    callbacks: {
-      finish: 'http://localhost:3000/riwayat-pembelian',
-    },
   };
   try {
     const transaction = await snap.createTransaction(parameter);

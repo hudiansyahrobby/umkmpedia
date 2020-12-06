@@ -101,7 +101,6 @@ export const getTransactionStatus = (id) => async (dispatch) => {
   dispatch({ type: ORDER.GET_TRANSACTION_STATUS_INIT });
   try {
     const { data } = await Axios.get(`api/payment/${id}`);
-    console.log('TRANSACTION', data);
     dispatch({
       type: ORDER.GET_TRANSACTION_STATUS_SUCCESS,
       payload: { transaction: data.transaction },

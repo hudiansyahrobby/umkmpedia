@@ -1,5 +1,4 @@
 import React from 'react';
-// import CircleButton from '../components/Buttons/CircleButtons/CircleButton';
 import Input from '../components/Input';
 import Button from '../components/Buttons/Button';
 import * as Yup from 'yup';
@@ -43,11 +42,7 @@ function SigninPage() {
           >
             <Form className='bg-info shadow-md rounded px-8 pt-6 pb-8 mb-4'>
               <h2 className='font-bold text-2xl tracking-wide text-center'>Masuk ke Akun</h2>
-              <div className='flex justify-center mt-4 text-center'>
-                {/* <CircleButton icon={<FacebookIcon />} border='border-blue-dark' />
-                <CircleButton icon={<GoogleIcon />} border='border-red-600' />
-                <CircleButton icon={<TwitterIcon />} border='border-blue-light' /> */}
-              </div>
+              <div className='flex justify-center mt-4 text-center'></div>
 
               <Input
                 name='email'
@@ -65,9 +60,9 @@ function SigninPage() {
                 label='Password'
               />
 
-              <NavLink to='/lupa-password' className='text-sm text-blue-400 font-bold'>
+              {/* <NavLink to='/lupa-password' className='text-sm text-blue-400 font-bold'>
                 Lupa Password ?
-              </NavLink>
+              </NavLink> */}
               <div className='mt-2 text-center'>
                 <Button
                   background='bg-primary hover:bg-orange-400'

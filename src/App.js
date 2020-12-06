@@ -16,7 +16,6 @@ const EditCategoryPage = lazy(() => import('./pages/EditCategoryPage'));
 const EditProductPage = lazy(() => import('./pages/EditProductPage'));
 const HomePage = lazy(() => import('./pages/HomePage'));
 const OrderPage = lazy(() => import('./pages/OrderPage'));
-const PaymentPage = lazy(() => import('./pages/PaymentPage'));
 const PostNewPasswordPage = lazy(() => import('./pages/PostNewPasswordPage'));
 const ProductDetailPage = lazy(() => import('./pages/ProductDetailPage'));
 const ProductsPage = lazy(() => import('./pages/ProductsPage'));
@@ -42,7 +41,6 @@ function App() {
         <UserRoute path='/admin/tambah-resi/:id' component={AddResiPage} />
         <AdminRoute path='/admin' component={AdminPage} />
         <UserRoute path='/keranjang' component={CartPage} />
-        <UserRoute path='/pembayaran' component={PaymentPage} />
         <UserRoute path='/favorit' component={WishlistPage} />
         <UserRoute path='/order' component={OrderPage} />
         <UserRoute path='/riwayat-pembelian/:id' component={HistoryDetailPage} />

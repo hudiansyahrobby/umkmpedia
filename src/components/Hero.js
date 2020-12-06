@@ -1,11 +1,13 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import HeroImage from '../assets/images/hero.jpg';
 
 function Hero() {
   return (
     <div
       style={{
-        backgroundImage: `linear-gradient( to bottom, #05000000 , #000000), url('https://images.unsplash.com/photo-1501946623428-b301146b83af?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1101&q=80')`,
+        backgroundImage: `linear-gradient( to bottom, #05000000 , #000000), url(${HeroImage})`,
+        minHeight: '600px',
       }}
       className='h-screen bg-cover bg-center flex items-center justify-center flex-col'
     >

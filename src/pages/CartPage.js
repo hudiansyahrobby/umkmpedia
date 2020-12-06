@@ -4,7 +4,6 @@ import { deleteFromCart, onChangeQuantity } from '../actions/cartActions';
 import Button from '../components/Buttons/Button';
 import Carts from '../components/Carts/Carts';
 import CartSkeleton from '../components/Carts/CartSkeleton';
-import CircleButton from '../components/Buttons/CircleButtons/CircleButton';
 import Layout from '../components/Layout';
 import Title from '../components/Title';
 import { calculateTotalPrice } from '../utils/CalculateTotalPrice';
@@ -77,7 +76,6 @@ function CartPage() {
         <div className='px-6'>
           <div className='flex justify-between items-center'>
             <Title>Keranjang Belanja</Title>
-            <CircleButton />
           </div>
         </div>
 

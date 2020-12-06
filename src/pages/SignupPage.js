@@ -13,7 +13,7 @@ function SignupPage() {
   const user = useSelector((state) => state.user);
   const history = useHistory();
 
-  if (user.authenticated) {
+  if (user?.authenticated) {
     return <Redirect to='/user' />;
   }
 
@@ -42,11 +42,6 @@ function SignupPage() {
           >
             <Form className='bg-info shadow-md rounded px-8 pt-6 pb-8 mb-4'>
               <h2 className='font-bold text-2xl tracking-wide text-center'>Buat Akun Baru</h2>
-              {/* <div className='flex justify-center mt-4 text-center'>
-                <CircleButton icon={<FacebookIcon />} border='border-blue-dark' />
-                <CircleButton icon={<GoogleIcon />} border='border-red-light' />
-                <CircleButton icon={<TwitterIcon />} border='border-blue-light' />
-              </div> */}
 
               <Input name='name' type='text' id='name' placeholder='Masukkan Nama' label='Name' />
               <Input

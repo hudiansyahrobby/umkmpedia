@@ -31,11 +31,7 @@ function ResetPasswordPage() {
           >
             <Form className='bg-info shadow-md rounded px-8 pt-6 pb-8 mb-4'>
               <h2 className='font-bold text-2xl tracking-wide text-center'>Reset Password</h2>
-              <div className='flex justify-center mt-4 text-center'>
-                {/* <CircleButton icon={<FacebookIcon />} border='border-blue-dark' />
-                <CircleButton icon={<GoogleIcon />} border='border-red-600' />
-                <CircleButton icon={<TwitterIcon />} border='border-blue-light' /> */}
-              </div>
+              <div className='flex justify-center mt-4 text-center'></div>
 
               <Input
                 name='email'

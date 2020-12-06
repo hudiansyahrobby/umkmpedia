@@ -5,7 +5,6 @@ export const addUnit = (unit) => async (dispatch) => {
   dispatch({ type: UNIT.ADD_UNIT_INIT });
   try {
     const { data } = await Axios.post('api/unit', unit);
-    console.log(data.unit);
     dispatch({ type: UNIT.ADD_UNIT_SUCCESS, payload: { unit: data.unit } });
   } catch (error) {
     dispatch({

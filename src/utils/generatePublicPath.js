@@ -1,3 +1,3 @@
 export const generatePublicPath = (filename) => {
-  return `http://localhost:5000/${filename}`;
+  return `${process.env.REACT_APP_SERVER_URL}${filename}`;
 };
