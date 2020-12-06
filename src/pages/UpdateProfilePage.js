@@ -11,12 +11,12 @@ import PROVINCES from '../data/provinces.json';
 
 export default function UpdateProfilePage() {
   const { user } = useSelector((state) => state.user);
-  const [name, setName] = useState(user.name);
-  const [telephone, setTelephone] = useState(user.telephone);
-  const [fullAddress, setFullAddress] = useState(user.fullAddress);
-  const [myCity, setMyCity] = useState('');
-  const [myProvince, setMyProvince] = useState('');
-  const [cityByProvince, setCityByProvince] = useState([]);
+  const [name, setName] = useState(user?.name);
+  const [telephone, setTelephone] = useState(user?.telephone);
+  const [fullAddress, setFullAddress] = useState(user?.fullAddress);
+  const [myCity, setMyCity] = useState(user?.city);
+  const [myProvince, setMyProvince] = useState(user?.province);
+  const [cityByProvince, setCityByProvince] = useState(CITIES.cities);
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -26,6 +26,16 @@ export default function UpdateProfilePage() {
     const filteredCity = CITIES.cities.filter((city) => city.province_id === provinceId);
     setCityByProvince(filteredCity);
   };
+
+  useEffect(() => {
+    setMyProvince(user?.province);
+    setMyCity(user?.city);
+
+    if (user?.province) {
+      const filteredCity = CITIES.cities.filter((city) => city.province_id === user?.province);
+      setCityByProvince(filteredCity);
+    }
+  }, []);
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
@@ -118,7 +128,6 @@ export default function UpdateProfilePage() {
                   name='kota'
                   id='kota'
                   value={myCity}
-                  disabled={!myProvince}
                   onChange={(e) => setMyCity(e.target.value)}
                   className='block appearance-none w-full bg-white border border-gray-400 hover:border-gray-500 px-4 py-2 pr-8 rounded shadow leading-tight focus:outline-none focus:shadow-outline'
                 >

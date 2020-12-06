@@ -137,8 +137,6 @@ function EditProductPage() {
                   productData.append('category', category);
                   productData.append('image', image);
                   productData.append('description', description);
-                  console.log('IMAGE', image);
-                  console.log('productData', productData);
                   dispatch(updateProductById(id, productData, history));
                   setSubmitting(false);
                   setTimeout(() => {
@@ -240,7 +238,6 @@ function EditProductPage() {
                               placeholder='Pilih Satuan'
                               formatCreateLabel={(inputValue) => `Buat "${inputValue}"`}
                               onChange={(option) => {
-                                console.log(option);
                                 if (option) {
                                   form.setFieldValue(field.name, option.value);
                                 } else {
