@@ -7,7 +7,6 @@ exports.getProductInCart = async (req, res, next) => {
       .populate('products.unit', '_id unit')
       .exec();
 
-    console.log('CART', cart);
     return res.status(200).json({ success: true, cart });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });

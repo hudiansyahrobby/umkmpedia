@@ -39,7 +39,6 @@ exports.signin = async (req, res, next) => {
     const accessToken = await user.getToken({ id: user._id });
     // Send Cookie
     res.cookie('jwt', accessToken, { secure: true, httpOnly: true });
-    console.log(user);
     return res.status(200).json({ success: true, accessToken, user });
   } catch (error) {
     return res.status(400).json({ success: false, message: error.message });

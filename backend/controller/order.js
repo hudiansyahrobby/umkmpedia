@@ -78,7 +78,6 @@ exports.getOrderById = async (req, res, next) => {
     if (!order) {
       return res.status(200).json({ success: true, order: [] });
     }
-    console.log('ORDER', order);
     return res.status(200).json({ success: true, order });
   } catch (error) {
     return res.status(500).json({ success: false, message: error.message });
@@ -148,13 +147,14 @@ exports.addToOrder = async (req, res, next) => {
 
 exports.getPayment = async (req, res, next) => {
   const { courierCost, orderItem } = req.body;
-
+  console.log(courierCost);
   let totalPrice = courierCost;
 
   for (let index = 0; index < orderItem.length; index++) {
     const productId = orderItem[index].productId;
     const product = await Product.findById({ _id: productId });
-    totalPrice += product.price;
+    const productPrice = product.price * orderItem[index].quantity;
+    totalPrice += +productPrice;
   }
   // Create Snap API instance
   let snap = new midtransClient.Snap({
@@ -192,8 +192,6 @@ exports.getPayment = async (req, res, next) => {
 };
 
 exports.checkPayment = async (req, res, next) => {
-  console.log(`- Received check transaction status request:`, req.body);
-
   let core = new midtransClient.CoreApi({
     isProduction: false,
     serverKey: process.env.SERVER_KEY_MIDTRANS,
