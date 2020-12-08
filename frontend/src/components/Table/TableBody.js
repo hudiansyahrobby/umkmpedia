@@ -28,7 +28,7 @@ export default function TableBody({ row }) {
             </td>
             <td className='px-6 py-4 whitespace-nowrap'>
               <Link
-                to={`/riwayat-pembelian/${transaction_id}`}
+                to={`/riwayat/${transaction_id}`}
                 className='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800'
               >
                 Lihat Detail

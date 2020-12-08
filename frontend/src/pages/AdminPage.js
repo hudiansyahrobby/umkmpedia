@@ -38,7 +38,7 @@ function AdminPage(props) {
 
   const onHandlePagination = (event) => {
     const data = +event.selected;
-    history.push(`riwayat-pembelian?page=${data + 1}`);
+    history.push(`riwayat?page=${data + 1}`);
   };
 
   useEffect(() => {

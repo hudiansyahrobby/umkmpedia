@@ -4,22 +4,20 @@ import { NavLink } from 'react-router-dom';
 export default function DrawerLink({ link, exact, name, button, onClick, buttonLink }) {
   if (button) {
     return (
-      <div className='mx-6'>
-        <button
-          className='mt-4 p-2 bg-primary hover:bg-orange-300 transition-colors duration-300 text-black font-semibold text-center w-full'
-          onClick={onClick}
-        >
-          {name}
-        </button>
-      </div>
+      <button
+        className='w-full text-gray-900 hover:bg-orange-300 block text-left px-3 py-2 rounded-md text-base font-medium'
+        onClick={onClick}
+      >
+        {name}
+      </button>
     );
   } else {
     return (
       <NavLink
         to={link}
         exact={exact}
-        activeClassName='bg-primary'
-        className='no-underline text-black font-semibold block pl-4 py-3 border-b border-primary hover:bg-primary transition duration-300'
+        activeClassName='bg-primary text-white block px-3 py-2 rounded-md text-base font-medium'
+        className='text-gray-900  hover:bg-orange-300 block px-3 py-2 rounded-md text-base font-medium'
       >
         {name}
       </NavLink>

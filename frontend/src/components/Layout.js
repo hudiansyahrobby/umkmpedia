@@ -13,7 +13,7 @@ export default function Layout({ children }) {
     <div className='font-poppins min-h-screen'>
       <Navbar onOpen={onOpenHandler} />
       {open && <Drawer onOpen={onOpenHandler} open={open} />}
-      {open && <Overlay onOpen={onOpenHandler} />}
+      {/* {open && <Overlay onOpen={onOpenHandler} />} */}
       <div className='max-w-screen-xl mx-auto'>{children}</div>
     </div>
   );

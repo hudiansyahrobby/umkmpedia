@@ -1,8 +1,10 @@
 import React from 'react';
+import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
 
 export default function NavbarDropdown({ onSignOut, picture }) {
   const [show, setShow] = React.useState(false);
+  const { user } = useSelector((state) => state.user);
 
   return (
     <div className='ml-3 relative'>
@@ -31,19 +33,19 @@ export default function NavbarDropdown({ onSignOut, picture }) {
           className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
           role='menuitem'
         >
-          Profil Anda
+          Profil Saya
         </NavLink>
 
         <NavLink
-          to='/riwayat-pembelian'
+          to='/riwayat'
           className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
           role='menuitem'
         >
-          Riwayat Pembelian
+          {user?.role === 'user' ? 'Riwayat Pembelian' : 'Riwayat Penjualan'}
         </NavLink>
         <button
           onClick={onSignOut}
-          className='block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
+          className='block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100'
           role='menuitem'
         >
           Keluar

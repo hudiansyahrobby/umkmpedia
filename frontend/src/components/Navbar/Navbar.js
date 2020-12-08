@@ -56,9 +56,9 @@ export default function Navbar({ onOpen }) {
           <>
             <NavbarLink link='/favorit' icon={<AiFillHeart />} data={wishlists?.length} />
             <NavbarLink link='/keranjang' icon={<FaShoppingCart />} data={carts?.length} />
-            <NavbarDropdown onSignOut={onSignOutHandler} picture={user?.profilPic} />
           </>
         )}
+        <NavbarDropdown onSignOut={onSignOutHandler} picture={user?.profilPic} />
       </>
     );
   }

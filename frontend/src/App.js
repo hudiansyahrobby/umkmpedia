@@ -43,8 +43,8 @@ function App() {
         <UserRoute path='/keranjang' component={CartPage} />
         <UserRoute path='/favorit' component={WishlistPage} />
         <UserRoute path='/order' component={OrderPage} />
-        <UserRoute path='/riwayat-pembelian/:id' component={HistoryDetailPage} />
-        <UserRoute path='/riwayat-pembelian' component={HistoryPage} />
+        <UserRoute path='/riwayat/:id' component={HistoryDetailPage} />
+        <UserRoute path='/riwayat' component={HistoryPage} />
         <UserRoute path='/profil/update' component={UpdateProfilePage} />
         <UserRoute path='/profil' component={UserPage} />
         <Route path='/password-baru/:resetToken' component={PostNewPasswordPage} />

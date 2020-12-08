@@ -3,23 +3,24 @@ import { useDispatch, useSelector } from 'react-redux';
 import Layout from '../components/Layout';
 import Table from '../components/Table/Table';
 import Title from '../components/Title';
-import { getOrderByUser, resetOrder } from '../actions/orderActions';
+import { getOrder, getOrderByUser, resetOrder } from '../actions/orderActions';
 import ReactPaginate from 'react-paginate';
 import { useHistory } from 'react-router-dom';
+import Spinner from '../components/Spinner/Spinner';
 
 export default function HistoryPage(props) {
   const dispatch = useDispatch();
   const history = useHistory();
+  const { user } = useSelector((state) => state.user);
+  const { orders, totalPage, loading } = useSelector((state) => state.order);
 
   // Get page and search query
   const query = new URLSearchParams(props.location.search);
   const page = query.get('page') || 1;
 
-  const { orders, totalPage } = useSelector((state) => state.order);
-
   const onHandlePagination = (event) => {
     const data = +event.selected;
-    history.push(`riwayat-pembelian?page=${data + 1}`);
+    history.push(`riwayat?page=${data + 1}`);
   };
 
   const header = [
@@ -38,7 +39,8 @@ export default function HistoryPage(props) {
   ];
 
   useEffect(() => {
-    dispatch(getOrderByUser(page));
+    if (user?.role === 'user') dispatch(getOrderByUser(page));
+    if (user?.role === 'admin') dispatch(getOrder());
 
     return () => {
       dispatch(resetOrder());
@@ -49,10 +51,12 @@ export default function HistoryPage(props) {
     <Layout>
       <div className='mt-24 max-w-screen-xl'>
         <Title margin='mx-auto' align='text-center'>
-          Riwayat Pembelian
+          {user?.role === 'user' ? 'Riwayat Pembelian' : 'Riwayat Penjualan'}
         </Title>
 
-        {orders.length > 0 ? (
+        {loading ? (
+          <Spinner />
+        ) : orders.length > 0 ? (
           <>
             <Table header={header} row={orders} />
             <ReactPaginate
@@ -74,7 +78,11 @@ export default function HistoryPage(props) {
             />
           </>
         ) : (
-          <h1 className='text-center mt-8'>Anda Belum Pernah Melakukan Pemesanan</h1>
+          <h1 className='text-center mt-8'>
+            {user?.role === 'user'
+              ? 'Anda Belum Pernah Melakukan Pemesanan'
+              : 'Belum Ada Barang Yang Terjual'}
+          </h1>
         )}
       </div>
     </Layout>
