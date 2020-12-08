@@ -3,7 +3,13 @@ import AdminCard from './AdminCard';
 import { FaShoppingBag, FaUserCircle, FaMoneyBillAlt } from 'react-icons/fa';
 import { GoGraph } from 'react-icons/go';
 
-export default function AdminCards({ totalOrders, totalProducts, totalUsers }) {
+export default function AdminCards({
+  totalOrders,
+  totalProducts,
+  totalUsers,
+  totalOrderThisMonth,
+}) {
+  console.log(totalOrderThisMonth);
   return (
     <div className='mt-8 grid grid-cols-2 md:grid-cols-4 gap-6'>
       <AdminCard
@@ -23,7 +29,7 @@ export default function AdminCards({ totalOrders, totalProducts, totalUsers }) {
         icon={<GoGraph />}
         color='text-purple-700'
         title='Pembelian Bulan Ini'
-        number={totalOrders}
+        number={totalOrderThisMonth}
       />
     </div>
   );

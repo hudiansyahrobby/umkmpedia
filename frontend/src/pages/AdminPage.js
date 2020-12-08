@@ -4,7 +4,7 @@ import Button from '../components/Buttons/Button';
 import Layout from '../components/Layout';
 import Title from '../components/Title';
 import { useDispatch, useSelector } from 'react-redux';
-import { getOrder, resetOrder } from '../actions/orderActions';
+import { getOrder, getOrderThisMonth, resetOrder } from '../actions/orderActions';
 import { useHistory } from 'react-router-dom';
 import ReactPaginate from 'react-paginate';
 import Table from '../components/Table/Table';
@@ -14,13 +14,16 @@ import { getTotalUsers } from '../actions/userActions';
 function AdminPage(props) {
   const header = [
     {
+      title: 'ID Pembelian',
+    },
+    {
       title: 'Produk Pembelian',
     },
     {
-      title: 'Jumlah Pembelian',
+      title: 'Harga',
     },
     {
-      title: 'Harga',
+      title: 'Aksi',
     },
   ];
 
@@ -32,7 +35,9 @@ function AdminPage(props) {
   const query = new URLSearchParams(props.location.search);
   const page = query.get('page') || 1;
 
-  const { orders, totalPage, totalOrders } = useSelector((state) => state.order);
+  const { orders, totalPage, totalOrders, totalOrderThisMonth } = useSelector(
+    (state) => state.order,
+  );
   const { totalProducts } = useSelector((state) => state.product);
   const { totalUsers } = useSelector((state) => state.user);
 
@@ -43,6 +48,7 @@ function AdminPage(props) {
 
   useEffect(() => {
     dispatch(getOrder(page));
+    dispatch(getOrderThisMonth());
     dispatch(getProducts());
     dispatch(getTotalUsers());
 
@@ -80,6 +86,7 @@ function AdminPage(props) {
           totalOrders={totalOrders}
           totalProducts={totalProducts}
           totalUsers={totalUsers}
+          totalOrderThisMonth={totalOrderThisMonth}
         />
 
         <h2 className='text-center mt-4 text-lg font-semibold text-gray-500 tracking-wide uppercase'>

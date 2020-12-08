@@ -8,6 +8,7 @@ import useDeepCompareEffect from 'use-deep-compare-effect';
 import { getCart } from '../../actions/cartActions';
 import { signout } from '../../actions/userActions';
 import { getWishlist } from '../../actions/wishlistActions';
+import { generatePublicPath } from '../../utils/generatePublicPath';
 import DrawerLink from './DrawerLink';
 
 export default function Drawer({ open }) {
@@ -46,7 +47,11 @@ export default function Drawer({ open }) {
         <div class='pt-4 pb-3 border-t border-gray-700'>
           <div class='flex items-center px-5'>
             <div class='flex-shrink-0'>
-              <img class='h-10 w-10 rounded-full' src={user?.profilPic} alt='Profil Picture' />
+              <img
+                class='h-10 w-10 rounded-full'
+                src={generatePublicPath(user?.profilPic)}
+                alt=''
+              />
             </div>
             <div class='ml-3'>
               <div class='text-base font-medium leading-none text-gray-800'>{user?.name}</div>

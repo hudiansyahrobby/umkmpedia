@@ -69,6 +69,32 @@ exports.getOrdersByUser = async (req, res, next) => {
   }
 };
 
+exports.getOrderThisMonth = async (req, res, next) => {
+  const date = new Date();
+  const month = date.getMonth();
+  const year = date.getFullYear();
+  console.log(month);
+  console.log(year);
+  try {
+    const order = await Order.countDocuments({
+      createdAt: {
+        $gte: new Date(`${year},$${month}`),
+      },
+    });
+
+    if (!order) {
+      return res.status(200).json({ success: true, order: 0 });
+    }
+
+    return res.status(200).json({
+      success: true,
+      order,
+    });
+  } catch (error) {
+    return res.status(500).json({ success: false, message: error.message });
+  }
+};
+
 exports.getOrderById = async (req, res, next) => {
   const { id } = req.params;
   try {

@@ -10,6 +10,7 @@ const initialState = {
   couriers: [],
   totalOrders: 0,
   totalPage: 0,
+  totalOrderThisMonth: 0,
   token: null,
   redirect_url: '',
 };
@@ -52,6 +53,26 @@ export default function orderReducer(state = initialState, action) {
 
       break;
     case ORDER.GET_ORDER__FAIL:
+      state = {
+        ...state,
+        loading: false,
+        message: action.payload.message,
+      };
+      break;
+    case ORDER.GET_ORDER_THIS_MONTH_INIT:
+      state = {
+        ...state,
+        loading: true,
+      };
+      break;
+    case ORDER.GET_ORDER_THIS_MONTH_SUCCESS:
+      state = {
+        ...state,
+        loading: false,
+        totalOrderThisMonth: action.payload.totalOrder,
+      };
+      break;
+    case ORDER.GET_ORDER_THIS_MONTH__FAIL:
       state = {
         ...state,
         loading: false,

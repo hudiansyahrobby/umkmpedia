@@ -48,6 +48,23 @@ export const getOrderByUser = (page = 1) => async (dispatch) => {
   }
 };
 
+export const getOrderThisMonth = () => async (dispatch) => {
+  dispatch({ type: ORDER.GET_ORDER_THIS_MONTH_INIT });
+  try {
+    const { data } = await Axios.get('api/order/month');
+    console.log(data);
+    dispatch({
+      type: ORDER.GET_ORDER_THIS_MONTH_SUCCESS,
+      payload: { totalOrder: data.order },
+    });
+  } catch (error) {
+    dispatch({
+      type: ORDER.GET_ORDER_THIS_MONTH__FAIL,
+      payload: { message: error.response.data.message },
+    });
+  }
+};
+
 export const getOrderById = (id) => async (dispatch) => {
   dispatch({ type: ORDER.GET_ORDER_BY_ID_INIT });
   try {

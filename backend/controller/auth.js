@@ -104,7 +104,11 @@ exports.postNewPassword = async (req, res, next) => {
 
 exports.updateProfile = async (req, res, next) => {
   const userId = req.user._id;
-  const { city, province, fullAddress, telephone, name } = req.body;
+  const { city, province, fullAddress, telephone, name, image } = req.body;
+
+  if (!req.file) {
+    return res.status(400).json({ success: false, message: 'Gambar Tidak valid' });
+  }
 
   const updatedUser = {
     city,
@@ -112,6 +116,7 @@ exports.updateProfile = async (req, res, next) => {
     fullAddress,
     telephone,
     name,
+    profilPic: image || req.file.filename,
   };
 
   try {

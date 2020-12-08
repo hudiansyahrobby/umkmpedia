@@ -1,6 +1,7 @@
 import React from 'react';
 import { useSelector } from 'react-redux';
 import { NavLink } from 'react-router-dom';
+import { generatePublicPath } from '../../utils/generatePublicPath';
 
 export default function NavbarDropdown({ onSignOut, picture }) {
   const [show, setShow] = React.useState(false);
@@ -16,7 +17,11 @@ export default function NavbarDropdown({ onSignOut, picture }) {
           onClick={() => setShow(!show)}
         >
           <span className='sr-only'>Open user menu</span>
-          <img className='h-8 w-8 rounded-full' src={picture} alt='profil picture' />
+          <img
+            className='h-8 w-8 rounded-full'
+            src={generatePublicPath(picture)}
+            alt='profil picture'
+          />
         </button>
       </div>
 

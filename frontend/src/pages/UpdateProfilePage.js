@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { updateProfile } from '../actions/userActions';
 import Button from '../components/Buttons/Button';
+import FileInput from '../components/Forms/FileInput';
 import Layout from '../components/Layout';
 import Title from '../components/Title';
 
@@ -17,6 +18,9 @@ export default function UpdateProfilePage() {
   const [myCity, setMyCity] = useState(user?.city);
   const [myProvince, setMyProvince] = useState(user?.province);
   const [cityByProvince, setCityByProvince] = useState(CITIES.cities);
+  const [image, setImage] = useState(user?.profilPic);
+  const [editImage, setEditImage] = useState(false);
+
   const dispatch = useDispatch();
   const history = useHistory();
 
@@ -39,14 +43,15 @@ export default function UpdateProfilePage() {
 
   const onSubmitHandler = (e) => {
     e.preventDefault();
-    const updatedProfile = {
-      name,
-      telephone,
-      city: myCity,
-      province: myProvince,
-      fullAddress,
-    };
-    dispatch(updateProfile(updatedProfile, history));
+    const profilData = new FormData();
+    profilData.append('name', name);
+    profilData.append('telephone', telephone);
+    profilData.append('city', myCity);
+    profilData.append('province', myProvince);
+    profilData.append('fullAddress', fullAddress);
+    profilData.append('image', image);
+
+    dispatch(updateProfile(profilData, history));
   };
 
   return (
@@ -162,6 +167,21 @@ export default function UpdateProfilePage() {
                 className='shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline'
                 placeholder='Masukkan Alamat Lengkap'
               />
+
+              <FileInput
+                id='profilPic'
+                accept='image/*'
+                name='profilPic'
+                editImageState={editImage}
+                image={image}
+                label='Foto Profil'
+                onChange={(e) => {
+                  setEditImage(true);
+                  setImage(e.target.files[0]);
+                }}
+                onDelete={() => setImage('')}
+              />
+
               <div className='text-center'>
                 <Button
                   background='mt-8 bg-primary hover:bg-orange-400'

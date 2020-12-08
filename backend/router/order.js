@@ -11,6 +11,8 @@ router.get('/order/user', verifyUser, orderController.getOrdersByUser);
 
 router.get('/order/admin', verifyUser, verifyAdmin, orderController.getAllOrders);
 
+router.get('/order/month', verifyUser, verifyAdmin, orderController.getOrderThisMonth);
+
 router.get('/order/:id', verifyUser, orderController.getOrderById);
 
 router.post('/order', verifyUser, orderController.addToOrder);
