@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import AdminCards from '../components/Cards/AdminCards';
 import Button from '../components/Buttons/Button';
 import Layout from '../components/Layout';
-// import Table from '../components/Table/Table';
 import Title from '../components/Title';
 import { useDispatch, useSelector } from 'react-redux';
 import { getOrder, resetOrder } from '../actions/orderActions';
@@ -83,6 +82,9 @@ function AdminPage(props) {
           totalUsers={totalUsers}
         />
 
+        <h2 className='text-center mt-4 text-lg font-semibold text-gray-500 tracking-wide uppercase'>
+          Barang Pesanan
+        </h2>
         <Table header={header} row={orders} />
         {totalPage !== 0 && (
           <ReactPaginate

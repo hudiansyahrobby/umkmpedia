@@ -8,6 +8,7 @@ function Hero() {
       style={{
         backgroundImage: `linear-gradient( to bottom, #05000000 , #000000), url(${HeroImage})`,
         minHeight: '600px',
+        maxHeight: '800px',
       }}
       className='h-screen bg-cover bg-center flex items-center justify-center flex-col'
     >

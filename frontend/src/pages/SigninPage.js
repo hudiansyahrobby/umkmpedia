@@ -4,7 +4,7 @@ import Button from '../components/Buttons/Button';
 import * as Yup from 'yup';
 import { resetState, signin } from '../actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import { Form, Formik } from 'formik';
 import Layout from '../components/Layout';
 import Alert from '../components/Alert';
@@ -78,9 +78,12 @@ function SigninPage() {
                 label='Password'
               />
 
-              {/* <NavLink to='/lupa-password' className='text-sm text-blue-400 font-bold'>
-                Lupa Password ?
-              </NavLink> */}
+              <p className='text-sm '>
+                Belum memiliki Akun ?
+                <NavLink to='/daftar' className='ml-2 text-blue-400 font-bold'>
+                  Daftar
+                </NavLink>
+              </p>
               <div className='mt-2 text-center'>
                 <Button
                   background='bg-primary hover:bg-orange-400'

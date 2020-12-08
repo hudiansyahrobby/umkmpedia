@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getProductById, resetStateProduct } from '../actions/productActions';
 
-import { useParams } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import { addToCart } from '../actions/cartActions';
 import { addToWishlist, deleteFromWishlist } from '../actions/wishlistActions';
 import Layout from '../components/Layout';
@@ -17,6 +17,7 @@ import ProductDetailTitle from '../components/Products/ProductDetailTitle';
 
 function ProductDetailPage() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { product } = useSelector((state) => state.product);
   const { wishlists } = useSelector((state) => state.wishlist);
   const { user } = useSelector((state) => state.user);
@@ -33,10 +34,12 @@ function ProductDetailPage() {
   }, [dispatch, id]);
 
   const onAddToCartHandler = (id) => {
+    if (!user?.role) history.push('/masuk');
     dispatch(addToCart(id));
   };
 
   const onAddToWishlistHandler = (id) => {
+    if (!user?.role) history.push('/masuk');
     dispatch(addToWishlist(id));
   };
 
@@ -62,7 +65,7 @@ function ProductDetailPage() {
             <ProductPrice price={price} />
           </div>
 
-          {user.role !== 'admin' && (
+          {user?.role !== 'admin' && (
             <div className='flex align-center'>
               <CartButton size='2.7rem' styling='mr-2' onClick={() => onAddToCartHandler(_id)} />
 

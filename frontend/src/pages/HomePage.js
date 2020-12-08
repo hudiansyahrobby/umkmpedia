@@ -7,11 +7,14 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addToWishlist, deleteFromWishlist } from '../actions/wishlistActions';
 import Layout from '../components/Layout';
 import ProductSkeleton from '../components/Products/ProductSkeleton';
+import { useHistory } from 'react-router-dom';
 
 function HomePage() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { products, loading } = useSelector((state) => state.product);
   const { wishlists } = useSelector((state) => state.wishlist);
+  const { users } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(getProducts());
@@ -22,6 +25,8 @@ function HomePage() {
   };
 
   const onAddWishlistHandler = (id) => {
+    if (!users?.role) return history.push('/masuk');
+
     dispatch(addToWishlist(id));
   };
 
@@ -32,7 +37,7 @@ function HomePage() {
   return (
     <Layout>
       <Hero />
-      <div className='bg-gray-200 mt-10'>
+      <div className='bg-gray-200 pt-6'>
         <div className='px-10'>
           <div className='mt-10'>
             <Title>Produk Baru</Title>

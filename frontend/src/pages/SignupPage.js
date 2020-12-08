@@ -4,7 +4,7 @@ import Button from '../components/Buttons/Button';
 import * as Yup from 'yup';
 import { resetState, signup } from '../actions/userActions';
 import { useDispatch, useSelector } from 'react-redux';
-import { Redirect, useHistory } from 'react-router-dom';
+import { NavLink, Redirect, useHistory } from 'react-router-dom';
 import { Form, Formik } from 'formik';
 import Layout from '../components/Layout';
 import Alert from '../components/Alert';
@@ -85,6 +85,14 @@ function SignupPage() {
                 placeholder='Masukkan Kembali Password'
                 label='Password'
               />
+
+              <p className='text-sm mb-4'>
+                Sudah memiliki Akun ?
+                <NavLink to='/masuk' className='ml-2 text-blue-400 font-bold'>
+                  Masuk
+                </NavLink>
+              </p>
+
               <div className='text-center'>
                 <Button
                   background='bg-primary hover:bg-orange-400'

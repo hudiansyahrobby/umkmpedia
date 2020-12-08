@@ -6,7 +6,7 @@ import ProductTitle from './ProductTitle';
 import ProductStar from './ProductStar';
 import ProductPrice from './ProductPrice';
 import ProductAdminButton from './ProductAdminButton';
-import { Link } from 'react-router-dom';
+import { Link, useHistory } from 'react-router-dom';
 
 function Product({
   id,
@@ -22,11 +22,16 @@ function Product({
   onWishlist,
 }) {
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const { user } = useSelector((state) => state.user);
+
   const onAddToCartHandler = (productId) => {
+    if (!user?.role) return history.push('/masuk');
+
     dispatch(addToCart(productId));
   };
+
   let card;
   if (direction === 'vertical') {
     card = (
