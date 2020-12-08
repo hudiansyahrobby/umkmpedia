@@ -34,14 +34,54 @@ exports.signin = async (req, res, next) => {
       return res.status(400).json({ success: false, message: 'Email or password is invalid' });
     }
 
-    user.password = null;
+    const { accessToken, refreshToken } = await user.getToken({ id: user._id });
+    user.refreshToken = refreshToken;
+    await user.save();
 
-    const accessToken = await user.getToken({ id: user._id });
+    user.password = null;
+    user.refreshToken = null;
+
     // Send Cookie
-    res.cookie('jwt', accessToken, { secure: true, httpOnly: true });
+    res.cookie('jwt', user.refreshToken, { httpOnly: true });
     return res.status(200).json({ success: true, accessToken, user });
   } catch (error) {
     return res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+exports.generateRefreshToken = async (req, res) => {
+  try {
+    //get refreshToken
+    const { refreshToken } = req.body;
+    console.log('TOKEN', refreshToken);
+    //send error if no refreshToken is sent
+    if (!refreshToken) {
+      return res.status(403).json({ error: 'Access denied,token missing!' });
+    } else {
+      //query for the token to check if it is valid:
+      const user = await User.findOne({ refreshToken });
+
+      //send error if no token found:
+      if (!user) {
+        return res.status(401).json({ error: 'Token expired!' });
+      } else {
+        //extract payload from refresh token and generate a new access token and send it
+
+        const { accessToken, refreshToken } = await user.getToken({ id: user._id });
+        user.refreshToken = refreshToken;
+        await user.save();
+
+        user.password = null;
+        user.refreshToken = null;
+
+        // Send Cookie
+        res.cookie('jwt', user.refreshToken, { httpOnly: true });
+        return res.status(200).json({ success: true, accessToken, user });
+      }
+    }
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: 'Internal Server Error!' });
   }
 };
 

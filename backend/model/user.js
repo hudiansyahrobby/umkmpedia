@@ -39,7 +39,7 @@ const userSchema = mongoose.Schema(
     },
     profilPic: {
       type: String,
-      default: 'https://cdn.pixabay.com/photo/2014/04/02/10/25/man-303792_960_720.png',
+      default: 'profile.webp',
     },
     refreshToken: {
       type: String,
@@ -93,8 +93,11 @@ userSchema.methods.getToken = function (payload) {
   });
 
   const user = this;
-  user.refreshToken = refreshToken;
-  return accessToken;
+  // user.refreshToken = refreshToken;
+  return {
+    accessToken,
+    refreshToken,
+  };
 };
 
 const user = mongoose.model('User', userSchema);

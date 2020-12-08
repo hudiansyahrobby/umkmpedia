@@ -36,38 +36,40 @@ export default function Drawer({ open }) {
   }, [wishlists]);
 
   return (
-    <div class='mt-16 pt-4 block md:hidden z-50 fixed inset-0 bg-white'>
-      <div class='px-2 pt-2 pb-3 space-y-1 sm:px-3'>
+    <div className='mt-16 pt-4 block md:hidden z-50 fixed inset-0 bg-white'>
+      <div className='px-2 pt-2 pb-3 space-y-1 sm:px-3'>
         <DrawerLink link='/' name='Beranda' exact />
         <DrawerLink link='/produk' name='Produk' />
         {user?.role === 'admin' && <DrawerLink link='/admin' name='Admin' />}
       </div>
 
       {user ? (
-        <div class='pt-4 pb-3 border-t border-gray-700'>
-          <div class='flex items-center px-5'>
-            <div class='flex-shrink-0'>
+        <div className='pt-4 pb-3 border-t border-gray-700'>
+          <div className='flex items-center px-5'>
+            <div className='flex-shrink-0'>
               <img
-                class='h-10 w-10 rounded-full'
+                className='h-10 w-10 rounded-full'
                 src={generatePublicPath(user?.profilPic)}
                 alt=''
               />
             </div>
-            <div class='ml-3'>
-              <div class='text-base font-medium leading-none text-gray-800'>{user?.name}</div>
-              <div class='text-sm font-medium leading-none text-gray-600 mt-1'>{user?.email}</div>
+            <div className='ml-3'>
+              <div className='text-base font-medium leading-none text-gray-800'>{user?.name}</div>
+              <div className='text-sm font-medium leading-none text-gray-600 mt-1'>
+                {user?.email}
+              </div>
             </div>
 
-            <div className='ml-auto '>
-              <button class='flex-shrink-0 p-1 rounded-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'>
-                <span class='sr-only'>Keranjang Belanja</span>
+            <div className='ml-auto text-right'>
+              <button className='p-1 rounded-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'>
+                <span className='sr-only'>Keranjang Belanja</span>
                 <IconContext.Provider
                   value={{
-                    className: `mr-2  inline-block`,
-                    size: '1.6rem',
+                    className: `mr-2 inline-block`,
+                    size: '1.3rem',
                   }}
                 >
-                  <NavLink to='/keranjang' className='relative mr-2'>
+                  <NavLink to='/keranjang' className='relative ml-1'>
                     <FaShoppingCart />
                     <span className='absolute top-0 right-0 -mt-1 h-4 w-4 text-xs rounded-full bg-primary inline-flex justify-center items-center'>
                       {carts?.length}
@@ -76,15 +78,15 @@ export default function Drawer({ open }) {
                 </IconContext.Provider>
               </button>
 
-              <button class='ml-auto flex-shrink-0 p-1 rounded-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'>
-                <span class='sr-only'>Produk Favorit</span>
+              <button className='p-1 rounded-full text-gray-900 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white'>
+                <span className='sr-only'>Produk Favorit</span>
                 <IconContext.Provider
                   value={{
-                    className: `mr-2  inline-block`,
-                    size: '1.6rem',
+                    className: `mr-2 inline-block`,
+                    size: '1.3rem',
                   }}
                 >
-                  <NavLink to='/favorit' className='relative mr-2'>
+                  <NavLink to='/favorit' className='relative ml-1'>
                     <AiFillHeart />
                     <span className='absolute top-0 right-0 -mt-1 h-4 w-4 text-xs rounded-full bg-primary inline-flex justify-center items-center'>
                       {wishlists?.length}
@@ -94,7 +96,7 @@ export default function Drawer({ open }) {
               </button>
             </div>
           </div>
-          <div class='mt-3 px-2'>
+          <div className='mt-3 px-2'>
             {user?.role && (
               <div className='space-y-1'>
                 <DrawerLink link='/profil' name='Profil Saya' />

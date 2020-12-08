@@ -14,6 +14,8 @@ router.post('/signin', authController.signin);
 
 router.post('/signout', authController.signout);
 
+router.post('/refresh_token', authController.generateRefreshToken);
+
 router.post('/reset-password', authController.postResetPassword);
 
 router.post('/new-password/:resetPasswordToken', authController.postNewPassword);

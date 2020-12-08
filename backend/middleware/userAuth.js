@@ -9,15 +9,22 @@ exports.verifyUser = async function (req, res, next) {
       return res.status(401).json({ success: false, message: 'Unauthorized, Access Denied' });
     }
 
-    let decodedToken;
     try {
-      decodedToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+      const decodedToken = jwt.verify(accessToken, process.env.ACCESS_TOKEN_SECRET);
+      const user = await User.findOne({ _id: decodedToken.id }).select('-password');
+      req.user = user;
+      next();
     } catch (error) {
-      return res.json({ success: false, message: 'Invalid Token' });
+      if (error.name === 'TokenExpiredError') {
+        return res.status(401).json({ error: 'Session timed out,please login again' });
+      } else if (error.name === 'JsonWebTokenError') {
+        return res.status(401).json({ error: 'Invalid token,please login again!' });
+      } else {
+        //catch other unprecedented errors
+        console.error(error);
+        return res.status(400).json({ error });
+      }
     }
-    const user = await User.findOne({ _id: decodedToken.id }).select('-password');
-    req.user = user;
-    next();
   } else {
     return res.status(401).json({ success: false, message: 'Unauthorized, Access Denied' });
   }

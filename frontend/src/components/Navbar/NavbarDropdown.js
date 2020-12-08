@@ -17,11 +17,7 @@ export default function NavbarDropdown({ onSignOut, picture }) {
           onClick={() => setShow(!show)}
         >
           <span className='sr-only'>Open user menu</span>
-          <img
-            className='h-8 w-8 rounded-full'
-            src={generatePublicPath(picture)}
-            alt='profil picture'
-          />
+          <img className='h-8 w-8 rounded-full' src={generatePublicPath(picture)} alt='' />
         </button>
       </div>
 

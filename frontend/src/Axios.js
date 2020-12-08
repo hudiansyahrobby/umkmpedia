@@ -4,6 +4,7 @@ const fetchClient = () => {
   // Create instance
   let instance = axios.create({
     baseURL: process.env.REACT_APP_SERVER_URL,
+    withCredentials: true,
   });
 
   // Set the AUTH token for any request
