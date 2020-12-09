@@ -31,7 +31,9 @@ export default function AddResiPage() {
             }}
           >
             <Form className='bg-info shadow-md rounded px-8 pt-6 pb-8 mb-4'>
-              <h2 className='font-bold text-2xl tracking-wide text-center'>Tambah Nomer Resi</h2>
+              <h2 className='font-bold text-lg md:text-2xl tracking-wide text-center'>
+                Tambah Nomer Resi
+              </h2>
 
               <Input
                 name='resiNumber'
@@ -45,7 +47,7 @@ export default function AddResiPage() {
                 <Button
                   background='bg-primary hover:bg-orange-400'
                   variant='text-black font-bold transition duration-300'
-                  size='extraBig'
+                  size='big'
                   type='submit'
                 >
                   Masukkan Resi

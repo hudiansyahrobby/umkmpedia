@@ -10,7 +10,7 @@ export default function AddressName({ address }) {
           <HiLocationMarker />
         </span>
       </IconContext.Provider>
-      <h2 className='font-semibold text-sm'>{address}</h2>
+      <h2 className='font-semibold text-xs md:text-sm'>{address}</h2>
     </div>
   );
 }

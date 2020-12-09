@@ -11,7 +11,7 @@ export default function AdminCards({
 }) {
   console.log(totalOrderThisMonth);
   return (
-    <div className='mt-8 grid grid-cols-2 md:grid-cols-4 gap-6'>
+    <div className='mt-8 grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-6'>
       <AdminCard
         icon={<FaShoppingBag />}
         color='text-green-700'

@@ -63,7 +63,7 @@ function AdminPage(props) {
         <Title margin='mx-auto' align='text-center'>
           Beranda Admin
         </Title>
-        <div className='text-right mt-4'>
+        <div className='text-center md:text-right mt-8'>
           <Button
             link='/admin/daftar-kategori'
             background='bg-primary hover:bg-orange-400'

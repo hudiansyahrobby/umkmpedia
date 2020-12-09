@@ -8,14 +8,14 @@ export default function TableBody({ row }) {
         return (
           <tr key={transaction_id}>
             <td className='px-6 py-4 whitespace-nowrap'>
-              <h2 className='text-sm font-medium text-gray-900'>{transaction_id}</h2>
+              <h2 className='text-xs font-medium text-gray-900'>{transaction_id}</h2>
             </td>
             <td className='px-6 py-4 whitespace-nowrap'>
-              <ul className='text-sm text-gray-900'>
+              <ul className='text-xs text-gray-900'>
                 {products.map(({ _id, name, quantity, unit }) => {
                   return (
-                    <li key={_id}>
-                      {name} - {quantity} {unit.unit}
+                    <li key={_id} className='mt-2 list-decimal'>
+                      {name}
                     </li>
                   );
                 })}

@@ -86,7 +86,6 @@ export default function OrderPage() {
 
   const onOpenModal = () => {
     if (courierCost === 0) return alert('Mohon Pilih Kurir Pengiriman');
-    console.log('courierCost', courierCost);
     onGetTokenPayment();
     setModal(true);
   };
