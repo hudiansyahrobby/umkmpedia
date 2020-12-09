@@ -25,6 +25,7 @@ const SignupPage = lazy(() => import('./pages/SignupPage'));
 const UserPage = lazy(() => import('./pages/UserPage'));
 const WishlistPage = lazy(() => import('./pages/WishListPage'));
 const AddResiPage = lazy(() => import('./pages/AddResiPage'));
+const NotFound = lazy(() => import('./pages/NotFound'));
 
 function App() {
   const dispatch = useDispatch();
@@ -53,7 +54,8 @@ function App() {
         <Route path='/daftar' component={SignupPage} />
         <Route path='/produk/:id' component={ProductDetailPage} />
         <Route path='/produk' component={ProductsPage} />
-        <Route path='/' component={HomePage} />
+        <Route path='/' exact component={HomePage} />
+        <Route path='*' exact component={NotFound} />
       </Switch>
     </Suspense>
   );

@@ -1,8 +1,9 @@
 import React from 'react';
 import { HiMenu } from 'react-icons/hi';
+import { MdClose } from 'react-icons/md';
 import { IconContext } from 'react-icons';
 
-export default function MenuButton({ onOpen }) {
+export default function MenuButton({ onOpen, open }) {
   return (
     <IconContext.Provider
       value={{
@@ -11,9 +12,7 @@ export default function MenuButton({ onOpen }) {
         size: '2rem',
       }}
     >
-      <div onClick={onOpen}>
-        <HiMenu />
-      </div>
+      <div onClick={onOpen}>{!open ? <HiMenu /> : <MdClose />}</div>
     </IconContext.Provider>
   );
 }

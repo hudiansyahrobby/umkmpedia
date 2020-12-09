@@ -11,7 +11,7 @@ export default function Layout({ children }) {
   };
   return (
     <div className='font-poppins'>
-      <Navbar onOpen={onOpenHandler} />
+      <Navbar onOpen={onOpenHandler} open={open} />
       {open && <Drawer onOpen={onOpenHandler} open={open} />}
       <div className='max-w-screen-xl mx-auto'>{children}</div>
       <Footer />

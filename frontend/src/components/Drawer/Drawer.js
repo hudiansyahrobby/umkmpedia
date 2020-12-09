@@ -61,7 +61,10 @@ export default function Drawer({ open }) {
             </li>
             {categories?.map(({ name, _id }) => {
               return (
-                <li className='text-gray-900 w-full hover:bg-orange-300 block px-3 py-2 rounded-md text-base font-medium'>
+                <li
+                  key={_id}
+                  className='text-gray-900 w-full hover:bg-orange-300 block px-3 py-2 rounded-md text-base font-medium'
+                >
                   <NavLink className='block w-full' to={`/produk?category=${_id}`}>
                     &gt; {capitalizeFirstLetter(name)}
                   </NavLink>

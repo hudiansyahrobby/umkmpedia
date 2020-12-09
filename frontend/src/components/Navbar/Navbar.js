@@ -13,7 +13,7 @@ import { getcategories } from '../../actions/categoryActions';
 import useDeepCompareEffect from 'use-deep-compare-effect';
 import NavbarDropdown from './NavbarDropdown';
 
-export default function Navbar({ onOpen }) {
+export default function Navbar({ onOpen, open }) {
   const { user, authenticated } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const history = useHistory();
@@ -69,7 +69,7 @@ export default function Navbar({ onOpen }) {
         UMKM<span className='text-primary'>Pedia</span>
       </Link>
 
-      <MenuButton onOpen={onOpen} />
+      <MenuButton onOpen={onOpen} open={open} />
       <div className='hidden h-full md:flex md:items-center'>
         <NavbarLink link='/' name='Beranda' exact />
         <NavbarLink link='/produk' name='Produk' dropdown={categories} />
