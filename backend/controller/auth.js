@@ -38,11 +38,12 @@ exports.signin = async (req, res, next) => {
     user.refreshToken = refreshToken;
     await user.save();
 
+    // Send Cookie
+    res.cookie('jwt', user.refreshToken, { httpOnly: true });
+
     user.password = null;
     user.refreshToken = null;
 
-    // Send Cookie
-    res.cookie('jwt', user.refreshToken, { httpOnly: true });
     return res.status(200).json({ success: true, accessToken, user });
   } catch (error) {
     return res.status(400).json({ success: false, message: error.message });
@@ -50,9 +51,10 @@ exports.signin = async (req, res, next) => {
 };
 
 exports.generateRefreshToken = async (req, res) => {
+  // console.log(jwt);
   try {
     //get refreshToken
-    const { refreshToken } = req.body;
+    const { jwt: refreshToken } = req.cookies;
     console.log('TOKEN', refreshToken);
     //send error if no refreshToken is sent
     if (!refreshToken) {
@@ -71,11 +73,12 @@ exports.generateRefreshToken = async (req, res) => {
         user.refreshToken = refreshToken;
         await user.save();
 
+        // Send Cookie
+        res.cookie('jwt', user.refreshToken, { httpOnly: true });
+
         user.password = null;
         user.refreshToken = null;
 
-        // Send Cookie
-        res.cookie('jwt', user.refreshToken, { httpOnly: true });
         return res.status(200).json({ success: true, accessToken, user });
       }
     }

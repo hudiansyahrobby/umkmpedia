@@ -5,7 +5,7 @@ import { MdDelete } from 'react-icons/md';
 export default function DeleteButton({ onClick }) {
   return (
     <button
-      className='bg-red-600 text-white p-2 mt-2 rounded-lg hover:bg-white border-2 border-red-600 transition duration-300 ease-in-out hover:text-red-600 font-semibold tracking-wider text-sm'
+      className='bg-red-600 text-white p-1 md:p-2 mt-2 rounded-lg hover:bg-white border-2 border-red-600 transition duration-300 ease-in-out hover:text-red-600 font-semibold tracking-wider text-sm'
       onClick={onClick}
     >
       Hapus

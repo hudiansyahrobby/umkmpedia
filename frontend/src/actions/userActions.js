@@ -50,7 +50,6 @@ export const isUserLoggedIn = () => async (dispatch) => {
     dispatch({ type: USER.SIGN_IN_SUCCESS, payload: { token, user } });
   } catch (error) {
     dispatch({ type: USER.SIGN_IN__FAIL, payload: 'Token Tidak Valid' });
-    return localStorage.clear();
   }
 };
 

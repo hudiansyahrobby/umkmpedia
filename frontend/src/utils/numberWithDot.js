@@ -1,4 +1,4 @@
 export function numberWithDot(number) {
-  if (!number) return;
+  if (typeof number !== 'number') return;
   return number.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
 }

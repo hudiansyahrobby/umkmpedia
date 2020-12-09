@@ -78,13 +78,13 @@ function SigninPage() {
                 label='Password'
               />
 
-              <p className='text-sm '>
+              <p className='text-sm mt-6'>
                 Belum memiliki Akun ?
                 <NavLink to='/daftar' className='ml-2 text-blue-400 font-bold'>
                   Daftar
                 </NavLink>
               </p>
-              <div className='mt-2 text-center'>
+              <div className='mt-6 text-center'>
                 <Button
                   background='bg-primary hover:bg-orange-400'
                   variant='font-bold transition duration-300 mx-auto'

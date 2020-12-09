@@ -144,8 +144,9 @@ export default function Drawer({ open }) {
           </div>
         </div>
       ) : (
-        <div className='px-3'>
+        <div className='px-2'>
           <DrawerLink link='/masuk' name='Masuk' />
+          <DrawerLink link='/daftar' name='Daftar' />
         </div>
       )}
     </div>

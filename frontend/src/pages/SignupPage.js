@@ -82,12 +82,12 @@ function SignupPage() {
                 name='password2'
                 type='password'
                 id='password2'
-                placeholder='Masukkan Kembali Password'
+                placeholder='Masukkan Ulang Password'
                 label='Password'
               />
 
               <p className='text-sm mb-4'>
-                Sudah memiliki Akun ?
+                Punya Akun ?
                 <NavLink to='/masuk' className='ml-2 text-blue-400 font-bold'>
                   Masuk
                 </NavLink>
