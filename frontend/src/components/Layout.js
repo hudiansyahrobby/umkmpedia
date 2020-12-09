@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Drawer from './Drawer/Drawer';
+import Footer from './Footer';
 import Navbar from './Navbar/Navbar';
-import Overlay from './Overlay';
 
 export default function Layout({ children }) {
   const [open, setOpen] = useState(false);
@@ -10,11 +10,11 @@ export default function Layout({ children }) {
     setOpen(!open);
   };
   return (
-    <div className='font-poppins min-h-screen'>
+    <div className='font-poppins'>
       <Navbar onOpen={onOpenHandler} />
       {open && <Drawer onOpen={onOpenHandler} open={open} />}
-      {/* {open && <Overlay onOpen={onOpenHandler} />} */}
       <div className='max-w-screen-xl mx-auto'>{children}</div>
+      <Footer />
     </div>
   );
 }
