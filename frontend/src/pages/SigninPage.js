@@ -9,6 +9,8 @@ import { Form, Formik } from 'formik';
 import Layout from '../components/Layout';
 import Alert from '../components/Alert';
 
+import Image from '../assets/images/login.svg';
+
 function SigninPage() {
   const dispatch = useDispatch();
   const { user, success, error, message } = useSelector((state) => state.user);
@@ -27,8 +29,11 @@ function SigninPage() {
 
   return (
     <Layout>
-      <div className='w-full h-screen max-w-2xl mx-auto'>
-        <div className='w-full px-3 mt-24 mx-auto py-5'>
+      <div className='w-full mt-24 max-w-6xl px-3 mx-auto flex items-center'>
+        <div className='hidden md:block h-64 mr-8'>
+          <img src={Image} alt='login image' className='w-full h-full' />
+        </div>
+        <div className='w-full px-3 mx-auto py-5'>
           <Formik
             initialValues={{ email: '', password: '' }}
             validationSchema={Yup.object({
