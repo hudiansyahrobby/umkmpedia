@@ -16,7 +16,7 @@ import Modal from '../components/Modal';
 import CITIES from '../data/cities.json';
 
 export default function OrderPage() {
-  const { couriers, token } = useSelector((state) => state.order);
+  const { couriers, token, loading } = useSelector((state) => state.order);
   const { user } = useSelector((state) => state.user);
   const [courierCost, setCourierCost] = useState(0);
   const [orderItemPrice, setOrderItemPrice] = useState(0);
@@ -125,7 +125,7 @@ export default function OrderPage() {
         <AddressName address={userAddress} />
 
         <h2 className='mt-8 text-center font-semibold'>Plih Kurir Pengiriman</h2>
-        <CourierLists courierList={couriers} onChange={onChangeCourier} />
+        <CourierLists courierList={couriers} onChange={onChangeCourier} loading={loading} />
 
         <h2 className='mt-8 text-right font-bold'>Harga Total : Rp {numberWithDot(totalPrice)}</h2>
         <Button

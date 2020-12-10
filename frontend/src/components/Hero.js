@@ -10,7 +10,7 @@ function Hero() {
         minHeight: '600px',
         maxHeight: '800px',
       }}
-      className='h-screen bg-cover bg-center flex items-center justify-center flex-col'
+      className='h-screen bg-cover bg-center flex items-center justify-center flex-col -mx-4'
     >
       <h1 className='text-white text-5xl font-bold tracking-wide'>
         UMKM

@@ -14,7 +14,7 @@ export default function TableBody({ row }) {
               <ul className='text-xs text-gray-900'>
                 {products.map(({ _id, name, quantity, unit }) => {
                   return (
-                    <li key={_id} className='mt-2 list-decimal'>
+                    <li key={_id} className='mt-2'>
                       {name}
                     </li>
                   );

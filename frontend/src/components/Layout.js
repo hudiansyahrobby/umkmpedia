@@ -10,10 +10,17 @@ export default function Layout({ children }) {
     setOpen(!open);
   };
   return (
-    <div className='font-poppins'>
+    <div className='font-poppins min-h-screen flex flex-col w-full'>
       <Navbar onOpen={onOpenHandler} open={open} />
       {open && <Drawer onOpen={onOpenHandler} open={open} />}
-      <div className='max-w-screen-xl mx-auto'>{children}</div>
+      <main
+        className='max-w-screen-xl mx-4'
+        style={{
+          flex: '1 0 auto',
+        }}
+      >
+        {children}
+      </main>
       <Footer />
     </div>
   );

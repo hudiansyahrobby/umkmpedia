@@ -12,12 +12,11 @@ function Product({
   id,
   name,
   price,
-  rating = 0,
   image,
   direction,
   onDelete,
+  quantity,
   category,
-  onUpdate,
   favorited,
   onWishlist,
 }) {
@@ -39,6 +38,7 @@ function Product({
         <ProductImage
           image={image}
           name={image}
+          quantity={quantity}
           user={user}
           onClick={() => onWishlist(id)}
           favorited={favorited}
@@ -58,8 +58,11 @@ function Product({
 
           {user?.role !== 'admin' && (
             <button
-              className='mb-4 p-2 bg-primary text-center block w-full text-xs font-bold text-gray-900'
+              className={`mb-4 p-2 bg-primary text-center block w-full text-xs font-bold text-gray-900 ${
+                quantity <= 0 && 'opacity-50'
+              }`}
               onClick={() => onAddToCartHandler(id)}
+              disabled={quantity <= 0}
             >
               Tambah Ke Keranjang
             </button>

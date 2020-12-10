@@ -88,7 +88,7 @@ function ProductDetailPage() {
 
   return (
     <Layout>
-      <div className='w-full h-screen max-w-xl mx-auto mt-20'>{productElement}</div>
+      <div className='mt-20'>{productElement}</div>
     </Layout>
   );
 }

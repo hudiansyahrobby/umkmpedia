@@ -9,7 +9,7 @@ export default function Products({
 }) {
   const productEl =
     products?.length > 0 ? (
-      products.map(({ _id, name, price, image, category }) => {
+      products.map(({ _id, name, price, image, category, quantity }) => {
         const found = wishlists?.some((wishlist) => wishlist.productId === _id);
         if (found) {
           return (
@@ -17,6 +17,7 @@ export default function Products({
               key={_id}
               id={_id}
               name={name}
+              quantity={quantity}
               price={price}
               image={image}
               favorited={true}
@@ -32,6 +33,7 @@ export default function Products({
               key={_id}
               id={_id}
               name={name}
+              quantity={quantity}
               price={price}
               category={category}
               image={image}
