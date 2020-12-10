@@ -10,6 +10,7 @@ import Layout from '../components/Layout';
 import Alert from '../components/Alert';
 
 import Image from '../assets/images/register.svg';
+import LazyLoad from 'react-lazyload';
 
 function SignupPage() {
   const dispatch = useDispatch();
@@ -28,7 +29,9 @@ function SignupPage() {
     <Layout>
       <div className='w-full mt-24 max-w-6xl px-3 mx-auto flex items-center'>
         <div className='hidden md:block h-64 mr-8'>
-          <img src={Image} alt='signup' className='w-full h-full' />
+          <LazyLoad height={200} once>
+            <img src={Image} alt='signup' className='w-full h-full' />
+          </LazyLoad>
         </div>
         <div className='w-full px-3 mx-auto py-5'>
           <Formik

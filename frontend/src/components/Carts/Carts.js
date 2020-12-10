@@ -3,7 +3,6 @@ import Cart from './Cart';
 import { numberWithDot } from '../../utils/numberWithDot';
 
 export default function Carts({ carts, totalPrice = 0, onCheck, onChangeQty, onDelete }) {
-  console.log(typeof totalPrice);
   return (
     <div className='mt-8 py-6 px-2 bg-red-lightest rounded-mammoth'>
       {carts?.map(({ _id, name, price, quantity, image, productId, stock, unit }) => {

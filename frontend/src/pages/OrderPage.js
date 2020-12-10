@@ -80,7 +80,6 @@ export default function OrderPage() {
       courierCost,
       orderItem,
     };
-    console.log(paymentData);
     dispatch(getPayment(paymentData));
   };
 

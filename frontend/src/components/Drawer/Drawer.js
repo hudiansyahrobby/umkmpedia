@@ -4,6 +4,7 @@ import { IconContext } from 'react-icons';
 import { AiFillHeart } from 'react-icons/ai';
 import { FaShoppingCart } from 'react-icons/fa';
 import { FiChevronDown, FiChevronUp } from 'react-icons/fi';
+import LazyLoad from 'react-lazyload';
 import { useDispatch, useSelector } from 'react-redux';
 import { NavLink, useHistory } from 'react-router-dom';
 import useDeepCompareEffect from 'use-deep-compare-effect';
@@ -81,11 +82,13 @@ export default function Drawer({ open }) {
         <div className='pt-4 pb-3 border-t border-gray-700'>
           <div className='flex items-center px-5'>
             <div className='flex-shrink-0'>
-              <img
-                className='h-10 w-10 rounded-full'
-                src={generatePublicPath(user?.profilPic)}
-                alt=''
-              />
+              <LazyLoad height={200} once>
+                <img
+                  className='h-10 w-10 rounded-full'
+                  src={generatePublicPath(user?.profilPic)}
+                  alt=''
+                />
+              </LazyLoad>
             </div>
             <div className='ml-3'>
               <div className='text-base font-medium leading-none text-gray-800'>{user?.name}</div>

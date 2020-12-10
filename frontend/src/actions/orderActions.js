@@ -52,7 +52,6 @@ export const getOrderThisMonth = () => async (dispatch) => {
   dispatch({ type: ORDER.GET_ORDER_THIS_MONTH_INIT });
   try {
     const { data } = await Axios.get('api/order/month');
-    console.log(data);
     dispatch({
       type: ORDER.GET_ORDER_THIS_MONTH_SUCCESS,
       payload: { totalOrder: data.order },

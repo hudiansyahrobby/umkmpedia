@@ -74,7 +74,7 @@ function AddProductPage() {
 
   return (
     <Layout>
-      <div className='w-full h-screen max-w-6xl mx-auto mt-20'>
+      <div className='w-full mx-auto mt-20'>
         <div className='px-6'>
           <Formik
             initialValues={{

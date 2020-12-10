@@ -13,13 +13,6 @@ export default function UserRoute({ component: Component, ...rest }) {
         } else {
           return <h1>hahhaa</h1>;
         }
-        // try {
-        //   jwt.verify(token, process.env.REACT_APP_ACCESS_TOKEN_SECRET);
-        // } catch (error) {
-        //   console.log(error);
-        //   // localStorage.clear();
-        //   // return <Redirect to='/masuk' />;
-        // }
       }}
     />
   );

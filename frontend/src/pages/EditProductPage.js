@@ -97,7 +97,7 @@ function EditProductPage() {
     <>
       <Layout>
         {product?.length > 0 ? (
-          <div className='w-full h-screen max-w-lg mx-auto mt-20'>
+          <div className='w-full mx-auto mt-20'>
             <div className='px-6'>
               <Formik
                 initialValues={{

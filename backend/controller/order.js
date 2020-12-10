@@ -73,8 +73,6 @@ exports.getOrderThisMonth = async (req, res, next) => {
   const date = new Date();
   const month = date.getMonth();
   const year = date.getFullYear();
-  console.log(month);
-  console.log(year);
   try {
     const order = await Order.countDocuments({
       createdAt: {
@@ -173,7 +171,6 @@ exports.addToOrder = async (req, res, next) => {
 
 exports.getPayment = async (req, res, next) => {
   const { courierCost, orderItem } = req.body;
-  console.log(courierCost);
   let totalPrice = courierCost;
 
   for (let index = 0; index < orderItem.length; index++) {

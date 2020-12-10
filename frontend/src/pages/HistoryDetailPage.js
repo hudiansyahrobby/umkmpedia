@@ -1,5 +1,6 @@
 import React from 'react';
 import { useEffect } from 'react';
+import LazyLoad from 'react-lazyload';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import { getOrderById, getTransactionStatus } from '../actions/orderActions';
@@ -81,11 +82,13 @@ export default function HistoryDetailPage() {
                             <td className='px-6 py-4 whitespace-nowrap'>
                               <div className='flex items-center'>
                                 <div className='flex-shrink-0 h-10 w-10'>
-                                  <img
-                                    className='h-10 w-10 rounded-full'
-                                    src={generatePublicPath(image)}
-                                    alt=''
-                                  />
+                                  <LazyLoad height={200} once>
+                                    <img
+                                      className='h-10 w-10 rounded-full'
+                                      src={generatePublicPath(image)}
+                                      alt=''
+                                    />
+                                  </LazyLoad>
                                 </div>
                                 <div className='ml-4'>
                                   <div className='text-sm font-medium text-gray-900'>{name}</div>

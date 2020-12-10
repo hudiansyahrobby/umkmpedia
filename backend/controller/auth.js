@@ -51,11 +51,9 @@ exports.signin = async (req, res, next) => {
 };
 
 exports.generateRefreshToken = async (req, res) => {
-  // console.log(jwt);
   try {
     //get refreshToken
     const { jwt: refreshToken } = req.cookies;
-    console.log('TOKEN', refreshToken);
     //send error if no refreshToken is sent
     if (!refreshToken) {
       return res.status(403).json({ error: 'Access denied,token missing!' });
