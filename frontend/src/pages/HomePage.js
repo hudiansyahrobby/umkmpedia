@@ -1,13 +1,13 @@
-import React, { useEffect } from 'react';
-import Hero from '../components/Hero';
-import Title from '../components/Title';
-import Products from '../components/Products/Products';
-import { deleteProductById, getProducts } from '../actions/productActions';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToWishlist, deleteFromWishlist } from '../actions/wishlistActions';
-import Layout from '../components/Layout';
-import ProductSkeleton from '../components/Products/ProductSkeleton';
-import { useHistory } from 'react-router-dom';
+import React, { useEffect } from "react";
+import Hero from "../components/Hero";
+import Title from "../components/Title";
+import Products from "../components/Products/Products";
+import { deleteProductById, getProducts } from "../actions/productActions";
+import { useDispatch, useSelector } from "react-redux";
+import { addToWishlist, deleteFromWishlist } from "../actions/wishlistActions";
+import Layout from "../components/Layout";
+import ProductSkeleton from "../components/Products/ProductSkeleton";
+import { useHistory } from "react-router-dom";
 
 function HomePage() {
   const dispatch = useDispatch();
@@ -25,7 +25,7 @@ function HomePage() {
   };
 
   const onAddWishlistHandler = (id) => {
-    if (!users?.role) return history.push('/masuk');
+    if (!users?.role) return history.push("/masuk");
 
     dispatch(addToWishlist(id));
   };
@@ -37,9 +37,9 @@ function HomePage() {
   return (
     <Layout>
       <Hero />
-      <div className='bg-gray-200 pt-6'>
-        <div className='px-10'>
-          <div className='mt-10'>
+      <div className="bg-gray-200 py-6">
+        <div className="px-10">
+          <div className="mt-10">
             <Title>Produk Baru</Title>
             {loading ? (
               <ProductSkeleton />

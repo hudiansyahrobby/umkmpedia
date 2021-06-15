@@ -1,7 +1,8 @@
-import React, { useState } from 'react';
-import Drawer from './Drawer/Drawer';
-import Footer from './Footer';
-import Navbar from './Navbar/Navbar';
+import React, { useState } from "react";
+import Drawer from "./Drawer/Drawer";
+import Footer from "./Footer";
+import Navbar from "./Navbar/Navbar";
+import { Helmet } from "react-helmet";
 
 export default function Layout({ children }) {
   const [open, setOpen] = useState(false);
@@ -10,13 +11,17 @@ export default function Layout({ children }) {
     setOpen(!open);
   };
   return (
-    <div className='font-poppins min-h-screen flex flex-col w-full'>
+    <div className="font-poppins min-h-screen flex flex-col w-full">
+      <Helmet>
+        <meta charSet="utf-8" />
+        <title>UMKMPedia</title>
+        <link rel="canonical" href="http://mysite.com/example" />
+      </Helmet>
       <Navbar onOpen={onOpenHandler} open={open} />
       {open && <Drawer onOpen={onOpenHandler} open={open} />}
       <main
-        className='max-w-screen-xl mx-4'
         style={{
-          flex: '1 0 auto',
+          flex: "1 0 auto",
         }}
       >
         {children}
